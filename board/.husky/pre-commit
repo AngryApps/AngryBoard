@@ -1,0 +1,3 @@
+pnpm ng lint
+pnpm ng test --watch=false
+pnpm lint-staged --allow-empty
