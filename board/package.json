@@ -10,6 +10,7 @@
     "docker:dev": "docker-compose up --build",
     "docker:dev:down": "docker-compose down",
     "test": "ng test",
+    "e2e:dev": "playwright test --ui",
     "lint": "ng lint",
     "prepare": "cd .. && husky board/.husky"
   },
