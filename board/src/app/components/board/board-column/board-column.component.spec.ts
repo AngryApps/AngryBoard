@@ -13,6 +13,7 @@ describe('BoardColumnComponent', () => {
 
     fixture = TestBed.createComponent(BoardColumnComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('column', {});
     fixture.detectChanges();
   });
 

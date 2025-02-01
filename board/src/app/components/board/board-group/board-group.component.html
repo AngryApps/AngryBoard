@@ -1,15 +1,21 @@
 @if (columnService.isLoading()) {
   <div class="bg-gray-100 p-8 min-h-screen flex justify-center items-center">
-    <nz-spin nzSimple nzSize="large"></nz-spin>
+    <nz-spin nzSimple nzSize="large" />
   </div>
 } @else if (columnService.error()) {
   <div class="bg-gray-100 p-8 min-h-screen flex justify-center items-center">
     <div class="text-red-500">{{ columnService.error() }}</div>
   </div>
 } @else {
-  <div class="bg-gray-100 p-8 min-h-screen flex overflow-x-auto">
+  <div
+    cdkDropList
+    cdkDropListGroup
+    cdkDropListOrientation="horizontal"
+    (cdkDropListDropped)="dropColumn($event)"
+    class="flex flex-row bg-gray-100 p-8 min-h-screen gap-4 overflow-x-auto flex-shrink-0"
+  >
     @for (column of columns$(); track column.id) {
-      <board-column [column]="column"></board-column>
+      <board-column cdkDrag [column]="column" />
     }
   </div>
 }

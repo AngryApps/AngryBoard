@@ -1,6 +1,18 @@
-<div class="bg-gray-200 shadow-sm rounded-lg p-4 w-72 mr-4 flex-shrink-0">
-  <div class="mb-3">
-    <h3 class="text-lg font-semibold">Column Title</h3>
-    <p class="text-sm text-gray-600">subtitle</p>
+<div
+  class="column-list flex flex-col h-full bg-gray-200 shadow-sm rounded-lg p-4 w-72 flex-shrink-0"
+>
+  <div class="mb-2">
+    <h3 class="text-lg font-semibold">{{ name() }}</h3>
+    <p class="text-sm text-gray-600">{{ description() }}</p>
+  </div>
+  <div
+    cdkDropList
+    [cdkDropListData]="cards()"
+    (cdkDropListDropped)="dropCard($event)"
+    class="flex flex-col gap-3 h-full"
+  >
+    @for (card of cards(); track card.id) {
+      <card-body cdkDrag [cdkDragData]="card" [card]="card"></card-body>
+    }
   </div>
 </div>
