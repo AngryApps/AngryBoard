@@ -1,0 +1,10 @@
+.cdk-drag-placeholder {
+  .card-wrapper {
+    border: 5px double #ccc;
+    border-radius: 8px;
+
+    .card-container {
+      opacity: 0;
+    }
+  }
+}

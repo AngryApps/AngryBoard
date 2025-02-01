@@ -1,3 +1,12 @@
-<div
-  class="w-full min-h-12 mb-4 bg-white p-3 rounded-lg shadow-lg transition-all duration-100 ease-in hover:scale-y-105"
-></div>
+<div class="card-wrapper flex flex-grow touch-manipulation cursor-grab">
+  <div
+    class="card-container flex flex-grow flex-col min-h-3 bg-white p-3 rounded-lg shadow-lg transition-all duration-100 ease-in hover:scale-y-105 select-none"
+  >
+    <div class="mb-1 text-sm font-semibold">
+      {{ title() }}
+    </div>
+    <p class="text-xs text-gray-600">
+      {{ description() }}
+    </p>
+  </div>
+</div>

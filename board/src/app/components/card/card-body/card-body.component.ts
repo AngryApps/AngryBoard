@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  ViewEncapsulation,
+} from '@angular/core';
+import { Card } from '../models/card';
 
 @Component({
   selector: 'card-body',
@@ -6,5 +13,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   templateUrl: './card-body.component.html',
   styleUrl: './card-body.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
 })
-export class CardBodyComponent {}
+export class CardBodyComponent {
+  card = input<Card>();
+
+  title = computed(() => this.card()?.title);
+  description = computed(() => this.card()?.description);
+}
