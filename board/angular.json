@@ -13,7 +13,8 @@
         "@schematics/angular:component": {
           "style": "scss",
           "changeDetection": "OnPush",
-          "standalone": true
+          "standalone": true,
+          "skipTests": true
         },
         "@schematics/angular:class": {
           "skipTests": true
@@ -56,7 +57,10 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss"],
+            "styles": [
+              "src/styles.scss",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
+            ],
             "scripts": []
           },
           "configurations": {
