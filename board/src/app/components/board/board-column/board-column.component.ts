@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { Column } from '../models';
 import { CardBodyComponent } from '../../card';
 import {
@@ -24,10 +19,6 @@ import { Card } from '../../card/models/card';
 })
 export class BoardColumnComponent {
   column = input.required<Column>({});
-
-  name = computed(() => this.column().name);
-  description = computed<string>(() => this.column().description);
-  cards = computed<Card[]>(() => this.column().cards);
 
   dropCard($event: CdkDragDrop<Card[]>) {
     if ($event.previousContainer === $event.container) {
