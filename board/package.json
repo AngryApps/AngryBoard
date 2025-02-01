@@ -1,6 +1,9 @@
 {
   "name": "board",
   "version": "0.0.0",
+  "engines": {
+    "node": ">=18.20.0 <=22.13.1"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -18,6 +21,7 @@
   "dependencies": {
     "@angular-architects/ngrx-toolkit": "^19.0.2",
     "@angular/animations": "^19.1.0",
+    "@angular/cdk": "~19.0.0",
     "@angular/common": "^19.1.0",
     "@angular/compiler": "^19.1.0",
     "@angular/core": "^19.1.0",
