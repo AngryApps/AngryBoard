@@ -14,7 +14,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/columns")
+@RequestMapping("api/v1/columns")
 public class ColumnResource {
 
     private CardRepository cardRepository;

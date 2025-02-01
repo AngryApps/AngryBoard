@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/cards")
+@RequestMapping("api/v1/cards")
 public class CardResource {
 
     private CardRepository cardRepository;
