@@ -1,12 +1,15 @@
 package br.com.angryapps.angry.api.resources;
 
 import br.com.angryapps.angry.api.mappers.ColumnMapper;
+import br.com.angryapps.angry.api.vm.BaseResponse;
 import br.com.angryapps.angry.api.vm.ColumnVM;
 import br.com.angryapps.angry.db.CardRepository;
 import br.com.angryapps.angry.db.ColumnRepository;
 import br.com.angryapps.angry.models.Column;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +39,7 @@ public class ColumnResource {
         return columnMapper.mapToColumnVM(savedColumn);
     }
 
-    @PostMapping(value = "/update")
+    @PutMapping
     ColumnVM updateColumn(@Valid @RequestBody ColumnVM columnVM) {
         Column column = columnMapper.mapToColumn(columnVM);
         Column savedColumn = columnRepository.save(column);
@@ -53,5 +56,11 @@ public class ColumnResource {
     ColumnVM getColumnById(@PathVariable UUID id) {
         Column column = columnRepository.findById(id).orElseThrow(() -> new RuntimeException("Column by id not found"));
         return columnMapper.mapToColumnVM(column);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    ResponseEntity<BaseResponse> deleteColumn(@PathVariable UUID id) {
+        columnRepository.findById(id).ifPresent(column -> columnRepository.delete(column));
+        return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(true, "Column deleted successfully"));
     }
 }
