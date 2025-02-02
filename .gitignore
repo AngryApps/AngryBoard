@@ -1,2 +1,3 @@
 board/target/*
 board/node/*
+.DS_Store
