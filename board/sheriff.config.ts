@@ -1,7 +1,7 @@
 import { SheriffConfig } from '@softarc/sheriff-core';
 
 /**
-  * Minimal configuration for Sheriff
+  * Minimal spring for Sheriff
   * Assigns the 'noTag' tag to all modules and
   * allows all modules to depend on each other.
   */

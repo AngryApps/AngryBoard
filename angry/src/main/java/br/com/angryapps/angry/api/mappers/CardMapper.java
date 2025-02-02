@@ -1,17 +1,12 @@
 package br.com.angryapps.angry.api.mappers;
 
 import br.com.angryapps.angry.api.vm.CardVM;
-import br.com.angryapps.angry.db.ColumnRepository;
 import br.com.angryapps.angry.models.Card;
 import br.com.angryapps.angry.models.Column;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CardMapper {
-
-    @Autowired
-    private ColumnRepository columnRepository;
 
     public CardVM mapToCardVM(Card card) {
         CardVM cardVM = new CardVM();
