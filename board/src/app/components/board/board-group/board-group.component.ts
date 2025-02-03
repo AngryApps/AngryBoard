@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   inject,
   OnInit,
@@ -26,8 +25,6 @@ export class BoardGroupComponent implements OnInit {
   columnService: ColumnService = inject(ColumnService);
 
   columns$ = this.columnService.columns;
-
-  constructor(private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.columnService.getColumns();
