@@ -9,10 +9,11 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { Card } from '../../card/models/card';
+import { ActionMenuComponent } from '../action-menu/action-menu.component';
 
 @Component({
   selector: 'board-column',
-  imports: [CardBodyComponent, CdkDrag, CdkDropList],
+  imports: [CardBodyComponent, CdkDrag, CdkDropList, ActionMenuComponent],
   templateUrl: './board-column.component.html',
   styleUrl: './board-column.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,5 +36,15 @@ export class BoardColumnComponent {
         $event.currentIndex,
       );
     }
+  }
+
+  onEdit() {
+    // not implemented
+    console.log('Edit');
+  }
+
+  onDelete() {
+    // not implemented
+    console.log('Delete');
   }
 }

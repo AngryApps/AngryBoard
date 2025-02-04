@@ -15,7 +15,7 @@
     class="flex flex-row bg-gray-100 p-8 min-h-screen gap-4 overflow-x-auto flex-shrink-0"
   >
     @for (column of columns$(); track column.id) {
-      <board-column cdkDrag [column]="column" />
+      <board-column cdkDrag [cdkDragData]="column" [column]="column" />
     }
   </div>
 }
