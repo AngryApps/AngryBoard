@@ -10,7 +10,7 @@
     "build": "ng build",
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "docker:dev": "docker-compose up --build",
+    "docker:dev": "docker compose up --build",
     "docker:dev:down": "docker-compose down",
     "test": "ng test",
     "e2e:dev": "playwright test --ui",
