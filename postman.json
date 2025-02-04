@@ -1,0 +1,285 @@
+{
+	"info": {
+		"_postman_id": "f77b3fab-ced8-4c5c-8fe6-e1a4d2cd827e",
+		"name": "Angry",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25250701",
+		"_collection_link": "https://ddmx-mobile.postman.co/workspace/DDMX-Mobile~8f77f9cf-f23f-414f-8313-adf6c214214b/collection/25250701-f77b3fab-ced8-4c5c-8fe6-e1a4d2cd827e?action=share&source=collection_link&creator=25250701"
+	},
+	"item": [
+		{
+			"name": "CREATE CARD",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"OAuth\",\n    \"description\": \"Implementar OAuth\",\n    \"createdAt\": \"2025-01-31T22:17:00\",\n    \"updatedAt\": \"\",\n    \"columnId\": \"ced1ab29-8019-4f44-a6bb-0e5fa993b238\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/cards",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"cards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LIST CARDS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/cards",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"cards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE CARD",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"5358f977-2338-46a5-954d-42de53be38d6\",\n    \"title\": \"OAuth ATUALIZADO\",\n    \"description\": \"Implementar OAuth\",\n    \"createdAt\": \"2025-01-31T22:17:00\",\n    \"updatedAt\": null,\n    \"columnId\": \"ced1ab29-8019-4f44-a6bb-0e5fa993b238\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/cards",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"cards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LIST CARD BY ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/cards/9f63b1d3-eb1c-4bed-945c-2c882218bd50",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"cards",
+						"9f63b1d3-eb1c-4bed-945c-2c882218bd50"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE CARD",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/cards/5358f977-2338-46a5-954d-42de53be38d6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"cards",
+						"5358f977-2338-46a5-954d-42de53be38d6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE COLUMN",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Teste\",\n    \"description\": \"Adicionar somente cards finalizados e prontos para teste\",\n    \"createdAt\": \"2025-01-31T22:16:00\",\n    \"updatedAt\": null,\n    \"position\": 0,\n    \"cards\": []\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/columns",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"columns"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LIST COLUMNS",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/columns",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"columns"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LIST COLUMN BY ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/columns/25cb145e-58f2-4dda-947f-fad6dba38a6a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"columns",
+						"25cb145e-58f2-4dda-947f-fad6dba38a6a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE COLUMN",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/columns/b5cb0e89-d4a0-4e2c-8e83-9f14ba2ac591",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"columns",
+						"b5cb0e89-d4a0-4e2c-8e83-9f14ba2ac591"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE COLUMN",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"08eeae31-9182-45d9-bb28-842049582b38\",\n    \"title\": \"Backlog\",\n    \"description\": \"Adicionar somente cards backlog\",\n    \"createdAt\": \"2025-01-31T22:16:00\",\n    \"updatedAt\": \"2025-01-31T22:43:00\",\n    \"position\": 0,\n    \"cards\": [\n        {\n            \"id\": \"48aa3a29-d024-467d-b8fb-9a7938d99802\",\n            \"title\": \"Adicionar url\",\n            \"description\": \"Adicionar URL no projeto\",\n            \"createdAt\": \"2025-01-31T22:17:00\",\n            \"updatedAt\": null,\n            \"columnId\": \"08eeae31-9182-45d9-bb28-842049582b38\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/angry/columns/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"angry",
+						"columns",
+						"update"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
