@@ -1,13 +1,16 @@
-import { DestroyRef, Injectable, signal } from '@angular/core';
-import { delay, map, Observable, of, Subject, take } from 'rxjs';
-import { Column, ColumnWS, KANBAN_COLUMNS } from '../models';
+import { DestroyRef, inject, Injectable, signal } from '@angular/core';
+import { map, Subject, take } from 'rxjs';
+import { Column, ColumnResponse } from '../models';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CardWS } from '../../card/models/card';
+import { BaseApiHttpRequestService, BaseResponse } from '../../../shared';
+import { Card, CardWS } from '../../card/models/card';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ColumnService {
+  apiService = inject(BaseApiHttpRequestService);
+
   private columnSignal = signal<Column[]>([]);
   private loadingSignal = signal<boolean>(false);
   private errorSignal = signal<string | null>(null);
@@ -30,34 +33,23 @@ export class ColumnService {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
-    this.fakeHttpRequest()
+    this.apiService
+      .get<ColumnResponse[]>('columns')
       .pipe(
         take(1),
         takeUntilDestroyed(this.destroyRef),
-        map((columns: ColumnWS[]) =>
-          columns.map((column: ColumnWS) => ({
-            id: column.id,
-            name: column.name,
-            description: column.description,
-            position: column.position,
-            createdAt: column.created_at,
-            updatedAt: column.updated_at,
-            cards: column.cards?.map((card: CardWS) => ({
-              id: card.id,
-              title: card.title,
-              description: card.description,
-              createdAt: card.created_at,
-              updatedAt: card.updated_at,
-              columnId: card.column_id,
-              columnPosition: card.column_position,
-              attachments: card.attachments,
-            })),
-          })),
-        ),
+        map((response: BaseResponse<ColumnResponse[]>) => {
+          if (!response.success) {
+            throw new Error(response.message);
+          }
+          return response.data.map((column) =>
+            this.parseColumnResponse(column),
+          );
+        }),
       )
       .subscribe({
-        next: (columns) => {
-          this.columnSignal.set(columns as Column[]);
+        next: (columns: Column[]) => {
+          this.columnSignal.set(columns);
           this.loadingSignal.set(false);
         },
         error: (err: unknown) => {
@@ -70,7 +62,28 @@ export class ColumnService {
       });
   }
 
-  private fakeHttpRequest(): Observable<ColumnWS[]> {
-    return of(KANBAN_COLUMNS).pipe(delay(800));
+  parseColumnResponse(response: ColumnResponse): Column {
+    return {
+      id: response.id,
+      title: response.title,
+      description: response.description,
+      position: response.position,
+      createdAt: response.created_at,
+      updatedAt: response.updated_at,
+      cards: response.cards?.map((card) => this.parseCardResponse(card)) || [],
+    };
+  }
+
+  parseCardResponse(response: CardWS): Card {
+    return {
+      id: response.id,
+      title: response.title,
+      description: response.description,
+      columnPosition: response.column_position,
+      columnId: response.column_id,
+      attachments: response.attachments,
+      createdAt: response.created_at,
+      updatedAt: response.updated_at,
+    };
   }
 }
