@@ -1,6 +1,11 @@
 .column-list {
-  .title {
-    border-bottom: 2px #000 solid;
+  display: block;
+  background-color: var(--p-content-background);
+  color: var(--p-content-color);
+  border: 1px solid #e5e7eb;
+
+  .subtitle {
+    color: var(--p-text-muted-color);
   }
 
   .cdk-drop-list-dragging {

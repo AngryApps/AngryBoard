@@ -51,7 +51,26 @@ export class BaseApiHttpRequestService {
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    console.error('HTTP Error:', error);
+    if (error.status === 404) {
+      return throwError(() => new Error('Resource not found.'));
+    }
+
+    if (error.status === 401) {
+      return throwError(() => new Error('Unauthorized.'));
+    }
+
+    if (error.status === 403) {
+      return throwError(() => new Error('Forbidden.'));
+    }
+
+    if (error.status === 500) {
+      return throwError(() => new Error('Internal server error.'));
+    }
+
+    if (error.status === 400) {
+      return throwError(() => new Error('Bad request.'));
+    }
+
     return throwError(
       () => new Error('An error occurred. Please try again later.'),
     );

@@ -1,35 +1,6 @@
-<nz-button-group>
-  <button
-    tabIndex="0"
-    [nzDropdownMenu]="action"
-    nz-button
-    nz-dropdown
-    nzType="text"
-  >
-    <nz-icon nzType="ellipsis" />
-  </button>
-</nz-button-group>
-<nz-dropdown-menu #action="nzDropdownMenu">
-  <ul nz-menu>
-    <li
-      (keyup.enter)="editAction()"
-      (click)="editAction()"
-      tabindex="0"
-      role="button"
-      nz-menu-item
-    >
-      <nz-icon nzType="edit" />
-      Edit details
-    </li>
-    <li
-      (keyup.enter)="deleteAction()"
-      (click)="deleteAction()"
-      tabindex="0"
-      role="button"
-      nz-menu-item
-    >
-      <nz-icon nzType="delete" />
-      Delete
-    </li>
-  </ul>
-</nz-dropdown-menu>
+<p-menu #menu [model]="items" [popup]="true" />
+<p-button
+  (click)="menu.toggle($event)"
+  icon="pi pi-ellipsis-v"
+  variant="text"
+/>
