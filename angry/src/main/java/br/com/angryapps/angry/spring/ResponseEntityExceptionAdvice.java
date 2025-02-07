@@ -40,6 +40,7 @@ public class ResponseEntityExceptionAdvice {
         return ex.getResponse();
     }
 
+    // Handling exceptions for validation constraints
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
