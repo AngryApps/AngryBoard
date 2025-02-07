@@ -1,13 +1,13 @@
 <div
-  class="column-list flex flex-col h-full bg-gray-200 shadow-sm rounded-lg p-4 w-72 flex-shrink-0"
+  class="column-list flex flex-col h-full shadow-md rounded-lg p-4 w-72 flex-shrink-0 p-card"
 >
-  <div class="flex flex-row place-content-between mb-2">
-    <div class="">
+  <div class="flex flex-row justify-between items-start mb-4">
+    <div class="mb-2">
       <h3 class="text-lg font-semibold">{{ column().title }}</h3>
-      <p class="text-sm text-gray-600">{{ column().description }}</p>
+      <p class="subtitle text-sm">{{ column().description }}</p>
     </div>
 
-    <action-menu (edit)="onEdit()" (delete)="onDelete()"></action-menu>
+    <action-menu (edit)="onEdit()" (delete)="onDelete()" />
   </div>
 
   <div

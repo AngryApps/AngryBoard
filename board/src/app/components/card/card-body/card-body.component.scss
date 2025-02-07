@@ -1,3 +1,9 @@
+.card-container {
+  background-color: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+  color: var(--p-surface-800);
+}
+
 .cdk-drag-placeholder {
   .card-wrapper {
     border: 5px double #ccc;

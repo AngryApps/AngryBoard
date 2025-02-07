@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, output } from '@angular/core';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzButtonModule } from 'ng-zorro-antd/button';
+import { Menu } from 'primeng/menu';
+import { Button } from 'primeng/button';
+import { MenuItem, PrimeIcons } from 'primeng/api';
 
 @Component({
   selector: 'action-menu',
-  imports: [NzButtonModule, NzDropDownModule, NzIconModule],
+  imports: [Menu, Button],
   templateUrl: './action-menu.component.html',
   styleUrl: './action-menu.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -13,6 +13,24 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 export class ActionMenuComponent {
   edit = output<void>();
   delete = output<void>();
+
+  items: MenuItem[] = [
+    {
+      label: 'Actions',
+      items: [
+        {
+          label: 'Edit',
+          icon: PrimeIcons.PENCIL,
+          command: () => this.editAction(),
+        },
+        {
+          label: 'Delete',
+          icon: PrimeIcons.TRASH,
+          command: () => this.deleteAction(),
+        },
+      ],
+    },
+  ];
 
   editAction() {
     this.edit.emit();
