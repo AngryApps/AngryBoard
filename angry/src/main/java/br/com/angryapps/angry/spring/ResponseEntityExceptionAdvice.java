@@ -3,14 +3,20 @@ package br.com.angryapps.angry.spring;
 import br.com.angryapps.angry.api.exceptions.BadRequestResponseException;
 import br.com.angryapps.angry.api.exceptions.NotFoundResponseException;
 import br.com.angryapps.angry.api.exceptions.UnauthorizedResponseException;
+import br.com.angryapps.angry.api.responses.ApiResponses;
 import br.com.angryapps.angry.api.responses.BaseResponse;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@ControllerAdvice
+import java.util.Arrays;
+import java.util.List;
+
+@RestControllerAdvice
 public class ResponseEntityExceptionAdvice {
 
     @ResponseBody
@@ -32,5 +38,17 @@ public class ResponseEntityExceptionAdvice {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public BaseResponse handleUnauthorizedException(UnauthorizedResponseException ex) {
         return ex.getResponse();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public BaseResponse handleNotValidConstrainsException(MethodArgumentNotValidException ex) {
+        List<String> errors = Arrays.stream(ex.getDetailMessageArguments())
+                                    .map(String::valueOf)
+                                    .filter(d -> !d.isEmpty())
+                                    .toList();
+
+        return ApiResponses.error(String.join(", ", errors));
     }
 }

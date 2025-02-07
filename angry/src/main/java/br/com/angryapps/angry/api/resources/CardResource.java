@@ -37,7 +37,7 @@ public class CardResource {
     @PostMapping
     CardVM createCard(@Valid @RequestBody CardVM cardVM) {
         Column column = columnRepository.findById(cardVM.getColumnId())
-                .orElseThrow(() -> new RuntimeException("Column not found"));
+                                        .orElseThrow(() -> new NotFoundResponseException("Column not found"));
 
         Card card = cardMapper.mapToCard(cardVM, column);
         Card savedCard = cardRepository.save(card);
@@ -63,9 +63,9 @@ public class CardResource {
     @GetMapping
     ListDataResponse<CardVM> getAllCards() {
         List<CardVM> cards = cardRepository.findAll()
-                .stream()
-                .map(cardMapper::mapToCardVM)
-                .toList();
+                                           .stream()
+                                           .map(cardMapper::mapToCardVM)
+                                           .toList();
 
         return ApiResponses.list(cards);
     }

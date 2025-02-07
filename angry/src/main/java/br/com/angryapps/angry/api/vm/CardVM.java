@@ -1,5 +1,6 @@
 package br.com.angryapps.angry.api.vm;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
@@ -8,11 +9,12 @@ import java.util.UUID;
 public class CardVM {
 
     private UUID id;
+    @NotBlank(message = "Title is required")
     private String title;
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    @NotNull
+    @NotNull(message = "ColumnId is required")
     private UUID columnId;
 
     public UUID getColumnId() {
