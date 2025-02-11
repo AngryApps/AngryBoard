@@ -1,0 +1,41 @@
+<p-menubar class="z-50" [model]="items">
+  <ng-template #start>
+    <svg
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      width="33"
+      height="35"
+      viewBox="0 0 200 200"
+      class="angryboard-logo"
+    >
+      <rect width="200" height="200" rx="20" ry="20" class="background" />
+      <path d="M40,30 V140 M160,30 V140" class="kanban-lines" />
+      <path d="M30,160 Q100,90 170,160" class="kanban-curve" />
+      <path d="M70,80 Q85,60 100,80 Q115,60 130,80" class="angry-eyes" />
+    </svg>
+  </ng-template>
+  <ng-template #item let-item let-root="root">
+    <a class="flex items-center p-menubar-item-link" pRipple>
+      <span>{{ item.label }}</span>
+      <span
+        *ngIf="item.shortcut"
+        class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1"
+        >{{ item.shortcut }}</span
+      >
+      <i
+        *ngIf="item.items"
+        [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"
+      ></i>
+    </a>
+  </ng-template>
+  <ng-template #end>
+    <div class="flex items-center gap-2">
+      <p-button
+        (click)="toggleDarkMode()"
+        [icon]="iconClass()"
+        class="float-right"
+        variant="text"
+      />
+    </div>
+  </ng-template>
+</p-menubar>

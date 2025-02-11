@@ -1,0 +1,17 @@
+.angryboard-logo .background {
+  fill: var(--p-surface-100);
+}
+
+.angryboard-logo .kanban-lines,
+.angryboard-logo .kanban-curve {
+  stroke: var(--p-primary-500);
+  stroke-width: 10;
+  stroke-linecap: round;
+  fill: var(--p-surface-100);
+}
+
+.angryboard-logo .angry-eyes {
+  stroke: var(--p-red-400);
+  stroke-width: 5;
+  fill: none;
+}

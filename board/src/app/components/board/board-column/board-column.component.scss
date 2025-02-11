@@ -2,7 +2,7 @@
   display: block;
   background-color: var(--p-content-background);
   color: var(--p-content-color);
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--p-content-border-color);
 
   .subtitle {
     color: var(--p-text-muted-color);
