@@ -1,7 +1,7 @@
 <div
-  class="column-list flex flex-col h-full shadow-md rounded-lg p-4 w-72 flex-shrink-0 p-card"
+  class="column-list flex flex-col h-full relative shadow-md rounded-lg p-4 w-72 flex-shrink-0 p-card"
 >
-  <div class="flex flex-row justify-between items-start mb-4">
+  <div class="flex flex-row justify-between items-start">
     <div class="mb-2">
       <h3 class="text-lg font-semibold">{{ column().title }}</h3>
       <p class="subtitle text-sm">{{ column().description }}</p>
@@ -14,7 +14,7 @@
     cdkDropList
     [cdkDropListData]="column().cards"
     (cdkDropListDropped)="dropCard($event)"
-    class="flex flex-col gap-3 h-full"
+    class="flex flex-col gap-3 h-[95%] overflow-auto py-3"
   >
     @for (card of column().cards; track card.id) {
       <card-body cdkDrag [cdkDragData]="card" [card]="card"></card-body>

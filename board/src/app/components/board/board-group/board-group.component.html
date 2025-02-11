@@ -1,12 +1,5 @@
-<p-button
-  (click)="toggleDarkMode()"
-  [icon]="iconClass()"
-  class="float-right"
-  variant="text"
-/>
-
 @if (columnService.isLoading()) {
-  <div class="p-8 min-h-screen flex justify-center items-center">
+  <div class="min-h-full flex justify-center items-center">
     <p-progress-spinner
       strokeWidth="8"
       fill="transparent"
@@ -15,7 +8,7 @@
     />
   </div>
 } @else if (columnService.error()) {
-  <div class="p-8 min-h-screen flex justify-center items-center">
+  <div class="min-h-full flex justify-center items-center">
     <div class="text-red-500">{{ columnService.error() }}</div>
   </div>
 } @else {
@@ -24,7 +17,7 @@
     cdkDropListGroup
     cdkDropListOrientation="horizontal"
     (cdkDropListDropped)="dropColumn($event)"
-    class="flex flex-row p-8 min-h-screen gap-4 overflow-x-auto flex-shrink-0"
+    class="flex flex-row min-h-[50rem] h-[90vh] pb-2 gap-4"
   >
     @for (column of columns$(); track column.id) {
       <board-column cdkDrag [cdkDragData]="column" [column]="column" />
