@@ -1,6 +1,6 @@
 import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { map, Subject, take } from 'rxjs';
-import { Column, ColumnResponse } from '../models';
+import { AddColumnRequest, Column, ColumnResponse } from '../models';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BaseApiHttpRequestService, BaseResponse } from '../../../shared';
 import { Card, CardWS } from '../../card/models/card';
@@ -12,13 +12,12 @@ export class ColumnService {
   apiService = inject(BaseApiHttpRequestService);
 
   private columnSignal = signal<Column[]>([]);
-  private loadingSignal = signal<boolean>(false);
-  private errorSignal = signal<string | null>(null);
-  private destroy$ = new Subject<void>();
-
   columns = this.columnSignal.asReadonly();
+  private loadingSignal = signal<boolean>(false);
   isLoading = this.loadingSignal.asReadonly();
+  private errorSignal = signal<string | null>(null);
   error = this.errorSignal.asReadonly();
+  private destroy$ = new Subject<void>();
 
   constructor(private destroyRef: DestroyRef) {
     destroyRef.onDestroy(() => {
@@ -54,6 +53,45 @@ export class ColumnService {
         },
         error: (err: unknown) => {
           this.errorSignal.set(`Failed to load columns ${err}`);
+          this.loadingSignal.set(false);
+        },
+        complete: () => {
+          this.loadingSignal.set(false);
+        },
+      });
+  }
+
+  addColumn(title: string, description?: string | null | undefined): void {
+    if (this.isLoading()) return;
+
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+
+    const addColumnRequest: AddColumnRequest = {
+      title,
+      description: description || undefined,
+    };
+
+    this.apiService
+      .post<ColumnResponse>('columns', addColumnRequest)
+      .pipe(
+        take(1),
+        takeUntilDestroyed(this.destroyRef),
+        map((response: BaseResponse<ColumnResponse>) => {
+          if (!response.success) {
+            throw new Error(response.message);
+          }
+
+          return this.parseColumnResponse(response.data);
+        }),
+      )
+      .subscribe({
+        next: (column: Column) => {
+          this.columnSignal.set([...this.columns(), column]);
+          this.loadingSignal.set(false);
+        },
+        error: (err: unknown) => {
+          this.errorSignal.set(`Failed to add column ${err}`);
           this.loadingSignal.set(false);
         },
         complete: () => {

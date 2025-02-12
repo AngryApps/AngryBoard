@@ -1,3 +1,5 @@
+<add-column class="mb-2" />
+
 @if (columnService.isLoading()) {
   <div class="min-h-full flex justify-center items-center">
     <p-progress-spinner
@@ -17,7 +19,7 @@
     cdkDropListGroup
     cdkDropListOrientation="horizontal"
     (cdkDropListDropped)="dropColumn($event)"
-    class="flex flex-row min-h-[50rem] h-[90vh] pb-2 gap-4"
+    class="flex flex-row min-h-[50rem] h-4/5 pb-2 gap-4"
   >
     @for (column of columns$(); track column.id) {
       <board-column cdkDrag [cdkDragData]="column" [column]="column" />
