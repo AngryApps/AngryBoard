@@ -1,0 +1,55 @@
+<p-button
+  (click)="op.toggle($event)"
+  class="sticky left-8"
+  icon="pi pi-plus"
+  label="Add Column"
+  size="small"
+/>
+<p-popover #op>
+  <form
+    (ngSubmit)="addColumn()"
+    [formGroup]="columnForm"
+    class="flex flex-col gap-2 w-[25rem]"
+  >
+    <p-floatlabel variant="on">
+      <input
+        autocomplete="off"
+        class="w-full"
+        formControlName="title"
+        id="in_label"
+        pInputText
+        pSize="small"
+        required
+      />
+      <label for="in_label">Title</label>
+    </p-floatlabel>
+
+    @if (isFieldInvalid("title")) {
+      <p-message severity="error" variant="simple" size="small"
+        >Title is required</p-message
+      >
+    }
+
+    <p-floatlabel variant="on">
+      <textarea
+        class="w-full"
+        formControlName="description"
+        id="over_label"
+        pSize="small"
+        pTextarea
+        rows="3"
+        style="resize: none"
+      ></textarea>
+      <label for="in_label">Description</label>
+    </p-floatlabel>
+
+    <p-button
+      [disabled]="columnForm.invalid"
+      class="self-end"
+      label="ok"
+      severity="secondary"
+      size="small"
+      type="submit"
+    />
+  </form>
+</p-popover>

@@ -12,11 +12,19 @@ import {
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
 import { Column } from '../models';
-import { ProgressSpinner } from 'primeng/progressspinner';
+import { ButtonModule } from 'primeng/button';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { AddColumnComponent } from '../add-column/add-column.component';
 
 @Component({
   selector: 'board-group',
-  imports: [DragDropModule, BoardColumnComponent, ProgressSpinner],
+  imports: [
+    DragDropModule,
+    BoardColumnComponent,
+    ProgressSpinnerModule,
+    ButtonModule,
+    AddColumnComponent,
+  ],
   templateUrl: './board-group.component.html',
   styleUrl: './board-group.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
