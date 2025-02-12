@@ -14,7 +14,7 @@
     cdkDropList
     [cdkDropListData]="column().cards"
     (cdkDropListDropped)="dropCard($event)"
-    class="flex flex-col gap-3 h-[95%] overflow-auto py-3"
+    class="flex flex-col gap-3 h-[90%] overflow-auto py-3"
   >
     @for (card of column().cards; track card.id) {
       <card-body cdkDrag [cdkDragData]="card" [card]="card"></card-body>

@@ -19,3 +19,8 @@ export interface ColumnResponse {
   updated_at: Date;
   cards?: CardWS[];
 }
+
+export interface AddColumnRequest {
+  title: string;
+  description?: string;
+}
