@@ -1,0 +1,10 @@
+:host ::ng-deep .p-inplace-display {
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+:host ::ng-deep .p-inplace-display:hover {
+  background: var(--surface-100);
+  cursor: pointer;
+}
