@@ -1,6 +1,11 @@
 import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { map, Subject, take } from 'rxjs';
-import { AddColumnRequest, Column, ColumnResponse } from '../models';
+import {
+  AddColumnRequest,
+  Column,
+  ColumnResponse,
+  UpdateColumnRequest,
+} from '../models';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BaseApiHttpRequestService, BaseResponse } from '../../../shared';
 import { Card, CardWS } from '../../card/models/card';
@@ -51,7 +56,7 @@ export class ColumnService {
           this.columnSignal.set(columns);
           this.loadingSignal.set(false);
         },
-        error: (err: unknown) => {
+        error: (err: string) => {
           this.errorSignal.set(`Failed to load columns ${err}`);
           this.loadingSignal.set(false);
         },
@@ -90,8 +95,50 @@ export class ColumnService {
           this.columnSignal.set([...this.columns(), column]);
           this.loadingSignal.set(false);
         },
-        error: (err: unknown) => {
+        error: (err: string) => {
           this.errorSignal.set(`Failed to add column ${err}`);
+          this.loadingSignal.set(false);
+        },
+        complete: () => {
+          this.loadingSignal.set(false);
+        },
+      });
+  }
+
+  editColumn(columnId: string, title?: string, description?: string): void {
+    if (this.isLoading()) return;
+
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+
+    const editColumnRequest: UpdateColumnRequest = {
+      id: columnId,
+      title,
+      description: description || undefined,
+    };
+
+    this.apiService
+      .put<ColumnResponse>(`columns`, editColumnRequest)
+      .pipe(
+        take(1),
+        takeUntilDestroyed(this.destroyRef),
+        map((response: BaseResponse<ColumnResponse>) => {
+          if (!response.success) {
+            throw new Error(response.message);
+          }
+
+          return this.parseColumnResponse(response.data);
+        }),
+      )
+      .subscribe({
+        next: (column: Column) => {
+          this.columnSignal.set(
+            this.columns().map((c) => (c.id === column.id ? column : c)),
+          );
+          this.loadingSignal.set(false);
+        },
+        error: (err: string) => {
+          this.errorSignal.set(`Failed to edit column ${err}`);
           this.loadingSignal.set(false);
         },
         complete: () => {
@@ -115,18 +162,16 @@ export class ColumnService {
           if (!response.success) {
             throw new Error(response.message);
           }
-
-          return response.data.id;
         }),
       )
       .subscribe({
-        next: (columnId: string) => {
+        next: () => {
           this.columnSignal.set(
             this.columns().filter((column) => column.id !== columnId),
           );
           this.loadingSignal.set(false);
         },
-        error: (err: unknown) => {
+        error: (err: string) => {
           this.errorSignal.set(`Failed to delete column ${err}`);
           this.loadingSignal.set(false);
         },

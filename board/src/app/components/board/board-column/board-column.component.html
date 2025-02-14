@@ -3,8 +3,17 @@
 >
   <div class="flex flex-row justify-between items-start">
     <div class="mb-2">
-      <h3 class="text-lg font-semibold">{{ column().title }}</h3>
-      <p class="subtitle text-sm">{{ column().description }}</p>
+      <inplace-input
+        (saved)="editTite($event)"
+        [(value)]="column().title"
+        class="text-lg font-semibold"
+      />
+
+      <inplace-input
+        (saved)="editDescription($event)"
+        [(value)]="column().description"
+        class="subtitle text-sm"
+      />
     </div>
 
     <action-menu (delete)="onDelete()" (edit)="onEdit()" />

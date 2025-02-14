@@ -18,6 +18,7 @@ import { PopoverModule } from 'primeng/popover';
 import { CommonModule } from '@angular/common';
 import { ActionMenuComponent } from '../action-menu/action-menu.component';
 import { CardBodyComponent } from '../../card';
+import { InplaceInputComponent } from '../../../shared';
 
 @Component({
   selector: 'board-column',
@@ -29,6 +30,7 @@ import { CardBodyComponent } from '../../card';
     PopoverModule,
     ActionMenuComponent,
     CardBodyComponent,
+    InplaceInputComponent,
   ],
   templateUrl: './board-column.component.html',
   styleUrl: './board-column.component.scss',
@@ -61,5 +63,21 @@ export class BoardColumnComponent {
 
   onDelete() {
     this.columnService.deleteColumn(this.column().id);
+  }
+
+  editDescription(description: string) {
+    this.columnService.editColumn(
+      this.column().id,
+      this.column().title,
+      description,
+    );
+  }
+
+  editTite(title: string) {
+    this.columnService.editColumn(
+      this.column().id,
+      title,
+      this.column().description,
+    );
   }
 }
