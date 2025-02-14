@@ -30,7 +30,7 @@ import { AddColumnComponent } from '../add-column/add-column.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardGroupComponent implements OnInit {
-  columnService: ColumnService = inject(ColumnService);
+  columnService = inject(ColumnService);
 
   columns$ = this.columnService.columns;
 

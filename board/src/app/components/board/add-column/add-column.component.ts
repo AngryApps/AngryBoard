@@ -6,12 +6,7 @@ import {
 } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { Popover, PopoverModule } from 'primeng/popover';
-import {
-  FormBuilder,
-  FormControl,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { TextareaModule } from 'primeng/textarea';
@@ -34,20 +29,15 @@ import { MessageModule } from 'primeng/message';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddColumnComponent {
-  popover = viewChild.required<Popover>('op');
+  public popover = viewChild.required<Popover>('op');
 
-  columnService = inject(ColumnService);
+  private columnService = inject(ColumnService);
   private _fb = inject(FormBuilder);
 
-  columnForm = this._fb.group({
-    title: new FormControl('', Validators.required),
-    description: new FormControl(''),
+  protected columnForm = this._fb.nonNullable.group({
+    title: ['', Validators.required],
+    description: [''],
   });
-
-  isFieldInvalid(fieldName: string) {
-    const field = this.columnForm.get(fieldName);
-    return field ? field.invalid && (field.dirty || field.touched) : false;
-  }
 
   protected addColumn() {
     if (this.columnForm.invalid) return;

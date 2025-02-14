@@ -61,7 +61,7 @@ export class ColumnService {
       });
   }
 
-  addColumn(title: string, description?: string | null | undefined): void {
+  addColumn(title: string, description?: string): void {
     if (this.isLoading()) return;
 
     this.loadingSignal.set(true);
@@ -92,6 +92,42 @@ export class ColumnService {
         },
         error: (err: unknown) => {
           this.errorSignal.set(`Failed to add column ${err}`);
+          this.loadingSignal.set(false);
+        },
+        complete: () => {
+          this.loadingSignal.set(false);
+        },
+      });
+  }
+
+  deleteColumn(columnId: string): void {
+    if (this.isLoading()) return;
+
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+
+    this.apiService
+      .delete<ColumnResponse>('columns', columnId)
+      .pipe(
+        take(1),
+        takeUntilDestroyed(this.destroyRef),
+        map((response: BaseResponse<ColumnResponse>) => {
+          if (!response.success) {
+            throw new Error(response.message);
+          }
+
+          return response.data.id;
+        }),
+      )
+      .subscribe({
+        next: (columnId: string) => {
+          this.columnSignal.set(
+            this.columns().filter((column) => column.id !== columnId),
+          );
+          this.loadingSignal.set(false);
+        },
+        error: (err: unknown) => {
+          this.errorSignal.set(`Failed to delete column ${err}`);
           this.loadingSignal.set(false);
         },
         complete: () => {

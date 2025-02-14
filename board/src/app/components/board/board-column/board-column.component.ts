@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+} from '@angular/core';
 import { Column } from '../models';
 import { CardBodyComponent } from '../../card';
 import {
@@ -10,15 +15,24 @@ import {
 } from '@angular/cdk/drag-drop';
 import { Card } from '../../card/models/card';
 import { ActionMenuComponent } from '../action-menu/action-menu.component';
+import { ColumnService } from '../services';
+import { PopoverModule } from 'primeng/popover';
 
 @Component({
   selector: 'board-column',
-  imports: [CardBodyComponent, CdkDrag, CdkDropList, ActionMenuComponent],
+  imports: [
+    CardBodyComponent,
+    CdkDrag,
+    CdkDropList,
+    ActionMenuComponent,
+    PopoverModule,
+  ],
   templateUrl: './board-column.component.html',
   styleUrl: './board-column.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardColumnComponent {
+  columnService = inject(ColumnService);
   column = input.required<Column>({});
 
   dropCard($event: CdkDragDrop<Card[]>) {
@@ -39,12 +53,10 @@ export class BoardColumnComponent {
   }
 
   onEdit() {
-    // not implemented
-    console.log('Edit');
+    console.log('not implemented');
   }
 
   onDelete() {
-    // not implemented
-    console.log('Delete');
+    this.columnService.deleteColumn(this.column().id);
   }
 }

@@ -1,20 +1,33 @@
-import { ChangeDetectionStrategy, Component, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  output,
+} from '@angular/core';
 import { Menu } from 'primeng/menu';
 import { Button } from 'primeng/button';
-import { MenuItem, PrimeIcons } from 'primeng/api';
+import {
+  ConfirmationService,
+  MenuItem,
+  MessageService,
+  PrimeIcons,
+} from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'action-menu',
-  imports: [Menu, Button],
+  imports: [Menu, Button, ToastModule, ConfirmDialogModule],
+  providers: [ConfirmationService, MessageService],
   templateUrl: './action-menu.component.html',
   styleUrl: './action-menu.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActionMenuComponent {
-  edit = output<void>();
-  delete = output<void>();
+  public edit = output<void>();
+  public delete = output<void>();
 
-  items: MenuItem[] = [
+  protected items: MenuItem[] = [
     {
       label: 'Actions',
       items: [
@@ -32,11 +45,43 @@ export class ActionMenuComponent {
     },
   ];
 
+  private messageService = inject(MessageService);
+  private confirmationService = inject(ConfirmationService);
+
   editAction() {
     this.edit.emit();
   }
 
   deleteAction() {
-    this.delete.emit();
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this column?',
+      icon: 'pi pi-info-circle',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Delete',
+        severity: 'danger',
+      },
+      accept: () => {
+        this.delete.emit();
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Confirmed',
+          detail: 'Record deleted',
+          life: 3000,
+        });
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Rejected',
+          detail: 'You have rejected',
+          life: 3000,
+        });
+      },
+    });
   }
 }

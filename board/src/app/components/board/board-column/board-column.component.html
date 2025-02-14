@@ -7,13 +7,13 @@
       <p class="subtitle text-sm">{{ column().description }}</p>
     </div>
 
-    <action-menu (edit)="onEdit()" (delete)="onDelete()" />
+    <action-menu (delete)="onDelete()" (edit)="onEdit()" />
   </div>
 
   <div
-    cdkDropList
-    [cdkDropListData]="column().cards"
     (cdkDropListDropped)="dropCard($event)"
+    [cdkDropListData]="column().cards"
+    cdkDropList
     class="flex flex-col gap-3 h-[90%] overflow-auto py-3"
   >
     @for (card of column().cards; track card.id) {
