@@ -15,6 +15,7 @@ import { MessageModule } from 'primeng/message';
 
 @Component({
   selector: 'add-column',
+  standalone: true,
   imports: [
     ButtonModule,
     PopoverModule,

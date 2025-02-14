@@ -17,6 +17,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'action-menu',
+  standalone: true,
   imports: [Menu, Button, ToastModule, ConfirmDialogModule],
   providers: [ConfirmationService, MessageService],
   templateUrl: './action-menu.component.html',

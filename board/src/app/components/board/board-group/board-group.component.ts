@@ -28,6 +28,7 @@ import { AddColumnComponent } from '../add-column/add-column.component';
   templateUrl: './board-group.component.html',
   styleUrl: './board-group.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class BoardGroupComponent implements OnInit {
   columnService = inject(ColumnService);

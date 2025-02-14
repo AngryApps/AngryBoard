@@ -5,7 +5,6 @@ import {
   input,
 } from '@angular/core';
 import { Column } from '../models';
-import { CardBodyComponent } from '../../card';
 import {
   CdkDrag,
   CdkDragDrop,
@@ -14,18 +13,22 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { Card } from '../../card/models/card';
-import { ActionMenuComponent } from '../action-menu/action-menu.component';
 import { ColumnService } from '../services';
 import { PopoverModule } from 'primeng/popover';
+import { CommonModule } from '@angular/common';
+import { ActionMenuComponent } from '../action-menu/action-menu.component';
+import { CardBodyComponent } from '../../card';
 
 @Component({
   selector: 'board-column',
+  standalone: true,
   imports: [
-    CardBodyComponent,
+    CommonModule,
     CdkDrag,
     CdkDropList,
-    ActionMenuComponent,
     PopoverModule,
+    ActionMenuComponent,
+    CardBodyComponent,
   ],
   templateUrl: './board-column.component.html',
   styleUrl: './board-column.component.scss',
