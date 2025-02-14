@@ -5,6 +5,7 @@
   label="Add Column"
   size="small"
 />
+
 <p-popover #op>
   <form
     (ngSubmit)="addColumn()"
@@ -24,7 +25,10 @@
       <label for="in_label">Title</label>
     </p-floatlabel>
 
-    @if (isFieldInvalid("title")) {
+    @if (
+      columnForm.controls.title.invalid &&
+      (columnForm.controls.title.dirty || columnForm.controls.title.touched)
+    ) {
       <p-message severity="error" variant="simple" size="small"
         >Title is required</p-message
       >

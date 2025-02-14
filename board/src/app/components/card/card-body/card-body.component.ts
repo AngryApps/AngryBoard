@@ -14,6 +14,7 @@ import { Card } from '../models/card';
   styleUrl: './card-body.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  standalone: true,
 })
 export class CardBodyComponent {
   card = input<Card>();

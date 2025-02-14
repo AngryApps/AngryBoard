@@ -1,0 +1,49 @@
+<p-inplace (onActivate)="onActivate()" (onDeactivate)="onDeactivate()">
+  <ng-template #display>
+    <div class="inline-flex align-items-center">
+      <span class="mr-2">{{ displayValue() }}</span>
+    </div>
+  </ng-template>
+
+  <ng-template #content>
+    <div class="inline-flex align-items-center">
+      <input
+        #input
+        (blur)="save()"
+        (keyup.enter)="save()"
+        (keyup.escape)="close()"
+        (ngModelChange)="updateTempValue($event)"
+        [ngModel]="tempValue()"
+        [pAutoFocus]="true"
+        [placeholder]="placeholder()"
+        pInputText
+        size="small"
+      />
+      @if (actionButtons()) {
+        <p-buttongroup>
+          <button
+            (click)="save()"
+            class="text-xs"
+            pButton
+            rounded="true"
+            severity="primary"
+            text="true"
+          >
+            <CheckIcon pButtonIcon />
+          </button>
+          <button
+            (click)="close()"
+            class="text-xs"
+            pButton
+            pButtonIcon="pi pi-times"
+            rounded="true"
+            severity="warn"
+            text="true"
+          >
+            <TimesIcon pButtonIcon />
+          </button>
+        </p-buttongroup>
+      }
+    </div>
+  </ng-template>
+</p-inplace>

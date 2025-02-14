@@ -3,17 +3,26 @@
 >
   <div class="flex flex-row justify-between items-start">
     <div class="mb-2">
-      <h3 class="text-lg font-semibold">{{ column().title }}</h3>
-      <p class="subtitle text-sm">{{ column().description }}</p>
+      <inplace-input
+        (saved)="editTite($event)"
+        [(value)]="column().title"
+        class="text-lg font-semibold"
+      />
+
+      <inplace-input
+        (saved)="editDescription($event)"
+        [(value)]="column().description"
+        class="subtitle text-sm"
+      />
     </div>
 
-    <action-menu (edit)="onEdit()" (delete)="onDelete()" />
+    <action-menu (delete)="onDelete()" (edit)="onEdit()" />
   </div>
 
   <div
-    cdkDropList
-    [cdkDropListData]="column().cards"
     (cdkDropListDropped)="dropCard($event)"
+    [cdkDropListData]="column().cards"
+    cdkDropList
     class="flex flex-col gap-3 h-[90%] overflow-auto py-3"
   >
     @for (card of column().cards; track card.id) {

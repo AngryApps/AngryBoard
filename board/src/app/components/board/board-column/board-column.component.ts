@@ -1,6 +1,10 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+} from '@angular/core';
 import { Column } from '../models';
-import { CardBodyComponent } from '../../card';
 import {
   CdkDrag,
   CdkDragDrop,
@@ -9,16 +13,31 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { Card } from '../../card/models/card';
+import { ColumnService } from '../services';
+import { PopoverModule } from 'primeng/popover';
+import { CommonModule } from '@angular/common';
 import { ActionMenuComponent } from '../action-menu/action-menu.component';
+import { CardBodyComponent } from '../../card';
+import { InplaceInputComponent } from '../../../shared';
 
 @Component({
   selector: 'board-column',
-  imports: [CardBodyComponent, CdkDrag, CdkDropList, ActionMenuComponent],
+  standalone: true,
+  imports: [
+    CommonModule,
+    CdkDrag,
+    CdkDropList,
+    PopoverModule,
+    ActionMenuComponent,
+    CardBodyComponent,
+    InplaceInputComponent,
+  ],
   templateUrl: './board-column.component.html',
   styleUrl: './board-column.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardColumnComponent {
+  columnService = inject(ColumnService);
   column = input.required<Column>({});
 
   dropCard($event: CdkDragDrop<Card[]>) {
@@ -39,12 +58,26 @@ export class BoardColumnComponent {
   }
 
   onEdit() {
-    // not implemented
-    console.log('Edit');
+    console.log('not implemented');
   }
 
   onDelete() {
-    // not implemented
-    console.log('Delete');
+    this.columnService.deleteColumn(this.column().id);
+  }
+
+  editDescription(description: string) {
+    this.columnService.editColumn(
+      this.column().id,
+      this.column().title,
+      description,
+    );
+  }
+
+  editTite(title: string) {
+    this.columnService.editColumn(
+      this.column().id,
+      title,
+      this.column().description,
+    );
   }
 }

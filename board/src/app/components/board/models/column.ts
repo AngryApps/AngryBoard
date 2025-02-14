@@ -24,3 +24,9 @@ export interface AddColumnRequest {
   title: string;
   description?: string;
 }
+
+export interface UpdateColumnRequest {
+  id: string;
+  title?: string;
+  description?: string;
+}

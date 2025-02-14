@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BoardColumnComponent } from './board-column.component';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('BoardColumnComponent', () => {
   let component: BoardColumnComponent;
@@ -9,6 +10,7 @@ describe('BoardColumnComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [BoardColumnComponent],
+      providers: [provideHttpClient()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BoardColumnComponent);
