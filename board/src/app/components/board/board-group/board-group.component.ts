@@ -45,5 +45,8 @@ export class BoardGroupComponent implements OnInit {
       $event.previousIndex,
       $event.currentIndex,
     );
+
+    const column = this.columnService.columns()[$event.currentIndex];
+    this.columnService.editColumn(column.id, column.title, column.description);
   }
 }

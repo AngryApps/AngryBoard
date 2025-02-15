@@ -23,10 +23,12 @@ export interface ColumnResponse {
 export interface AddColumnRequest {
   title: string;
   description?: string;
+  position: number;
 }
 
 export interface UpdateColumnRequest {
   id: string;
-  title?: string;
-  description?: string;
+  position: number;
+  title: string;
+  description: string;
 }

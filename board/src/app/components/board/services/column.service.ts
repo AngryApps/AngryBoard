@@ -75,6 +75,7 @@ export class ColumnService {
     const addColumnRequest: AddColumnRequest = {
       title,
       description: description || undefined,
+      position: this.columns().length,
     };
 
     this.apiService
@@ -105,7 +106,7 @@ export class ColumnService {
       });
   }
 
-  editColumn(columnId: string, title?: string, description?: string): void {
+  editColumn(columnId: string, title: string, description: string): void {
     if (this.isLoading()) return;
 
     this.loadingSignal.set(true);
@@ -114,7 +115,8 @@ export class ColumnService {
     const editColumnRequest: UpdateColumnRequest = {
       id: columnId,
       title,
-      description: description || undefined,
+      description: description,
+      position: this.columns().findIndex((c) => c.id === columnId) || 0,
     };
 
     this.apiService
