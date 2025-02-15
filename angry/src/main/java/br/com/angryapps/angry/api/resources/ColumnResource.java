@@ -12,11 +12,13 @@ import br.com.angryapps.angry.db.ColumnRepository;
 import br.com.angryapps.angry.models.Column;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 @RequestMapping("api/v1/columns")
@@ -33,25 +35,31 @@ public class ColumnResource {
         this.columnMapper = columnMapper;
     }
 
-    @PostMapping
-    SingleDataResponse<ColumnVM> createColumn(@Valid @RequestBody ColumnVM columnVM) {
-        Column column = columnMapper.mapToColumn(columnVM);
+    @RequestMapping(method = {RequestMethod.PUT, RequestMethod.POST})
+    SingleDataResponse<ColumnVM> upsertColumn(@Valid @RequestBody ColumnVM columnVM) {
+        var firstPosition = new AtomicInteger(columnVM.getPosition());
 
-        Column savedColumn = columnRepository.save(column);
-        return ApiResponses.single(columnMapper.mapToColumnVM(savedColumn));
-    }
+        List<Column> columns;
+        if (columnVM.getId() != null) {
+            columns = columnRepository.findByPositionGreaterThanEqualAndIdNotOrderByPositionAsc(columnVM.getPosition(), columnVM.getId());
+        } else {
+            columns = columnRepository.findByPositionGreaterThanEqualOrderByPositionAsc(columnVM.getPosition());
+        }
 
-    @PutMapping
-    SingleDataResponse<ColumnVM> updateColumn(@Valid @RequestBody ColumnVM columnVM) {
-        Column column = columnMapper.mapToColumn(columnVM);
-        Column savedColumn = columnRepository.save(column);
+        columns.forEach(c -> c.setPosition(firstPosition.incrementAndGet()));
 
-        return ApiResponses.single(columnMapper.mapToColumnVM(savedColumn));
+        Column newColumn = columnMapper.mapToColumn(columnVM);
+        columnRepository.save(newColumn);
+
+        // I reorder all the columns that are greater than the new column
+        columnRepository.saveAll(columns);
+
+        return ApiResponses.single("Column created", columnMapper.mapToColumnVM(newColumn));
     }
 
     @GetMapping
     ListDataResponse<ColumnVM> getAllColumns() {
-        List<ColumnVM> columns = columnRepository.findAll()
+        List<ColumnVM> columns = columnRepository.findAll(Sort.by(Sort.Direction.ASC, "position"))
                                                  .stream()
                                                  .map(columnMapper::mapToColumnVM)
                                                  .toList();
