@@ -47,7 +47,6 @@ public class CardResource {
 
     @PutMapping
     SingleDataResponse<CardVM> updateCard(@Valid @RequestBody CardVM cardVM) {
-
         Optional<Column> columnById = columnRepository.findById(cardVM.getColumnId());
         Column column = columnById.orElseThrow(() -> new NotFoundResponseException("ColumnId not found"));
 
