@@ -19,6 +19,7 @@ public class Column {
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    @NotNull(message = "Position is required")
     private int position;
 
     @OneToMany(mappedBy = "column")

@@ -20,6 +20,7 @@ public class ColumnMapper {
         columnVM.setDescription(column.getDescription());
         columnVM.setCreatedAt(column.getCreatedAt());
         columnVM.setUpdatedAt(column.getUpdatedAt());
+        columnVM.setPosition(column.getPosition());
         columnVM.setCards(column.getCards().stream().map(cardMapper::mapToCardVM).collect(Collectors.toList()));
         return columnVM;
     }
