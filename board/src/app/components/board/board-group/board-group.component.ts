@@ -3,6 +3,7 @@ import {
   Component,
   inject,
   OnInit,
+  signal,
 } from '@angular/core';
 import { BoardColumnComponent } from '../board-column';
 import { ColumnService } from '../services';
@@ -15,6 +16,7 @@ import { Column } from '../models';
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { AddColumnComponent } from '../add-column/add-column.component';
+import { DeleteBarComponent } from '../../../shared';
 
 @Component({
   selector: 'board-group',
@@ -24,6 +26,7 @@ import { AddColumnComponent } from '../add-column/add-column.component';
     ProgressSpinnerModule,
     ButtonModule,
     AddColumnComponent,
+    DeleteBarComponent,
   ],
   templateUrl: './board-group.component.html',
   styleUrl: './board-group.component.scss',
@@ -33,7 +36,8 @@ import { AddColumnComponent } from '../add-column/add-column.component';
 export class BoardGroupComponent implements OnInit {
   columnService = inject(ColumnService);
 
-  columns$ = this.columnService.columns;
+  columns = this.columnService.columns;
+  showDeleteBar = signal(false);
 
   ngOnInit() {
     this.columnService.getColumns();
@@ -46,7 +50,25 @@ export class BoardGroupComponent implements OnInit {
       $event.currentIndex,
     );
 
-    const column = this.columnService.columns()[$event.currentIndex];
-    this.columnService.editColumn(column.id, column.title, column.description);
+    if ($event.previousIndex !== $event.currentIndex) {
+      const column = this.columnService.columns()[$event.currentIndex];
+      this.columnService.editColumn(
+        column.id,
+        column.title,
+        column.description,
+      );
+    }
+  }
+
+  onDragStart() {
+    this.showDeleteBar.set(true);
+  }
+
+  onDragEnd() {
+    this.showDeleteBar.set(false);
+  }
+
+  deleteColumn(column: Column) {
+    this.columnService.deleteColumn(column.id);
   }
 }
