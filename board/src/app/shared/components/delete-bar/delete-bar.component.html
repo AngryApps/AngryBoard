@@ -1,0 +1,38 @@
+<p-drawer
+  [closable]="false"
+  [modal]="false"
+  [styleClass]="
+    isVisible()
+      ? 'opacity-100 h-24 bg-transparent border-none transform transition-opacity duration-500 ease-in-out'
+      : 'opacity-0'
+  "
+  [visible]="true"
+  position="bottom"
+>
+  <ng-template #headless>
+    <div
+      #trashDrop
+      (cdkDropListDropped)="drop($event)"
+      (cdkDropListEntered)="
+        trashDrop.classList.add(
+          'bg-[radial-gradient(at_center_bottom,var(--p-red-500)_0%,transparent_70%)]'
+        )
+      "
+      (cdkDropListExited)="
+        trashDrop.classList.remove(
+          'bg-[radial-gradient(at_center_bottom,var(--p-red-500)_0%,transparent_70%)]'
+        )
+      "
+      [cdkDropListData]="dropListContainer"
+      cdkDropList
+      class="h-full w-full flex justify-center items-end bg-[radial-gradient(at_center_bottom,var(--p-red-500)_0%,transparent_40%)] animate-slideup transition-all duration-300"
+      id="trashDrop"
+    >
+      <span class="animate-bounce text-xl pi pi-trash w-8 h-8 text-center">
+      </span>
+    </div>
+  </ng-template>
+</p-drawer>
+
+<p-toast position="bottom-right" />
+<p-confirmdialog />
