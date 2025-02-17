@@ -34,8 +34,8 @@ export class ColumnService {
   getColumns(): void {
     if (this.isLoading()) return;
 
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
+    this.loadingSignal.update(() => true);
+    this.errorSignal.update(() => null);
 
     this.apiService
       .get<ColumnResponse[]>('columns')
@@ -54,14 +54,11 @@ export class ColumnService {
       .subscribe({
         next: (columns: Column[]) => {
           this.columnSignal.set(columns);
-          this.loadingSignal.set(false);
+          this.loadingSignal.update(() => false);
         },
         error: (err: string) => {
           this.errorSignal.set(`Failed to load columns ${err}`);
-          this.loadingSignal.set(false);
-        },
-        complete: () => {
-          this.loadingSignal.set(false);
+          this.loadingSignal.update(() => false);
         },
       });
   }
@@ -69,8 +66,8 @@ export class ColumnService {
   addColumn(title: string, description?: string): void {
     if (this.isLoading()) return;
 
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
+    this.loadingSignal.update(() => true);
+    this.errorSignal.update(() => null);
 
     const addColumnRequest: AddColumnRequest = {
       title,
@@ -93,15 +90,12 @@ export class ColumnService {
       )
       .subscribe({
         next: (column: Column) => {
-          this.columnSignal.set([...this.columns(), column]);
-          this.loadingSignal.set(false);
+          this.columnSignal.update((columns) => [...columns, column]);
+          this.loadingSignal.update(() => false);
         },
         error: (err: string) => {
           this.errorSignal.set(`Failed to add column ${err}`);
-          this.loadingSignal.set(false);
-        },
-        complete: () => {
-          this.loadingSignal.set(false);
+          this.loadingSignal.update(() => false);
         },
       });
   }
@@ -109,8 +103,8 @@ export class ColumnService {
   editColumn(columnId: string, title: string, description: string): void {
     if (this.isLoading()) return;
 
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
+    this.loadingSignal.update(() => true);
+    this.errorSignal.update(() => null);
 
     const editColumnRequest: UpdateColumnRequest = {
       id: columnId,
@@ -134,17 +128,14 @@ export class ColumnService {
       )
       .subscribe({
         next: (column: Column) => {
-          this.columnSignal.set(
-            this.columns().map((c) => (c.id === column.id ? column : c)),
+          this.columnSignal.update((columns) =>
+            columns.map((c) => (c.id === column.id ? column : c)),
           );
-          this.loadingSignal.set(false);
+          this.loadingSignal.update(() => false);
         },
         error: (err: string) => {
           this.errorSignal.set(`Failed to edit column ${err}`);
-          this.loadingSignal.set(false);
-        },
-        complete: () => {
-          this.loadingSignal.set(false);
+          this.loadingSignal.update(() => false);
         },
       });
   }
@@ -152,8 +143,8 @@ export class ColumnService {
   deleteColumn(columnId: string): void {
     if (this.isLoading()) return;
 
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
+    this.loadingSignal.update(() => true);
+    this.errorSignal.update(() => null);
 
     this.apiService
       .delete<ColumnResponse>('columns', columnId)
@@ -168,17 +159,14 @@ export class ColumnService {
       )
       .subscribe({
         next: () => {
-          this.columnSignal.set(
-            this.columns().filter((column) => column.id !== columnId),
+          this.columnSignal.update((columns) =>
+            columns.filter((column) => column.id !== columnId),
           );
-          this.loadingSignal.set(false);
+          this.loadingSignal.update(() => false);
         },
         error: (err: string) => {
           this.errorSignal.set(`Failed to delete column ${err}`);
-          this.loadingSignal.set(false);
-        },
-        complete: () => {
-          this.loadingSignal.set(false);
+          this.loadingSignal.update(() => false);
         },
       });
   }
