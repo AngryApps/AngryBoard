@@ -36,7 +36,7 @@ public class ColumnResource {
     }
 
     @RequestMapping(method = {RequestMethod.PUT, RequestMethod.POST})
-    SingleDataResponse<ColumnVM> upsertColumn(@Valid @RequestBody ColumnVM columnVM) {
+    public SingleDataResponse<ColumnVM> upsertColumn(@Valid @RequestBody ColumnVM columnVM) {
         var firstPosition = new AtomicInteger(columnVM.getPosition());
 
         List<Column> columns;
@@ -58,7 +58,7 @@ public class ColumnResource {
     }
 
     @GetMapping
-    ListDataResponse<ColumnVM> getAllColumns() {
+    public ListDataResponse<ColumnVM> getAllColumns() {
         List<ColumnVM> columns = columnRepository.findAll(Sort.by(Sort.Direction.ASC, "position"))
                                                  .stream()
                                                  .map(columnMapper::mapToColumnVM)
@@ -68,7 +68,7 @@ public class ColumnResource {
     }
 
     @GetMapping(path = "/{id}")
-    SingleDataResponse<ColumnVM> getColumnById(@PathVariable UUID id) {
+    public SingleDataResponse<ColumnVM> getColumnById(@PathVariable UUID id) {
         Optional<Column> byId = columnRepository.findById(id);
         Column column = byId.orElseThrow(() -> new NotFoundResponseException("Column by id not found"));
 
