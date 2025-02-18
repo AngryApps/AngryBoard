@@ -12,6 +12,7 @@ public class CardVM {
     @NotBlank(message = "Title is required")
     private String title;
     private String description;
+    private int position;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     @NotNull(message = "ColumnId is required")
@@ -39,6 +40,14 @@ public class CardVM {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public UUID getId() {

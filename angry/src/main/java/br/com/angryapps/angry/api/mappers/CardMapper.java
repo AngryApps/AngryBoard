@@ -14,9 +14,10 @@ public class CardMapper {
         cardVM.setId(card.getId());
         cardVM.setTitle(card.getTitle());
         cardVM.setDescription(card.getDescription());
+        cardVM.setPosition(card.getPosition());
         cardVM.setCreatedAt(card.getCreatedAt());
         cardVM.setUpdatedAt(card.getUpdatedAt());
-        cardVM.setColumnId(card.getColumnId().getId());
+        cardVM.setColumnId(card.getColumn().getId());
 
         return cardVM;
     }
@@ -27,6 +28,7 @@ public class CardMapper {
         card.setId(cardVM.getId());
         card.setTitle(cardVM.getTitle());
         card.setDescription(cardVM.getDescription());
+        card.setPosition(cardVM.getPosition());
         card.setCreatedAt(cardVM.getCreatedAt());
         card.setUpdatedAt(cardVM.getUpdatedAt());
         card.setColumn(column);

@@ -14,14 +14,13 @@ public class Card {
     private UUID id;
     private String title;
     private String description;
+    private int position;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "column_id")
     private Column column;
-
-    private int columnPosition;
 
     public Column getColumn() {return column;}
 
@@ -33,22 +32,6 @@ public class Card {
 
     public UUID getId() {
         return id;
-    }
-
-    public Column getColumnId() {
-        return column;
-    }
-
-    public void setColumnId(Column column) {
-        this.column = column;
-    }
-
-    public int getColumnPosition() {
-        return columnPosition;
-    }
-
-    public void setColumnPosition(int columnPosition) {
-        this.columnPosition = columnPosition;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -65,6 +48,14 @@ public class Card {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public String getTitle() {

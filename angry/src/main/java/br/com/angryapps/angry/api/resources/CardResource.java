@@ -13,11 +13,13 @@ import br.com.angryapps.angry.models.Card;
 import br.com.angryapps.angry.models.Column;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 @RequestMapping("api/v1/cards")
@@ -34,34 +36,33 @@ public class CardResource {
         this.cardMapper = cardMapper;
     }
 
-    @PostMapping
-    CardVM createCard(@Valid @RequestBody CardVM cardVM) {
+    @RequestMapping(method = {RequestMethod.PUT, RequestMethod.POST})
+    public SingleDataResponse<CardVM> upsertCard(@Valid @RequestBody CardVM cardVM) {
         Column column = columnRepository.findById(cardVM.getColumnId())
                                         .orElseThrow(() -> new NotFoundResponseException("Column not found"));
 
-        Card card = cardMapper.mapToCard(cardVM, column);
-        Card savedCard = cardRepository.save(card);
+        var firstPosition = new AtomicInteger(cardVM.getPosition());
 
-        return cardMapper.mapToCardVM(savedCard);
-    }
+        List<Card> cards;
+        if (cardVM.getId() != null) {
+            cards = cardRepository.findByColumnIdAndPositionGreaterThanEqualAndIdNotOrderByPositionAsc(cardVM.getColumnId(), cardVM.getPosition(), cardVM.getId());
+        } else {
+            cards = cardRepository.findByColumnIdAndPositionGreaterThanEqualOrderByPositionAsc(cardVM.getColumnId(), cardVM.getPosition());
+        }
 
-    @PutMapping
-    SingleDataResponse<CardVM> updateCard(@Valid @RequestBody CardVM cardVM) {
-        Optional<Column> columnById = columnRepository.findById(cardVM.getColumnId());
-        Column column = columnById.orElseThrow(() -> new NotFoundResponseException("ColumnId not found"));
+        cards.forEach(c -> c.setPosition(firstPosition.incrementAndGet()));
 
-        Card card = cardMapper.mapToCard(cardVM, column);
-        Card savedCard = cardRepository.save(card);
+        Card newCard = cardMapper.mapToCard(cardVM, column);
+        cardRepository.save(newCard);
 
-        CardVM savedCardVM = cardMapper.mapToCardVM(savedCard);
+        cardRepository.saveAll(cards);
 
-        return ApiResponses.single(savedCardVM);
-
+        return ApiResponses.single("Card created", cardMapper.mapToCardVM(newCard));
     }
 
     @GetMapping
-    ListDataResponse<CardVM> getAllCards() {
-        List<CardVM> cards = cardRepository.findAll()
+    public ListDataResponse<CardVM> getAllCards() {
+        List<CardVM> cards = cardRepository.findAll(Sort.by(Sort.Direction.ASC, "position"))
                                            .stream()
                                            .map(cardMapper::mapToCardVM)
                                            .toList();
@@ -70,7 +71,7 @@ public class CardResource {
     }
 
     @GetMapping(path = "/{id}")
-    SingleDataResponse<CardVM> getCardById(@PathVariable("id") UUID id) {
+    public SingleDataResponse<CardVM> getCardById(@PathVariable("id") UUID id) {
         Optional<Card> cardById = cardRepository.findById(id);
         Card card = cardById.orElseThrow(() -> new NotFoundResponseException("Card not found"));
 
@@ -79,7 +80,7 @@ public class CardResource {
     }
 
     @DeleteMapping(path = "/{id}")
-    BaseResponse deleteCardById(@PathVariable("id") UUID id) {
+    public BaseResponse deleteCardById(@PathVariable("id") UUID id) {
         cardRepository.deleteById(id);
 
         return ApiResponses.ok("Card deleted successfully");
