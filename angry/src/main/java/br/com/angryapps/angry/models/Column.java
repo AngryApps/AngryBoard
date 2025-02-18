@@ -22,7 +22,7 @@ public class Column {
     @NotNull(message = "Position is required")
     private int position;
 
-    @OneToMany(mappedBy = "column")
+    @OneToMany(mappedBy = "column", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Card> cards = new ArrayList<>();
 
     public LocalDateTime getCreatedAt() {
