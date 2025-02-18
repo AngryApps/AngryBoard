@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
 import { ActionMenuComponent } from '../action-menu/action-menu.component';
 import { CardBodyComponent } from '../../card';
 import { InplaceInputComponent } from '../../../shared';
+import { AddCardComponent } from '../../card/add-card/add-card.component';
 
 @Component({
   selector: 'board-column',
@@ -31,6 +32,7 @@ import { InplaceInputComponent } from '../../../shared';
     ActionMenuComponent,
     CardBodyComponent,
     InplaceInputComponent,
+    AddCardComponent,
   ],
   templateUrl: './board-column.component.html',
   styleUrl: './board-column.component.scss',
@@ -79,5 +81,9 @@ export class BoardColumnComponent {
       title,
       this.column().description,
     );
+  }
+
+  onAddCard() {
+    console.log('not implemented');
   }
 }
