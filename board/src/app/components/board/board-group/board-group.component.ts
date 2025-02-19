@@ -16,7 +16,6 @@ import { Column } from '../models';
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { AddColumnComponent } from '../add-column/add-column.component';
-import { DeleteBarComponent } from '../../../shared';
 
 @Component({
   selector: 'board-group',
@@ -26,7 +25,6 @@ import { DeleteBarComponent } from '../../../shared';
     ProgressSpinnerModule,
     ButtonModule,
     AddColumnComponent,
-    DeleteBarComponent,
   ],
   templateUrl: './board-group.component.html',
   styleUrl: './board-group.component.scss',
