@@ -42,6 +42,14 @@ export class BaseApiHttpRequestService {
       .pipe(catchError(this.handleError));
   }
 
+  patch<T>(path: string, body: unknown): Observable<BaseResponse<T>> {
+    return this.httpClient
+      .patch<
+        BaseResponse<T>
+      >(`${this.baseUrl}/${path}`, body, { headers: this.headers })
+      .pipe(catchError(this.handleError));
+  }
+
   delete<T>(path: string, id: string): Observable<BaseResponse<T>> {
     return this.httpClient
       .delete<

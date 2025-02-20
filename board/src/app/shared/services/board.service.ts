@@ -119,7 +119,7 @@ export class BoardService {
     };
 
     this.apiService
-      .put<ColumnResponse>(`columns`, editColumnRequest)
+      .patch<ColumnResponse>(`columns`, editColumnRequest)
       .pipe(
         take(1),
         takeUntilDestroyed(this.destroyRef),
@@ -209,7 +209,7 @@ export class BoardService {
               if (column.id === columnId) {
                 return {
                   ...column,
-                  cards: [...column.cards, card],
+                  cards: [card, ...column.cards],
                 };
               }
               return column;
