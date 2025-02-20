@@ -1,21 +1,23 @@
 package br.com.angryapps.angry.api.vm;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class ColumnVM {
 
     private UUID id;
+    @NotEmpty
     private String title;
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    @NotNull
     private int position;
-    private List<CardVM> cards = new ArrayList<>();
+    private List<CardVM> cards;
 
     public LocalDateTime getCreatedAt() {
         return createdAt;

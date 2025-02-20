@@ -7,7 +7,7 @@ import br.com.angryapps.angry.api.responses.BaseResponse;
 import br.com.angryapps.angry.api.responses.ListDataResponse;
 import br.com.angryapps.angry.api.responses.SingleDataResponse;
 import br.com.angryapps.angry.api.vm.ColumnVM;
-import br.com.angryapps.angry.db.CardRepository;
+import br.com.angryapps.angry.api.vm.requests.PatchColumn;
 import br.com.angryapps.angry.db.ColumnRepository;
 import br.com.angryapps.angry.models.Column;
 import jakarta.validation.Valid;
@@ -24,13 +24,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RequestMapping("api/v1/columns")
 public class ColumnResource {
 
-    private CardRepository cardRepository;
-    private ColumnRepository columnRepository;
     private ColumnMapper columnMapper;
+    private ColumnRepository columnRepository;
 
     @Autowired
-    public ColumnResource(CardRepository cardRepository, ColumnRepository columnRepository, ColumnMapper columnMapper) {
-        this.cardRepository = cardRepository;
+    public ColumnResource(ColumnRepository columnRepository, ColumnMapper columnMapper) {
         this.columnRepository = columnRepository;
         this.columnMapper = columnMapper;
     }
@@ -49,12 +47,35 @@ public class ColumnResource {
         columns.forEach(c -> c.setPosition(firstPosition.incrementAndGet()));
 
         Column newColumn = columnMapper.mapToColumn(columnVM);
-        columnRepository.save(newColumn);
 
-        // I reorder all the columns that are greater than the new column
+        // Add it to the list to save together with all the others
+        columns.add(newColumn);
         columnRepository.saveAll(columns);
 
         return ApiResponses.single("Column created", columnMapper.mapToColumnVM(newColumn));
+    }
+
+    @PatchMapping("{id}")
+    public SingleDataResponse<ColumnVM> patchColumn(@PathVariable UUID id, @Valid @RequestBody PatchColumn patchColumn) {
+        Column column = columnRepository.findById(id)
+                                        .orElseThrow(() -> new NotFoundResponseException("Column not found"));
+
+        var firstPosition = new AtomicInteger(patchColumn.getPosition());
+
+        List<Column> columns = columnRepository.findByPositionGreaterThanEqualAndIdNotOrderByPositionAsc(patchColumn.getPosition(), id);
+
+        columns.forEach(c -> c.setPosition(firstPosition.incrementAndGet()));
+
+        columnMapper.patchColumn(patchColumn, column);
+
+        // Add it to the list to save together with all the others
+        columns.add(column);
+        columnRepository.saveAll(columns);
+
+        // Remove the cards from the column to return a smaller json
+        column.setCards(null);
+
+        return ApiResponses.single("Column patched", columnMapper.mapToColumnVM(column));
     }
 
     @GetMapping

@@ -1,11 +1,10 @@
 package br.com.angryapps.angry.api.mappers;
 
 import br.com.angryapps.angry.api.vm.ColumnVM;
+import br.com.angryapps.angry.api.vm.requests.PatchColumn;
 import br.com.angryapps.angry.models.Column;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.stream.Collectors;
 
 @Component
 public class ColumnMapper {
@@ -21,7 +20,11 @@ public class ColumnMapper {
         columnVM.setCreatedAt(column.getCreatedAt());
         columnVM.setUpdatedAt(column.getUpdatedAt());
         columnVM.setPosition(column.getPosition());
-        columnVM.setCards(column.getCards().stream().map(cardMapper::mapToCardVM).collect(Collectors.toList()));
+
+        if (column.getCards() != null) {
+            columnVM.setCards(column.getCards().stream().map(cardMapper::mapToCardVM).toList());
+        }
+
         return columnVM;
     }
 
@@ -33,10 +36,27 @@ public class ColumnMapper {
         column.setCreatedAt(columnVM.getCreatedAt());
         column.setUpdatedAt(columnVM.getUpdatedAt());
         column.setPosition(columnVM.getPosition());
-        column.setCards(columnVM.getCards().stream().map(
-                cardVM -> cardMapper.mapToCard(cardVM, column)).collect(Collectors.toList()));
+
+        if (columnVM.getCards() != null) {
+            column.setCards(columnVM.getCards().stream().map(c -> cardMapper.mapToCard(c, column)).toList());
+        }
 
         return column;
+    }
 
+    public Column patchColumn(PatchColumn patchColumn, Column column) {
+        if (patchColumn.getTitle() != null) {
+            column.setTitle(patchColumn.getTitle());
+        }
+
+        if (patchColumn.getDescription() != null) {
+            column.setDescription(patchColumn.getDescription());
+        }
+
+        if (patchColumn.getPosition() != null) {
+            column.setPosition(patchColumn.getPosition());
+        }
+
+        return column;
     }
 }

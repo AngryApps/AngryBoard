@@ -18,7 +18,7 @@ public class Card {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "column_id")
     private Column column;
 
@@ -26,12 +26,12 @@ public class Card {
 
     public void setColumn(Column column) {this.column = column;}
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
     public UUID getId() {
         return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public LocalDateTime getCreatedAt() {
