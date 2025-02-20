@@ -1,6 +1,6 @@
-import { CardWS } from './card';
+import { CardResponse } from './card';
 
-export const KANBAN_CARDS: CardWS[] = [
+export const KANBAN_CARDS: CardResponse[] = [
   // Backlog Cards
   {
     id: 'c1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c',

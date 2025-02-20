@@ -9,7 +9,7 @@ export interface Card {
   attachments: string[];
 }
 
-export interface CardWS {
+export interface CardResponse {
   id: string;
   title: string;
   description: string;
@@ -18,4 +18,11 @@ export interface CardWS {
   column_id: string;
   column_position: number;
   attachments: string[];
+}
+
+export interface AddCardRequest {
+  title: string;
+  description?: string;
+  position: number;
+  columnId: string;
 }

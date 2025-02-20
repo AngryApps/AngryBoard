@@ -1,4 +1,8 @@
-<p-inplace (onActivate)="onActivate()" (onDeactivate)="onDeactivate()">
+<p-inplace
+  (onActivate)="onActivate()"
+  (onDeactivate)="onDeactivate()"
+  [active]="isActive()"
+>
   <ng-template #display>
     <div class="inline-flex align-items-center">
       <span class="mr-2">{{ displayValue() }}</span>
@@ -6,7 +10,7 @@
   </ng-template>
 
   <ng-template #content>
-    <div class="inline-flex align-items-center">
+    <div class="inline-flex align-items-center w-full">
       <input
         #input
         (blur)="save()"
@@ -16,6 +20,7 @@
         [ngModel]="tempValue()"
         [pAutoFocus]="true"
         [placeholder]="placeholder()"
+        fluid
         pInputText
         pSize="small"
       />

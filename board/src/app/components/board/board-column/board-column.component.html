@@ -4,7 +4,7 @@
   <div class="flex flex-row justify-between items-start">
     <div class="mb-1">
       <inplace-input
-        (saved)="editTite($event)"
+        (saved)="editTitle($event)"
         [(value)]="column().title"
         class="text-md font-semibold"
       />
@@ -25,10 +25,20 @@
     cdkDropList
     class="flex flex-col gap-3 h-[90%] overflow-y-auto scroll-smooth overscroll-contain py-1"
   >
+    @for (card of newCards(); track card.id; let idx = $index) {
+      <inplace-input
+        (saved)="saveNewCard($event, card, idx)"
+        placeholder="Enter a title for this card"
+        [(value)]="card.title"
+        [isActive]="true"
+        class="text-md font-semibold"
+      />
+    }
+
     @for (card of column().cards; track card.id) {
-      <card-body cdkDrag [cdkDragData]="card" [card]="card"></card-body>
+      <card-body cdkDrag [cdkDragData]="card" [card]="card" />
     }
   </div>
 
-  <add-card (addCard)="onAddCard()" />
+  <add-card-button (addCard)="onAddCard()" />
 </div>

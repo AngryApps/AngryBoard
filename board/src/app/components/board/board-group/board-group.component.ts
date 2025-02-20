@@ -6,7 +6,6 @@ import {
   signal,
 } from '@angular/core';
 import { BoardColumnComponent } from '../board-column';
-import { ColumnService } from '../services';
 import {
   CdkDragDrop,
   DragDropModule,
@@ -16,6 +15,7 @@ import { Column } from '../models';
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { AddColumnComponent } from '../add-column/add-column.component';
+import { BoardService } from '../../../shared';
 
 @Component({
   selector: 'board-group',
@@ -32,29 +32,25 @@ import { AddColumnComponent } from '../add-column/add-column.component';
   standalone: true,
 })
 export class BoardGroupComponent implements OnInit {
-  columnService = inject(ColumnService);
+  boardService = inject(BoardService);
 
-  columns = this.columnService.columns;
+  columns = this.boardService.columns;
   showDeleteBar = signal(false);
 
   ngOnInit() {
-    this.columnService.getColumns();
+    this.boardService.getColumns();
   }
 
   dropColumn($event: CdkDragDrop<Column[]>) {
     moveItemInArray<Column>(
-      this.columnService.columns(),
+      this.boardService.columns(),
       $event.previousIndex,
       $event.currentIndex,
     );
 
     if ($event.previousIndex !== $event.currentIndex) {
-      const column = this.columnService.columns()[$event.currentIndex];
-      this.columnService.editColumn(
-        column.id,
-        column.title,
-        column.description,
-      );
+      const column = this.boardService.columns()[$event.currentIndex];
+      this.boardService.editColumn(column.id, column.title, column.description);
     }
   }
 
@@ -67,6 +63,6 @@ export class BoardGroupComponent implements OnInit {
   }
 
   deleteColumn(column: Column) {
-    this.columnService.deleteColumn(column.id);
+    this.boardService.deleteColumn(column.id);
   }
 }

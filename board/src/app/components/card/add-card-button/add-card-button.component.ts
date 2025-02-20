@@ -7,14 +7,14 @@ import {
 import { ButtonModule } from 'primeng/button';
 
 @Component({
-  selector: 'add-card',
+  selector: 'add-card-button',
   imports: [ButtonModule],
-  templateUrl: './add-card.component.html',
-  styleUrl: './add-card.component.scss',
+  templateUrl: './add-card-button.component.html',
+  styleUrl: './add-card-button.component.scss',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddCardComponent {
+export class AddCardButtonComponent {
   addCard: OutputEmitterRef<void> = output();
 
   add() {
