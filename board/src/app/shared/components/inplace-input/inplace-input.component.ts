@@ -37,11 +37,16 @@ export class InplaceInputComponent {
   inplaceRef = viewChild.required<Inplace>(Inplace);
 
   value = model<string>('');
+
   placeholder = input<string>('');
   actionButtons = input<boolean>(false);
+  isActive = input<boolean>(false);
+
   saved = output<string>();
   closed = output<void>();
+
   tempValue = signal('');
+
   displayValue = computed(() => this.value() || this.placeholder());
 
   onActivate(): void {

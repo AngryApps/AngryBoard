@@ -1,19 +1,24 @@
 import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { map, Subject, take } from 'rxjs';
+import { BaseApiHttpRequestService } from './base-api-http-request.service';
 import {
   AddColumnRequest,
   Column,
   ColumnResponse,
   UpdateColumnRequest,
-} from '../models';
+} from '../../components/board';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BaseApiHttpRequestService, BaseResponse } from '../../../shared';
-import { Card, CardWS } from '../../card/models/card';
+import { BaseResponse } from '../models';
+import {
+  AddCardRequest,
+  Card,
+  CardResponse,
+} from '../../components/card/models/card';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ColumnService {
+export class BoardService {
   apiService = inject(BaseApiHttpRequestService);
 
   private columnSignal = signal<Column[]>([]);
@@ -114,7 +119,7 @@ export class ColumnService {
     };
 
     this.apiService
-      .put<ColumnResponse>(`columns`, editColumnRequest)
+      .patch<ColumnResponse>(`columns`, editColumnRequest.id, editColumnRequest)
       .pipe(
         take(1),
         takeUntilDestroyed(this.destroyRef),
@@ -127,9 +132,17 @@ export class ColumnService {
         }),
       )
       .subscribe({
-        next: (column: Column) => {
+        next: (updatedColumn: Column) => {
           this.columnSignal.update((columns) =>
-            columns.map((c) => (c.id === column.id ? column : c)),
+            columns.map((c) => {
+              if (c.id === updatedColumn.id) {
+                return {
+                  ...updatedColumn,
+                  cards: c.cards,
+                };
+              }
+              return c;
+            }),
           );
           this.loadingSignal.update(() => false);
         },
@@ -171,6 +184,54 @@ export class ColumnService {
       });
   }
 
+  addCard(columnId: string, title: string, description?: string): void {
+    if (this.isLoading()) return;
+
+    this.loadingSignal.update(() => true);
+    this.errorSignal.update(() => null);
+
+    const addCardRequest: AddCardRequest = {
+      title,
+      description: description || undefined,
+      position: 0,
+      columnId,
+    };
+
+    this.apiService
+      .post<CardResponse>('cards', addCardRequest)
+      .pipe(
+        take(1),
+        takeUntilDestroyed(this.destroyRef),
+        map((response: BaseResponse<CardResponse>) => {
+          if (!response.success) {
+            throw new Error(response.message);
+          }
+
+          return this.parseCardResponse(response.data);
+        }),
+      )
+      .subscribe({
+        next: (card: Card) => {
+          this.columnSignal.update((columns) =>
+            columns.map((column) => {
+              if (column.id === columnId) {
+                return {
+                  ...column,
+                  cards: [card, ...column.cards],
+                };
+              }
+              return column;
+            }),
+          );
+          this.loadingSignal.update(() => false);
+        },
+        error: (err: string) => {
+          this.errorSignal.set(`Failed to add column ${err}`);
+          this.loadingSignal.update(() => false);
+        },
+      });
+  }
+
   parseColumnResponse(response: ColumnResponse): Column {
     return {
       id: response.id,
@@ -183,7 +244,7 @@ export class ColumnService {
     };
   }
 
-  parseCardResponse(response: CardWS): Card {
+  parseCardResponse(response: CardResponse): Card {
     return {
       id: response.id,
       title: response.title,
