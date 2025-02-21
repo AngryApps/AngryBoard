@@ -3,10 +3,10 @@
     class="card-container border-solid border flex flex-grow flex-col min-h-3 p-3 rounded-lg shadow-lg transition-all duration-100 ease-in hover:scale-y-105 select-none"
   >
     <div class="mb-1 text-sm font-semibold">
-      {{ title() }}
+      {{ card()?.title }}
     </div>
     <p class="text-xs">
-      {{ description() }}
+      {{ card()?.description }}
     </p>
   </div>
 </div>

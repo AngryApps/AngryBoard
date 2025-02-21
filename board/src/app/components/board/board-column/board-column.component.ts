@@ -3,6 +3,7 @@ import {
   Component,
   inject,
   input,
+  signal,
 } from '@angular/core';
 import { Column } from '../models';
 import {
@@ -13,12 +14,12 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { Card } from '../../card/models/card';
-import { ColumnService } from '../services';
 import { PopoverModule } from 'primeng/popover';
 import { CommonModule } from '@angular/common';
 import { ActionMenuComponent } from '../action-menu/action-menu.component';
 import { CardBodyComponent } from '../../card';
-import { InplaceInputComponent } from '../../../shared';
+import { BoardService, InplaceInputComponent } from '../../../shared';
+import { AddCardButtonComponent } from '../../card/add-card-button/add-card-button.component';
 
 @Component({
   selector: 'board-column',
@@ -31,14 +32,18 @@ import { InplaceInputComponent } from '../../../shared';
     ActionMenuComponent,
     CardBodyComponent,
     InplaceInputComponent,
+    AddCardButtonComponent,
   ],
   templateUrl: './board-column.component.html',
   styleUrl: './board-column.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardColumnComponent {
-  columnService = inject(ColumnService);
+  boardService = inject(BoardService);
+
   column = input.required<Column>({});
+
+  protected newCards = signal<Card[]>([]);
 
   dropCard($event: CdkDragDrop<Card[]>) {
     if ($event.previousContainer === $event.container) {
@@ -62,22 +67,39 @@ export class BoardColumnComponent {
   }
 
   onDelete() {
-    this.columnService.deleteColumn(this.column().id);
+    this.boardService.deleteColumn(this.column().id);
   }
 
   editDescription(description: string) {
-    this.columnService.editColumn(
+    this.boardService.editColumn(
       this.column().id,
       this.column().title,
       description,
     );
   }
 
-  editTite(title: string) {
-    this.columnService.editColumn(
+  editTitle(title: string) {
+    this.boardService.editColumn(
       this.column().id,
       title,
       this.column().description,
     );
+  }
+
+  onAddCard() {
+    const card = {
+      title: 'New Card',
+    } as Card;
+
+    this.newCards.set([...this.newCards(), card]);
+  }
+
+  saveNewCard($event: string, card: Card, idx: number) {
+    this.newCards.set(this.newCards().filter((_, i) => i !== idx));
+    if (!card?.title) {
+      return;
+    }
+
+    this.boardService.addCard(this.column().id, card.title);
   }
 }

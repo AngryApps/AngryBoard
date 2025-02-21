@@ -1,12 +1,12 @@
 <div
-  class="column-list flex flex-col h-full relative shadow-md rounded-lg p-4 w-72 flex-shrink-0 p-card"
+  class="column-list flex flex-col h-full relative shadow-md rounded-lg px-2 w-72"
 >
   <div class="flex flex-row justify-between items-start">
-    <div class="mb-2">
+    <div class="mb-1">
       <inplace-input
-        (saved)="editTite($event)"
+        (saved)="editTitle($event)"
         [(value)]="column().title"
-        class="text-lg font-semibold"
+        class="text-md font-semibold"
       />
 
       <inplace-input
@@ -23,10 +23,22 @@
     (cdkDropListDropped)="dropCard($event)"
     [cdkDropListData]="column().cards"
     cdkDropList
-    class="flex flex-col gap-3 h-[90%] overflow-auto py-3"
+    class="flex flex-col gap-3 h-[90%] overflow-y-auto scroll-smooth overscroll-contain py-1"
   >
+    @for (card of newCards(); track card.id; let idx = $index) {
+      <inplace-input
+        (saved)="saveNewCard($event, card, idx)"
+        placeholder="Enter a title for this card"
+        [(value)]="card.title"
+        [isActive]="true"
+        class="text-md font-semibold"
+      />
+    }
+
     @for (card of column().cards; track card.id) {
-      <card-body cdkDrag [cdkDragData]="card" [card]="card"></card-body>
+      <card-body cdkDrag [cdkDragData]="card" [card]="card" />
     }
   </div>
+
+  <add-card-button (addCard)="onAddCard()" />
 </div>

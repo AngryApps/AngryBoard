@@ -10,8 +10,8 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { TextareaModule } from 'primeng/textarea';
-import { ColumnService } from '../services';
 import { MessageModule } from 'primeng/message';
+import { BoardService } from '../../../shared';
 
 @Component({
   selector: 'add-column',
@@ -32,7 +32,7 @@ import { MessageModule } from 'primeng/message';
 export class AddColumnComponent {
   public popover = viewChild.required<Popover>('op');
 
-  private columnService = inject(ColumnService);
+  private boardService = inject(BoardService);
   private _fb = inject(FormBuilder);
 
   protected columnForm = this._fb.nonNullable.group({
@@ -48,7 +48,7 @@ export class AddColumnComponent {
 
     if (!title) return;
 
-    this.columnService.addColumn(title, description);
+    this.boardService.addColumn(title, description);
     this.columnForm.reset();
     this.popover().hide();
   }
