@@ -7,6 +7,7 @@ import br.com.angryapps.angry.api.responses.BaseResponse;
 import br.com.angryapps.angry.api.responses.ListDataResponse;
 import br.com.angryapps.angry.api.responses.SingleDataResponse;
 import br.com.angryapps.angry.api.vm.CardVM;
+import br.com.angryapps.angry.api.vm.requests.PatchCard;
 import br.com.angryapps.angry.db.CardRepository;
 import br.com.angryapps.angry.db.ColumnRepository;
 import br.com.angryapps.angry.models.Card;
@@ -58,6 +59,29 @@ public class CardResource {
         cardRepository.saveAll(cards);
 
         return ApiResponses.single("Card created", cardMapper.mapToCardVM(newCard));
+    }
+
+    @PatchMapping("{id}")
+    public SingleDataResponse<CardVM> patchCard(@PathVariable UUID id, @Valid @RequestBody PatchCard patchCard) {
+        Column column = columnRepository.findById(patchCard.getColumnId())
+                                        .orElseThrow(() -> new NotFoundResponseException("Column not found"));
+
+        Card card = cardRepository.findById(id)
+                                  .orElseThrow(() -> new NotFoundResponseException("Card not found"));
+
+        var firstPosition = new AtomicInteger(patchCard.getPosition());
+
+        List<Card> cards = cardRepository.findByColumnIdAndPositionGreaterThanEqualOrderByPositionAsc(patchCard.getColumnId(), patchCard.getPosition());
+
+        cards.forEach(c -> c.setPosition(firstPosition.incrementAndGet()));
+
+        cardMapper.patchCard(patchCard, card, column);
+
+        cards.add(card);
+
+        cardRepository.saveAll(cards);
+
+        return ApiResponses.single("Card patched", cardMapper.mapToCardVM(card));
     }
 
     @GetMapping
