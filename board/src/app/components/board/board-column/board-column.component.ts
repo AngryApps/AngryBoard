@@ -60,6 +60,17 @@ export class BoardColumnComponent {
         $event.currentIndex,
       );
     }
+
+    if ($event.previousIndex !== $event.currentIndex) {
+      const card = $event.container.data[$event.currentIndex];
+      this.boardService.editCard(
+        this.column().id,
+        card.id,
+        card.title,
+        card.description,
+        $event.currentIndex,
+      );
+    }
   }
 
   onEdit() {

@@ -13,6 +13,7 @@ import {
   AddCardRequest,
   Card,
   CardResponse,
+  EditCardRequest,
 } from '../../components/card/models/card';
 
 @Injectable({
@@ -227,6 +228,63 @@ export class BoardService {
         },
         error: (err: string) => {
           this.errorSignal.set(`Failed to add column ${err}`);
+          this.loadingSignal.update(() => false);
+        },
+      });
+  }
+
+  editCard(
+    columnId: string,
+    id: string,
+    title: string,
+    description: string,
+    position: number,
+  ): void {
+    if (this.isLoading()) return;
+
+    this.loadingSignal.update(() => true);
+    this.errorSignal.update(() => null);
+
+    const editCardRequest: EditCardRequest = {
+      id,
+      title,
+      description,
+      position,
+      columnId,
+    };
+
+    this.apiService
+      .patch<CardResponse>('cards', id, editCardRequest)
+      .pipe(
+        take(1),
+        takeUntilDestroyed(this.destroyRef),
+        map((response: BaseResponse<CardResponse>) => {
+          if (!response.success) {
+            throw new Error(response.message);
+          }
+
+          return this.parseCardResponse(response.data);
+        }),
+      )
+      .subscribe({
+        next: (card: Card) => {
+          this.columnSignal.update((columns) =>
+            columns.map((column) => {
+              return {
+                ...column,
+                cards: column.cards.map((c) => {
+                  if (c.id === card.id) {
+                    return card;
+                  }
+                  return c;
+                }),
+              };
+            }),
+          );
+          this.loadingSignal.update(() => false);
+        },
+        error: (err: string) => {
+          this.errorSignal.set(`Failed to edit card ${err}`);
           this.loadingSignal.update(() => false);
         },
       });

@@ -26,3 +26,11 @@ export interface AddCardRequest {
   position: number;
   columnId: string;
 }
+
+export interface EditCardRequest {
+  id: string;
+  title: string;
+  description: string;
+  position: number;
+  columnId: string;
+}
