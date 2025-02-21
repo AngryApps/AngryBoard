@@ -1,10 +1,15 @@
 package br.com.angryapps.angry.api.mappers;
 
+import br.com.angryapps.angry.api.vm.CardVM;
 import br.com.angryapps.angry.api.vm.ColumnVM;
 import br.com.angryapps.angry.api.vm.requests.PatchColumn;
+import br.com.angryapps.angry.models.Card;
 import br.com.angryapps.angry.models.Column;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Comparator;
+import java.util.List;
 
 @Component
 public class ColumnMapper {
@@ -21,8 +26,10 @@ public class ColumnMapper {
         columnVM.setUpdatedAt(column.getUpdatedAt());
         columnVM.setPosition(column.getPosition());
 
-        if (column.getCards() != null) {
-            columnVM.setCards(column.getCards().stream().map(cardMapper::mapToCardVM).toList());
+        List<Card> cards = column.getCards();
+        if (cards != null) {
+            cards.sort(Comparator.comparingInt(Card::getPosition));
+            columnVM.setCards(cards.stream().map(cardMapper::mapToCardVM).toList());
         }
 
         return columnVM;
@@ -37,14 +44,16 @@ public class ColumnMapper {
         column.setUpdatedAt(columnVM.getUpdatedAt());
         column.setPosition(columnVM.getPosition());
 
-        if (columnVM.getCards() != null) {
-            column.setCards(columnVM.getCards().stream().map(c -> cardMapper.mapToCard(c, column)).toList());
+        List<CardVM> cards = columnVM.getCards();
+        if (cards != null) {
+            cards.sort(Comparator.comparingInt(CardVM::getPosition));
+            column.setCards(cards.stream().map(c -> cardMapper.mapToCard(c, column)).toList());
         }
 
         return column;
     }
 
-    public Column patchColumn(PatchColumn patchColumn, Column column) {
+    public void patchColumn(PatchColumn patchColumn, Column column) {
         if (patchColumn.getTitle() != null) {
             column.setTitle(patchColumn.getTitle());
         }
@@ -56,7 +65,5 @@ public class ColumnMapper {
         if (patchColumn.getPosition() != null) {
             column.setPosition(patchColumn.getPosition());
         }
-
-        return column;
     }
 }
