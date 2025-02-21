@@ -71,7 +71,7 @@ public class CardResource {
 
         var firstPosition = new AtomicInteger(patchCard.getPosition());
 
-        List<Card> cards = cardRepository.findByColumnIdAndPositionGreaterThanEqualOrderByPositionAsc(patchCard.getColumnId(), patchCard.getPosition());
+        List<Card> cards = cardRepository.findByColumnIdAndPositionGreaterThanEqualAndIdNotOrderByPositionAsc(patchCard.getColumnId(), patchCard.getPosition(), id);
 
         cards.forEach(c -> c.setPosition(firstPosition.incrementAndGet()));
 
