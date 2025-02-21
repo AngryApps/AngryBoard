@@ -119,7 +119,7 @@ export class BoardService {
     };
 
     this.apiService
-      .patch<ColumnResponse>(`columns`, editColumnRequest)
+      .patch<ColumnResponse>(`columns`, editColumnRequest.id, editColumnRequest)
       .pipe(
         take(1),
         takeUntilDestroyed(this.destroyRef),
@@ -132,9 +132,17 @@ export class BoardService {
         }),
       )
       .subscribe({
-        next: (column: Column) => {
+        next: (updatedColumn: Column) => {
           this.columnSignal.update((columns) =>
-            columns.map((c) => (c.id === column.id ? column : c)),
+            columns.map((c) => {
+              if (c.id === updatedColumn.id) {
+                return {
+                  ...updatedColumn,
+                  cards: c.cards,
+                };
+              }
+              return c;
+            }),
           );
           this.loadingSignal.update(() => false);
         },
