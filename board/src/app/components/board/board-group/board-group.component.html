@@ -1,8 +1,8 @@
 <add-column class="mb-2" />
 
-@if (columnService.error()) {
+@if (boardService.error()) {
   <div class="min-h-full flex justify-center items-center">
-    <div class="text-red-500">{{ columnService.error() }}</div>
+    <div class="text-red-500">{{ boardService.error() }}</div>
   </div>
 } @else {
   <div
@@ -13,7 +13,6 @@
     [cdkDropListData]="columns()"
     cdkDropListOrientation="horizontal"
     (cdkDropListDropped)="dropColumn($event)"
-    [cdkDropListConnectedTo]="['trashDrop']"
     class="flex flex-row h-[calc(100vh-15rem)] min-h-[30rem] pb-2 gap-4"
   >
     @for (column of columns(); track column.id) {
@@ -26,8 +25,4 @@
       />
     }
   </div>
-  <delete-bar
-    [isVisible]="showDeleteBar()"
-    (deleteConfirm)="deleteColumn($event)"
-  />
 }

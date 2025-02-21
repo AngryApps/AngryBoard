@@ -3,8 +3,8 @@
   [modal]="false"
   [styleClass]="
     isVisible()
-      ? 'opacity-100 h-24 bg-transparent border-none transform transition-opacity duration-500 ease-in-out'
-      : 'opacity-0'
+      ? 'border-none bg-transparent transform translate-y-0'
+      : 'border-none transform translate-y-full'
   "
   [visible]="true"
   position="bottom"
@@ -14,6 +14,7 @@
       #trashDrop
       (cdkDropListDropped)="drop($event)"
       (cdkDropListEntered)="
+        entered($event);
         trashDrop.classList.add(
           'bg-[radial-gradient(at_center_bottom,var(--p-red-500)_0%,transparent_70%)]'
         )
@@ -25,7 +26,7 @@
       "
       [cdkDropListData]="dropListContainer"
       cdkDropList
-      class="h-full w-full flex justify-center items-end bg-[radial-gradient(at_center_bottom,var(--p-red-500)_0%,transparent_40%)] animate-slideup transition-all duration-300"
+      class="h-full z-auto flex justify-center items-end bg-[radial-gradient(at_center_bottom,var(--p-red-500)_0%,transparent_40%)]"
       id="trashDrop"
     >
       <span class="animate-bounce text-xl pi pi-trash w-8 h-8 text-center">

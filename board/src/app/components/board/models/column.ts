@@ -1,4 +1,4 @@
-import { Card, CardWS } from '../../card/models/card';
+import { Card, CardResponse } from '../../card/models/card';
 
 export interface Column {
   id: string;
@@ -17,7 +17,7 @@ export interface ColumnResponse {
   position: number;
   created_at: Date;
   updated_at: Date;
-  cards?: CardWS[];
+  cards?: CardResponse[];
 }
 
 export interface AddColumnRequest {
