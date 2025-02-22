@@ -4,7 +4,7 @@ class BaseWsResponse<T> {
   final bool success;
   final String message;
   final Map<String, dynamic> metadata;
-  final Map<String, dynamic> data;
+  final dynamic data;
 
   BaseWsResponse({
     required this.success,
@@ -27,7 +27,7 @@ class BaseWsResponse<T> {
       success: map['success'] ?? false,
       message: map['message'] ?? '',
       metadata: Map<String, dynamic>.from(map['metadata'] ?? {}),
-      data: Map<String, dynamic>.from(map['data'] ?? {}),
+      data: map['data'],
     );
   }
 

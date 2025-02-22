@@ -1,4 +1,5 @@
 import 'package:angryapp/data/usecases/create_column/remote_create_column.dart';
+import 'package:angryapp/data/usecases/usecases.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -23,11 +24,14 @@ class MyApp extends StatelessWidget {
       ),
       home: HomePage(
         presenter: StreamHomePresenter(
-          createColumnUseCase: RemoteCreateColumn(
-            httpClient: HttpAdapter(Client()),
-            url: "http://10.0.2.2:8080/api/v1/columns",
-          ),
-        ),
+            createColumnUseCase: RemoteCreateColumn(
+              httpClient: HttpAdapter(Client()),
+              url: "http://10.0.2.2:8080/api/v1/columns",
+            ),
+            listColumnsUseCase: RemoteListColumns(
+              httpClient: HttpAdapter(Client()),
+              url: "http://10.0.2.2:8080/api/v1/columns",
+            )),
       ),
     );
   }

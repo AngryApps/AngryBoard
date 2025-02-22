@@ -9,6 +9,7 @@ import '../../domain/entities/entities.dart';
 
 class StreamHomePresenter with LoadingManager implements HomePresenter {
   final CreateColumn createColumnUseCase;
+  final ListColumns listColumnsUseCase;
 
   final StreamController<String> _errorController =
       StreamController<String>.broadcast();
@@ -16,13 +17,23 @@ class StreamHomePresenter with LoadingManager implements HomePresenter {
   final StreamController<ColumnEntity> _messageController =
       StreamController<ColumnEntity>.broadcast();
 
-  StreamHomePresenter({required this.createColumnUseCase});
+  final StreamController<List<ColumnEntity>> _listColumnController =
+      StreamController<List<ColumnEntity>>.broadcast();
+
+  StreamHomePresenter({
+    required this.createColumnUseCase,
+    required this.listColumnsUseCase,
+  });
 
   @override
   Stream<String> get errorStream => _errorController.stream;
 
   @override
   Stream<ColumnEntity> get messageStream => _messageController.stream;
+
+  @override
+  Stream<List<ColumnEntity>> get listColumnsStream =>
+      _listColumnController.stream;
 
   @override
   Future<void> createColumn() async {
@@ -38,6 +49,20 @@ class StreamHomePresenter with LoadingManager implements HomePresenter {
       await Future.delayed(Duration(seconds: 2));
 
       _messageController.add(column);
+    } on Exception catch (error) {
+      _errorController.add(error.toString());
+    }
+
+    isLoading = false;
+  }
+
+  @override
+  Future<void> listColumns() async {
+    isLoading = true;
+
+    try {
+      final columns = await listColumnsUseCase.listColumns();
+      _listColumnController.add(columns);
     } on Exception catch (error) {
       _errorController.add(error.toString());
     }
