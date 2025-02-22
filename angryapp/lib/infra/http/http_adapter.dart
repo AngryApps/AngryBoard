@@ -14,7 +14,6 @@ class HttpAdapter implements HttpClient {
   @override
   Future<BaseWsResponse> post({
     required String url,
-    required String method,
     Map? body,
     Map? headers,
   }) async {

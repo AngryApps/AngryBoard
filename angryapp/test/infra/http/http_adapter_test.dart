@@ -50,7 +50,6 @@ void main() {
     test('Shoud call POST with correct values', () async {
       await sut.post(
         url: url,
-        method: 'POST',
         body: {"any_key": "any_value"},
       );
 
@@ -62,7 +61,6 @@ void main() {
 
       await sut.post(
         url: url,
-        method: 'POST',
         body: {"any_key": "any_value"},
         headers: {'any_header': 'any_value'},
       );
@@ -75,42 +73,42 @@ void main() {
     });
 
     test('Shoud return data if post returns 200', () async {
-      final response = await sut.post(url: url, method: 'POST');
+      final response = await sut.post(url: url);
 
       expect(response, {"any_key": "any_value"});
     });
 
     test('Should return BadRequestError if post returns 400', () async {
       mockResponse(400, body: '');
-      final future = sut.post(url: url, method: 'POST');
+      final future = sut.post(url: url);
 
       expect(future, throwsA(HttpError.badRequest));
     });
 
     test('Should return UnauthorizedError if post returns 401', () async {
       mockResponse(401);
-      final future = sut.post(url: url, method: 'POST');
+      final future = sut.post(url: url);
 
       expect(future, throwsA(HttpError.unauthorized));
     });
 
     test('Should return NotFoundError if post returns 404', () async {
       mockResponse(404);
-      final future = sut.post(url: url, method: 'POST');
+      final future = sut.post(url: url);
 
       expect(future, throwsA(HttpError.notFound));
     });
 
     test('Should return ServerError if post returns 500', () async {
       mockResponse(500);
-      final future = sut.post(url: url, method: 'POST');
+      final future = sut.post(url: url);
 
       expect(future, throwsA(HttpError.serverError));
     });
 
     test('Should return ServerError if post throws', () async {
       mockError();
-      final future = sut.post(url: url, method: 'POST');
+      final future = sut.post(url: url);
 
       expect(future, throwsA(HttpError.serverError));
     });
@@ -134,24 +132,23 @@ void main() {
     });
 
     test('Should call get with correct values', () async {
-      await sut.post(url: url, method: 'GET');
+      await sut.post(url: url);
       verify(() => client.get(uri, headers: defaultHeaders));
 
-      await sut
-          .post(url: url, method: 'GET', headers: {'any_header': 'any_value'});
+      await sut.post(url: url, headers: {'any_header': 'any_value'});
       verify(() => client
           .get(uri, headers: {...defaultHeaders, 'any_header': 'any_value'}));
     });
 
     test('Should return data if get returns 200', () async {
-      final response = await sut.post(url: url, method: 'GET');
+      final response = await sut.post(url: url);
 
       expect(response, {"any_key": "any_value"});
     });
 
     test('Should return BadRequestError if get returns 400', () async {
       mockResponse(400);
-      final future = sut.post(url: url, method: 'GET');
+      final future = sut.post(url: url);
 
       expect(future, throwsA(HttpError.badRequest));
     });
@@ -159,28 +156,28 @@ void main() {
     test('Should return UnauthorizedError if get returns 401', () async {
       mockResponse(401);
 
-      final future = sut.post(url: url, method: 'GET');
+      final future = sut.post(url: url);
       expect(future, throwsA(HttpError.unauthorized));
     });
 
     test('Should return NotFoundError if get returns 404', () async {
       mockResponse(404);
 
-      final future = sut.post(url: url, method: 'GET');
+      final future = sut.post(url: url);
       expect(future, throwsA(HttpError.notFound));
     });
 
     test('Should return ServerError if get returns 500', () async {
       mockResponse(500);
 
-      final future = sut.post(url: url, method: 'GET');
+      final future = sut.post(url: url);
       expect(future, throwsA(HttpError.serverError));
     });
 
     test('Should return ServerError if get throws', () async {
       mockError();
 
-      final future = sut.post(url: url, method: 'GET');
+      final future = sut.post(url: url);
       expect(future, throwsA(HttpError.serverError));
     });
   });
@@ -203,7 +200,7 @@ void main() {
     });
 
     test('Should call PUT with correct value', () async {
-      await sut.post(url: url, method: 'PUT', body: {"any_key": "any_value"});
+      await sut.post(url: url, body: {"any_key": "any_value"});
 
       verify(() => client.put(
             uri,
@@ -213,7 +210,6 @@ void main() {
 
       await sut.post(
         url: url,
-        method: 'PUT',
         headers: {'any_header': 'any_value'},
         body: {"any_key": "any_value"},
       );
@@ -232,7 +228,6 @@ void main() {
     test('Should return data if put returns 200', () async {
       final response = await sut.post(
         url: url,
-        method: 'PUT',
       );
 
       expect(response, {"any_key": "any_value"});
@@ -240,31 +235,31 @@ void main() {
 
     test('Should return BadRequestError if put returns 400', () async {
       mockResponse(400);
-      final future = sut.post(url: url, method: 'PUT');
+      final future = sut.post(url: url);
       expect(future, throwsA(HttpError.badRequest));
     });
 
     test('Should return UnauthorizedError if put returns 401', () async {
       mockResponse(401);
-      final future = sut.post(url: url, method: 'PUT');
+      final future = sut.post(url: url);
       expect(future, throwsA(HttpError.unauthorized));
     });
 
     test('Should return NotFoundError if put returns 404', () async {
       mockResponse(404);
-      final future = sut.post(url: url, method: 'PUT');
+      final future = sut.post(url: url);
       expect(future, throwsA(HttpError.notFound));
     });
 
     test('Should return ServerError if put returns 500', () async {
       mockResponse(500);
-      final future = sut.post(url: url, method: 'PUT');
+      final future = sut.post(url: url);
       expect(future, throwsA(HttpError.serverError));
     });
 
     test('Should return ServerError if put throws', () async {
       mockError();
-      final future = sut.post(url: url, method: 'PUT');
+      final future = sut.post(url: url);
       expect(future, throwsA(HttpError.serverError));
     });
   });

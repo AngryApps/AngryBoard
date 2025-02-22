@@ -15,7 +15,6 @@ class RemoteCreateColumn implements CreateColumn {
       final body = CreateColumnRequest.fromDomain(params).toJson();
       final response = await httpClient.post(
         url: url,
-        method: 'POST',
         body: body,
       );
 
