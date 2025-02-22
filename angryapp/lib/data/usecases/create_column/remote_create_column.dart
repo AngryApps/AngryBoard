@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:angryapp/data/http/http.dart';
 import 'package:angryapp/domain/entities/column_entity.dart';
 import 'package:angryapp/domain/entities/ws/ws.dart';
