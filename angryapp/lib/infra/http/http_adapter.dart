@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:angryapp/data/http/http.dart';
+
+import '../../domain/entities/ws/ws.dart';
 import 'package:http/http.dart';
 
 class HttpAdapter implements HttpClient {
@@ -9,7 +12,7 @@ class HttpAdapter implements HttpClient {
   HttpAdapter(this.client);
 
   @override
-  Future<dynamic> request({
+  Future<BaseWsResponse> post({
     required String url,
     required String method,
     Map? body,
@@ -22,36 +25,25 @@ class HttpAdapter implements HttpClient {
       });
 
     final jsonBody = body != null ? jsonEncode(body) : null;
-    var response = Response('', 500);
 
     try {
-      if (method == 'POST') {
-        response = await client.post(
+      return _handleResponse(
+        await client.post(
           Uri.parse(url),
           headers: defaultHeaders,
           body: jsonBody,
-        );
-      } else if (method == 'GET') {
-        response = await client.get(
-          Uri.parse(url),
-          headers: defaultHeaders,
-        );
-      } else if (method == 'PUT') {
-        response = await client.put(
-          Uri.parse(url),
-          headers: defaultHeaders,
-          body: jsonBody,
-        );
-      }
+        ),
+      );
     } catch (error) {
+      log("Error: ${error.toString()}");
       throw (HttpError.serverError);
     }
-    return _handleResponse(response);
   }
 
-  dynamic _handleResponse(Response response) {
+  BaseWsResponse _handleResponse(Response response) {
     if (response.statusCode == 200) {
-      return response.body.isEmpty ? null : jsonDecode(response.body);
+      String decoded = utf8.decode(response.bodyBytes);
+      return BaseWsResponse.fromJson(decoded);
     } else if (response.statusCode == 400) {
       throw (HttpError.badRequest);
     } else if (response.statusCode == 401) {
