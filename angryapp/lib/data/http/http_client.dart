@@ -6,4 +6,9 @@ abstract class HttpClient {
     Map? body,
     Map? headers,
   });
+
+  Future<BaseWsResponse> get({
+    required String url,
+    Map? headers,
+  });
 }

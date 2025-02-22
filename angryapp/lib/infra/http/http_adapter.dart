@@ -39,6 +39,27 @@ class HttpAdapter implements HttpClient {
     }
   }
 
+  @override
+  Future<BaseWsResponse> get({required String url, Map? headers}) async {
+    final defaultHeaders = headers?.cast<String, String>() ?? {}
+      ..addAll({
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      });
+
+    try {
+      return _handleResponse(
+        await client.get(
+          Uri.parse(url),
+          headers: defaultHeaders,
+        ),
+      );
+    } catch (error) {
+      log("Error: ${error.toString()}");
+      throw (HttpError.serverError);
+    }
+  }
+
   BaseWsResponse _handleResponse(Response response) {
     if (response.statusCode == 200) {
       String decoded = utf8.decode(response.bodyBytes);
