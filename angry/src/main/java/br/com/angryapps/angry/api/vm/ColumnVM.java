@@ -16,7 +16,7 @@ public class ColumnVM {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     @NotNull
-    private int position;
+    private double position;
     private List<CardVM> cards;
 
     public LocalDateTime getCreatedAt() {
@@ -43,11 +43,11 @@ public class ColumnVM {
         this.id = id;
     }
 
-    public int getPosition() {
+    public double getPosition() {
         return position;
     }
 
-    public void setPosition(int position) {
+    public void setPosition(double position) {
         this.position = position;
     }
 

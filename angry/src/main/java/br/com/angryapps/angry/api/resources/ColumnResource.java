@@ -7,18 +7,20 @@ import br.com.angryapps.angry.api.responses.BaseResponse;
 import br.com.angryapps.angry.api.responses.ListDataResponse;
 import br.com.angryapps.angry.api.responses.SingleDataResponse;
 import br.com.angryapps.angry.api.vm.ColumnVM;
+import br.com.angryapps.angry.api.vm.requests.ChangeColumnPositionRequest;
 import br.com.angryapps.angry.api.vm.requests.PatchColumn;
 import br.com.angryapps.angry.db.ColumnRepository;
 import br.com.angryapps.angry.models.Column;
+import br.com.angryapps.angry.utils.ColumnUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 @RequestMapping("api/v1/columns")
@@ -35,22 +37,15 @@ public class ColumnResource {
 
     @RequestMapping(method = {RequestMethod.PUT, RequestMethod.POST})
     public SingleDataResponse<ColumnVM> upsertColumn(@Valid @RequestBody ColumnVM columnVM) {
-        var firstPosition = new AtomicInteger(columnVM.getPosition());
-
-        List<Column> columns;
-        if (columnVM.getId() != null) {
-            columns = columnRepository.findByPositionGreaterThanEqualAndIdNotOrderByPositionAsc(columnVM.getPosition(), columnVM.getId());
-        } else {
-            columns = columnRepository.findByPositionGreaterThanEqualOrderByPositionAsc(columnVM.getPosition());
+        if (columnVM.getId() == null) {
+            columnVM.setCreatedAt(LocalDateTime.now());
         }
 
-        columns.forEach(c -> c.setPosition(firstPosition.incrementAndGet()));
+        columnVM.setUpdatedAt(LocalDateTime.now());
 
         Column newColumn = columnMapper.mapToColumn(columnVM);
 
-        // Add it to the list to save together with all the others
-        columns.add(newColumn);
-        columnRepository.saveAll(columns);
+        columnRepository.save(newColumn);
 
         return ApiResponses.single("Column created", columnMapper.mapToColumnVM(newColumn));
     }
@@ -60,22 +55,38 @@ public class ColumnResource {
         Column column = columnRepository.findById(id)
                                         .orElseThrow(() -> new NotFoundResponseException("Column not found"));
 
-        var firstPosition = new AtomicInteger(patchColumn.getPosition());
-
-        List<Column> columns = columnRepository.findByPositionGreaterThanEqualAndIdNotOrderByPositionAsc(patchColumn.getPosition(), id);
-
-        columns.forEach(c -> c.setPosition(firstPosition.incrementAndGet()));
-
         columnMapper.patchColumn(patchColumn, column);
 
-        // Add it to the list to save together with all the others
-        columns.add(column);
-        columnRepository.saveAll(columns);
+        columnRepository.save(column);
 
         // Remove the cards from the column to return a smaller json
         column.setCards(null);
 
         return ApiResponses.single("Column patched", columnMapper.mapToColumnVM(column));
+    }
+
+    @PatchMapping("changePosition/{id}")
+    public SingleDataResponse<ColumnVM> changePosition(@PathVariable UUID id, @Valid @RequestBody ChangeColumnPositionRequest request) {
+        Column currentColumn = columnRepository.findById(id)
+                                               .orElseThrow(() -> new NotFoundResponseException("Column not found"));
+
+        Column previousColumn = null, nextColumn = null;
+        if (request.getPreviousColumnId() != null) {
+            previousColumn = columnRepository.findById(request.getPreviousColumnId())
+                                             .orElseThrow(() -> new NotFoundResponseException("Previous column not found"));
+        }
+
+        if (request.getNextColumnId() != null) {
+            nextColumn = columnRepository.findById(request.getNextColumnId())
+                                         .orElseThrow(() -> new NotFoundResponseException("Next column not found"));
+        }
+
+        double newPosition = ColumnUtils.calculateNewPosition(previousColumn, nextColumn);
+
+        currentColumn.setPosition(newPosition);
+        columnRepository.save(currentColumn);
+
+        return ApiResponses.single("Column position changed", columnMapper.mapToColumnVM(currentColumn));
     }
 
     @GetMapping

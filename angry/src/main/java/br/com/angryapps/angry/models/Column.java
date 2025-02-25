@@ -20,7 +20,7 @@ public class Column {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     @NotNull(message = "Position is required")
-    private int position;
+    private double position;
 
     @OneToMany(mappedBy = "column", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Card> cards = new ArrayList<>();
@@ -49,11 +49,11 @@ public class Column {
         this.id = id;
     }
 
-    public int getPosition() {
+    public double getPosition() {
         return position;
     }
 
-    public void setPosition(int position) {
+    public void setPosition(double position) {
         this.position = position;
     }
 

@@ -8,6 +8,7 @@ import br.com.angryapps.angry.models.Column;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class ColumnMapper {
 
         List<Card> cards = column.getCards();
         if (cards != null) {
-            cards.sort(Comparator.comparingInt(Card::getPosition));
+            cards.sort(Comparator.comparingDouble(Card::getPosition));
             columnVM.setCards(cards.stream().map(cardMapper::mapToCardVM).toList());
         }
 
@@ -46,7 +47,7 @@ public class ColumnMapper {
 
         List<CardVM> cards = columnVM.getCards();
         if (cards != null) {
-            cards.sort(Comparator.comparingInt(CardVM::getPosition));
+            cards.sort(Comparator.comparingDouble(CardVM::getPosition));
             column.setCards(cards.stream().map(c -> cardMapper.mapToCard(c, column)).toList());
         }
 
@@ -62,8 +63,6 @@ public class ColumnMapper {
             column.setDescription(patchColumn.getDescription());
         }
 
-        if (patchColumn.getPosition() != null) {
-            column.setPosition(patchColumn.getPosition());
-        }
+        column.setUpdatedAt(LocalDateTime.now());
     }
 }

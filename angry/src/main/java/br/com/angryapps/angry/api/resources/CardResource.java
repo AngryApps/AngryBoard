@@ -7,20 +7,22 @@ import br.com.angryapps.angry.api.responses.BaseResponse;
 import br.com.angryapps.angry.api.responses.ListDataResponse;
 import br.com.angryapps.angry.api.responses.SingleDataResponse;
 import br.com.angryapps.angry.api.vm.CardVM;
+import br.com.angryapps.angry.api.vm.requests.ChangeCardPositionRequest;
 import br.com.angryapps.angry.api.vm.requests.PatchCard;
 import br.com.angryapps.angry.db.CardRepository;
 import br.com.angryapps.angry.db.ColumnRepository;
 import br.com.angryapps.angry.models.Card;
 import br.com.angryapps.angry.models.Column;
+import br.com.angryapps.angry.utils.CardUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 @RequestMapping("api/v1/cards")
@@ -42,46 +44,57 @@ public class CardResource {
         Column column = columnRepository.findById(cardVM.getColumnId())
                                         .orElseThrow(() -> new NotFoundResponseException("Column not found"));
 
-        var firstPosition = new AtomicInteger(cardVM.getPosition());
-
-        List<Card> cards;
-        if (cardVM.getId() != null) {
-            cards = cardRepository.findByColumnIdAndPositionGreaterThanEqualAndIdNotOrderByPositionAsc(cardVM.getColumnId(), cardVM.getPosition(), cardVM.getId());
-        } else {
-            cards = cardRepository.findByColumnIdAndPositionGreaterThanEqualOrderByPositionAsc(cardVM.getColumnId(), cardVM.getPosition());
+        if (cardVM.getId() == null) {
+            cardVM.setCreatedAt(LocalDateTime.now());
         }
 
-        cards.forEach(c -> c.setPosition(firstPosition.incrementAndGet()));
+        cardVM.setUpdatedAt(LocalDateTime.now());
 
         Card newCard = cardMapper.mapToCard(cardVM, column);
         cardRepository.save(newCard);
-
-        cardRepository.saveAll(cards);
 
         return ApiResponses.single("Card created", cardMapper.mapToCardVM(newCard));
     }
 
     @PatchMapping("{id}")
     public SingleDataResponse<CardVM> patchCard(@PathVariable UUID id, @Valid @RequestBody PatchCard patchCard) {
-        Column column = columnRepository.findById(patchCard.getColumnId())
-                                        .orElseThrow(() -> new NotFoundResponseException("Column not found"));
-
         Card card = cardRepository.findById(id)
                                   .orElseThrow(() -> new NotFoundResponseException("Card not found"));
 
-        var firstPosition = new AtomicInteger(patchCard.getPosition());
+        cardMapper.patchCard(patchCard, card);
 
-        List<Card> cards = cardRepository.findByColumnIdAndPositionGreaterThanEqualAndIdNotOrderByPositionAsc(patchCard.getColumnId(), patchCard.getPosition(), id);
-
-        cards.forEach(c -> c.setPosition(firstPosition.incrementAndGet()));
-
-        cardMapper.patchCard(patchCard, card, column);
-
-        cards.add(card);
-
-        cardRepository.saveAll(cards);
+        cardRepository.save(card);
 
         return ApiResponses.single("Card patched", cardMapper.mapToCardVM(card));
+    }
+
+    @PatchMapping("changePosition/{id}")
+    public SingleDataResponse<CardVM> changePosition(@PathVariable UUID id, @Valid @RequestBody ChangeCardPositionRequest request) {
+        Card currentCard = cardRepository.findById(id)
+                                         .orElseThrow(() -> new NotFoundResponseException("Current card not found"));
+
+        Column targetColumn = columnRepository.findById(request.getTargetColumnId())
+                                              .orElseThrow(() -> new NotFoundResponseException("Column not found"));
+
+        Card previousCard = null, nextCard = null;
+        if (request.getPreviousCardId() != null) {
+            previousCard = cardRepository.findById(request.getPreviousCardId())
+                                         .orElseThrow(() -> new NotFoundResponseException("Previous card not found"));
+        }
+
+        if (request.getNextCardId() != null) {
+            nextCard = cardRepository.findById(request.getNextCardId())
+                                     .orElseThrow(() -> new NotFoundResponseException("Next card not found"));
+        }
+
+        double newPosition = CardUtils.calculateNewPosition(previousCard, nextCard);
+
+        currentCard.setPosition(newPosition);
+        currentCard.setColumn(targetColumn);
+        currentCard.setUpdatedAt(LocalDateTime.now());
+        cardRepository.save(currentCard);
+
+        return ApiResponses.single("Card position changed", cardMapper.mapToCardVM(currentCard));
     }
 
     @GetMapping
