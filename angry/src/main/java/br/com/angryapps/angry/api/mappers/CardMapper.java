@@ -6,6 +6,8 @@ import br.com.angryapps.angry.models.Card;
 import br.com.angryapps.angry.models.Column;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class CardMapper {
 
@@ -37,7 +39,7 @@ public class CardMapper {
         return card;
     }
 
-    public void patchCard(PatchCard patchCard, Card card, Column column) {
+    public void patchCard(PatchCard patchCard, Card card) {
         if (patchCard.getTitle() != null) {
             card.setTitle(patchCard.getTitle());
         }
@@ -46,12 +48,6 @@ public class CardMapper {
             card.setDescription(patchCard.getDescription());
         }
 
-        if (patchCard.getPosition() != null) {
-            card.setPosition(patchCard.getPosition());
-        }
-
-        if (patchCard.getColumnId() != null) {
-            card.setColumn(column);
-        }
+        card.setUpdatedAt(LocalDateTime.now());
     }
 }

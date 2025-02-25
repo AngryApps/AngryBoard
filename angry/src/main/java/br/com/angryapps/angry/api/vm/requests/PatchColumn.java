@@ -4,7 +4,6 @@ public class PatchColumn {
 
     private String title;
     private String description;
-    private Integer position;
 
     public String getDescription() {
         return description;
@@ -12,14 +11,6 @@ public class PatchColumn {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Integer getPosition() {
-        return position;
-    }
-
-    public void setPosition(Integer position) {
-        this.position = position;
     }
 
     public String getTitle() {

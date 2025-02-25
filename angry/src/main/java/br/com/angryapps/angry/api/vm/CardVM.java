@@ -1,5 +1,6 @@
 package br.com.angryapps.angry.api.vm;
 
+import br.com.angryapps.angry.utils.CardUtils;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -12,7 +13,7 @@ public class CardVM {
     @NotBlank(message = "Title is required")
     private String title;
     private String description;
-    private int position;
+    private Double position = CardUtils.DEFAULT_POSITION;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     @NotNull(message = "ColumnId is required")
@@ -42,11 +43,11 @@ public class CardVM {
         this.description = description;
     }
 
-    public int getPosition() {
+    public double getPosition() {
         return position;
     }
 
-    public void setPosition(int position) {
+    public void setPosition(Double position) {
         this.position = position;
     }
 
