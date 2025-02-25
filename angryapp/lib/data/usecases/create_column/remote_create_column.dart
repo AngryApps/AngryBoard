@@ -28,19 +28,16 @@ class RemoteCreateColumn implements CreateColumn {
 class CreateColumnRequest {
   final String title;
   final String description;
-  final int position;
 
   CreateColumnRequest({
     required this.title,
     required this.description,
-    required this.position,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'title': title,
       'description': description,
-      'position': position,
     };
   }
 
@@ -48,6 +45,5 @@ class CreateColumnRequest {
       CreateColumnRequest(
         title: params.title,
         description: params.description,
-        position: params.position,
       );
 }

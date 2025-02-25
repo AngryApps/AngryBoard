@@ -2,7 +2,7 @@ import '../../../domain/entities/entities.dart';
 
 abstract class HomePresenter {
   Stream<String> get errorStream;
-  Stream<ColumnEntity> get messageStream;
+  Stream<ColumnEntity> get createColumnStream;
   Stream<List<ColumnEntity>> get listColumnsStream;
   Stream<bool> get isLoadingStream;
 

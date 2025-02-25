@@ -14,7 +14,7 @@ class StreamHomePresenter with LoadingManager implements HomePresenter {
   final StreamController<String> _errorController =
       StreamController<String>.broadcast();
 
-  final StreamController<ColumnEntity> _messageController =
+  final StreamController<ColumnEntity> _createColumnController =
       StreamController<ColumnEntity>.broadcast();
 
   final StreamController<List<ColumnEntity>> _listColumnController =
@@ -29,7 +29,7 @@ class StreamHomePresenter with LoadingManager implements HomePresenter {
   Stream<String> get errorStream => _errorController.stream;
 
   @override
-  Stream<ColumnEntity> get messageStream => _messageController.stream;
+  Stream<ColumnEntity> get createColumnStream => _createColumnController.stream;
 
   @override
   Stream<List<ColumnEntity>> get listColumnsStream =>
@@ -40,15 +40,10 @@ class StreamHomePresenter with LoadingManager implements HomePresenter {
     isLoading = true;
 
     try {
-      final column = await createColumnUseCase.create(CreateColumnParams(
-        "Este é o título",
-        "Esta é a descrição",
-        0,
-      ));
+      final column = await createColumnUseCase
+          .create(CreateColumnParams("Este é o título", "Esta é a descrição"));
 
-      await Future.delayed(Duration(seconds: 2));
-
-      _messageController.add(column);
+      _createColumnController.add(column);
     } on Exception catch (error) {
       _errorController.add(error.toString());
     }

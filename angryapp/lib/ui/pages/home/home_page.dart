@@ -13,14 +13,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with LoadingManager {
-  ColumnEntity message = ColumnEntity(
-    "",
-    "",
-    "",
-    DateTime.now(),
-    DateTime.now(),
-    0,
-  );
+  @override
+  void initState() {
+    super.initState();
+    widget.presenter.listColumns();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,43 +30,43 @@ class _HomePageState extends State<HomePage> with LoadingManager {
       body: Builder(builder: (_) {
         handleLoading(context, widget.presenter.isLoadingStream);
 
-        widget.presenter.messageStream.listen((event) {
-          setState(() {
-            message = event;
-            widget.presenter.listColumns();
-          });
+        widget.presenter.createColumnStream.listen((event) {
+          widget.presenter.listColumns();
         });
-        return SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Card(
-                elevation: 5,
-                child: ListTile(
-                  title: Text("${message.title} - ${message.id}"),
-                  subtitle: Text(message.description),
-                ),
-              ),
-              StreamBuilder(
-                stream: widget.presenter.listColumnsStream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      children: (snapshot.data as List<ColumnEntity>)
-                          .map((column) => Card(
-                                elevation: 5,
-                                child: ListTile(
-                                  title: Text("${column.title} - ${column.id}"),
-                                  subtitle: Text(column.description),
-                                ),
-                              ))
-                          .toList(),
-                    );
-                  }
-                  return Container();
-                },
-              )
-            ],
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: StreamBuilder(
+              stream: widget.presenter.listColumnsStream,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final columns = snapshot.data as List<ColumnEntity>;
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: columns.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              _buildColumn(columns[index]),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+                return Center(
+                  child: Text(
+                    "Nenhuma coluna cadastrada",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         );
       }),
@@ -90,6 +87,30 @@ class _HomePageState extends State<HomePage> with LoadingManager {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
+  }
+
+  _buildColumn(ColumnEntity column) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.8,
+      child: Card(
+        color: Color.fromRGBO(215, 204, 200, 1),
+        elevation: 10,
+        child: ListTile(
+          title: Text(
+            column.title,
+            style: TextStyle(
+              color: Color.fromRGBO(113, 95, 89, 1),
+            ),
+          ),
+          subtitle: Text(
+            column.description,
+            style: TextStyle(
+              color: Color.fromRGBO(161, 136, 127, 1),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -33,8 +33,8 @@ class ColumnEntity {
       map['id'] ?? '',
       map['title'] ?? '',
       map['description'] ?? '',
-      map['createdAt'] ?? DateTime.now(),
-      map['updatedAt'] ?? DateTime.now(),
+      DateTime.parse(map['createdAt']),
+      DateTime.parse(map['updatedAt']),
       map['position']?.toInt() ?? 0,
     );
   }
