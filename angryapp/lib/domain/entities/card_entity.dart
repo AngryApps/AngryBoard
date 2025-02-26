@@ -1,24 +1,22 @@
 import 'dart:convert';
 
-import 'package:angryapp/domain/entities/card_entity.dart';
-
-class ColumnEntity {
+class CardEntity {
   final String id;
   final String title;
   final String description;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final String columnId;
   final int position;
-  final List<CardEntity> cards;
 
-  ColumnEntity(
+  CardEntity(
     this.id,
     this.title,
     this.description,
     this.createdAt,
     this.updatedAt,
+    this.columnId,
     this.position,
-    this.cards,
   );
 
   Map<String, dynamic> toMap() {
@@ -28,25 +26,25 @@ class ColumnEntity {
       'description': description,
       'createdAt': createdAt.millisecondsSinceEpoch,
       'updatedAt': updatedAt.millisecondsSinceEpoch,
+      'columnId': columnId,
       'position': position,
-      'cards': cards.map((x) => x.toMap()).toList(),
     };
   }
 
-  factory ColumnEntity.fromMap(Map<String, dynamic> map) {
-    return ColumnEntity(
+  factory CardEntity.fromMap(Map<String, dynamic> map) {
+    return CardEntity(
       map['id'] ?? '',
       map['title'] ?? '',
       map['description'] ?? '',
       DateTime.parse(map['createdAt']),
       DateTime.parse(map['updatedAt']),
+      map['columnId'] ?? '',
       map['position']?.toInt() ?? 0,
-      List<CardEntity>.from(map['cards']?.map((x) => CardEntity.fromMap(x))),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory ColumnEntity.fromJson(String source) =>
-      ColumnEntity.fromMap(json.decode(source));
+  factory CardEntity.fromJson(String source) =>
+      CardEntity.fromMap(json.decode(source));
 }
