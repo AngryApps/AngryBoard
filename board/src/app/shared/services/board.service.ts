@@ -1,5 +1,5 @@
 import { DestroyRef, inject, Injectable, signal } from '@angular/core';
-import { map, Subject, take } from 'rxjs';
+import { map, Subject } from 'rxjs';
 import { BaseApiHttpRequestService } from './base-api-http-request.service';
 import {
   AddColumnRequest,
@@ -14,6 +14,7 @@ import {
   Card,
   CardResponse,
   EditCardRequest,
+  MoveCardRequest,
 } from '../../components/card/models/card';
 
 @Injectable({
@@ -46,7 +47,6 @@ export class BoardService {
     this.apiService
       .get<ColumnResponse[]>('columns')
       .pipe(
-        take(1),
         takeUntilDestroyed(this.destroyRef),
         map((response: BaseResponse<ColumnResponse[]>) => {
           if (!response.success) {
@@ -84,7 +84,6 @@ export class BoardService {
     this.apiService
       .post<ColumnResponse>('columns', addColumnRequest)
       .pipe(
-        take(1),
         takeUntilDestroyed(this.destroyRef),
         map((response: BaseResponse<ColumnResponse>) => {
           if (!response.success) {
@@ -116,13 +115,11 @@ export class BoardService {
       id: columnId,
       title,
       description: description,
-      position: this.columns().findIndex((c) => c.id === columnId) || 0,
     };
 
     this.apiService
       .patch<ColumnResponse>(`columns`, editColumnRequest.id, editColumnRequest)
       .pipe(
-        take(1),
         takeUntilDestroyed(this.destroyRef),
         map((response: BaseResponse<ColumnResponse>) => {
           if (!response.success) {
@@ -163,7 +160,6 @@ export class BoardService {
     this.apiService
       .delete<ColumnResponse>('columns', columnId)
       .pipe(
-        take(1),
         takeUntilDestroyed(this.destroyRef),
         map((response: BaseResponse<ColumnResponse>) => {
           if (!response.success) {
@@ -194,14 +190,12 @@ export class BoardService {
     const addCardRequest: AddCardRequest = {
       title,
       description: description || undefined,
-      position: 0,
       columnId,
     };
 
     this.apiService
       .post<CardResponse>('cards', addCardRequest)
       .pipe(
-        take(1),
         takeUntilDestroyed(this.destroyRef),
         map((response: BaseResponse<CardResponse>) => {
           if (!response.success) {
@@ -256,7 +250,6 @@ export class BoardService {
     this.apiService
       .patch<CardResponse>('cards', id, editCardRequest)
       .pipe(
-        take(1),
         takeUntilDestroyed(this.destroyRef),
         map((response: BaseResponse<CardResponse>) => {
           if (!response.success) {
@@ -290,7 +283,66 @@ export class BoardService {
       });
   }
 
-  parseColumnResponse(response: ColumnResponse): Column {
+  async moveCard(
+    cardId: string,
+    previousCardId: string,
+    nextCardId: string,
+    targetColumnId: string,
+  ) {
+    if (this.isLoading()) return;
+
+    this.loadingSignal.update(() => true);
+    this.errorSignal.update(() => null);
+
+    const moveCardRequest: MoveCardRequest = {
+      targetColumnId,
+    };
+
+    if (previousCardId) {
+      moveCardRequest.previousCardId = previousCardId;
+    }
+
+    if (nextCardId) {
+      moveCardRequest.nextCardId = nextCardId;
+    }
+
+    this.apiService
+      .patch<CardResponse>('cards/changePosition', cardId, moveCardRequest)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        map((response: BaseResponse<CardResponse>) => {
+          if (!response.success) {
+            throw new Error(response.message);
+          }
+
+          return this.parseCardResponse(response.data);
+        }),
+      )
+      .subscribe({
+        next: (card: Card) => {
+          this.columnSignal.update((columns) =>
+            columns.map((column) => {
+              return {
+                ...column,
+                cards: column.cards.map((c) => {
+                  if (c.id === card.id) {
+                    return card;
+                  }
+                  return c;
+                }),
+              };
+            }),
+          );
+          this.loadingSignal.update(() => false);
+        },
+        error: (err: string) => {
+          this.errorSignal.set(`Failed to move card ${err}`);
+          this.loadingSignal.update(() => false);
+        },
+      });
+  }
+
+  private parseColumnResponse(response: ColumnResponse): Column {
     return {
       id: response.id,
       title: response.title,
@@ -302,14 +354,13 @@ export class BoardService {
     };
   }
 
-  parseCardResponse(response: CardResponse): Card {
+  private parseCardResponse(response: CardResponse): Card {
     return {
       id: response.id,
       title: response.title,
       description: response.description,
-      columnPosition: response.column_position,
+      position: response.position,
       columnId: response.column_id,
-      attachments: response.attachments,
       createdAt: response.created_at,
       updatedAt: response.updated_at,
     };

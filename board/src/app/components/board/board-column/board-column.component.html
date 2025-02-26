@@ -27,7 +27,7 @@
   >
     @for (card of newCards(); track card.id; let idx = $index) {
       <inplace-input
-        (saved)="saveNewCard($event, card, idx)"
+        (saved)="saveNewCard(card, idx)"
         placeholder="Enter a title for this card"
         [(value)]="card.title"
         [isActive]="true"
