@@ -31,3 +31,8 @@ export interface UpdateColumnRequest {
   title: string;
   description: string;
 }
+
+export interface MoveColumnRequest {
+  previousColumnId?: string;
+  nextColumnId?: string;
+}

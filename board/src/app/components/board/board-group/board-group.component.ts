@@ -50,7 +50,15 @@ export class BoardGroupComponent implements OnInit {
 
     if ($event.previousIndex !== $event.currentIndex) {
       const column = this.boardService.columns()[$event.currentIndex];
-      this.boardService.editColumn(column.id, column.title, column.description);
+      const previousColumn =
+        this.boardService.columns()[$event.currentIndex - 1];
+      const nextColumn = this.boardService.columns()[$event.currentIndex + 1];
+
+      this.boardService.moveColumn(
+        column.id,
+        previousColumn?.id,
+        nextColumn?.id,
+      );
     }
   }
 

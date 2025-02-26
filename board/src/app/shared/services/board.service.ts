@@ -5,6 +5,7 @@ import {
   AddColumnRequest,
   Column,
   ColumnResponse,
+  MoveColumnRequest,
   UpdateColumnRequest,
 } from '../../components/board';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -337,6 +338,57 @@ export class BoardService {
         },
         error: (err: string) => {
           this.errorSignal.set(`Failed to move card ${err}`);
+          this.loadingSignal.update(() => false);
+        },
+      });
+  }
+
+  moveColumn(columnId: string, previousColumnId: string, nextColumnId: string) {
+    if (this.isLoading()) return;
+
+    this.loadingSignal.update(() => true);
+    this.errorSignal.update(() => null);
+
+    const moveColumnRequest = {} as MoveColumnRequest;
+
+    if (columnId) {
+      moveColumnRequest.previousColumnId = previousColumnId;
+    }
+
+    if (nextColumnId) {
+      moveColumnRequest.nextColumnId = nextColumnId;
+    }
+
+    this.apiService
+      .patch<ColumnResponse>(
+        `columns/changePosition`,
+        columnId,
+        moveColumnRequest,
+      )
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        map((response: BaseResponse<ColumnResponse>) => {
+          if (!response.success) {
+            throw new Error(response.message);
+          }
+
+          return this.parseColumnResponse(response.data);
+        }),
+      )
+      .subscribe({
+        next: (column: Column) => {
+          this.columnSignal.update((columns) =>
+            columns.map((c) => {
+              if (c.id === column.id) {
+                return column;
+              }
+              return c;
+            }),
+          );
+          this.loadingSignal.update(() => false);
+        },
+        error: (err: string) => {
+          this.errorSignal.set(`Failed to move column ${err}`);
           this.loadingSignal.update(() => false);
         },
       });
