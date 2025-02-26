@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 
-late BuildContext loadingContext;
-
 void showLoading(BuildContext context) {
   showDialog(
     context: context,
     barrierDismissible: false,
     builder: (dialogContext) {
-      loadingContext = dialogContext;
       return SimpleDialog(
         children: [
           Column(
@@ -25,7 +22,7 @@ void showLoading(BuildContext context) {
 }
 
 void hideLoading(BuildContext context) {
-  if (Navigator.canPop(loadingContext)) {
-    Navigator.of(loadingContext).pop();
+  if (Navigator.canPop(context)) {
+    Navigator.of(context).pop();
   }
 }
