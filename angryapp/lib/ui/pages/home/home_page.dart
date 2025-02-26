@@ -70,23 +70,6 @@ class _HomePageState extends State<HomePage> with LoadingManager {
           ),
         );
       }),
-      floatingActionButton: Column(
-        spacing: 16,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: widget.presenter.createColumn,
-            tooltip: 'Increment',
-            child: const Icon(Icons.add),
-          ),
-          FloatingActionButton(
-            onPressed: widget.presenter.listColumns,
-            tooltip: 'Increment',
-            child: const Icon(Icons.view_column),
-          ),
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
@@ -96,19 +79,51 @@ class _HomePageState extends State<HomePage> with LoadingManager {
       child: Card(
         color: Color.fromRGBO(215, 204, 200, 1),
         elevation: 10,
-        child: ListTile(
-          title: Text(
-            column.title,
-            style: TextStyle(
-              color: Color.fromRGBO(113, 95, 89, 1),
+        child: Column(
+          children: [
+            ListTile(
+              title: Text(
+                column.title,
+                style: TextStyle(
+                  color: Color.fromRGBO(113, 95, 89, 1),
+                ),
+              ),
+              subtitle: Text(
+                column.description,
+                style: TextStyle(
+                  color: Color.fromRGBO(161, 136, 127, 1),
+                ),
+              ),
             ),
-          ),
-          subtitle: Text(
-            column.description,
-            style: TextStyle(
-              color: Color.fromRGBO(161, 136, 127, 1),
+            Expanded(
+              child: ListView.builder(
+                itemCount: column.cards.length,
+                itemBuilder: ((context, index) {
+                  final card = column.cards[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Card(
+                      elevation: 4,
+                      child: ListTile(
+                        title: Text(
+                          card.title,
+                          style: TextStyle(
+                            color: Color.fromRGBO(113, 95, 89, 1),
+                          ),
+                        ),
+                        subtitle: Text(
+                          card.description,
+                          style: TextStyle(
+                            color: Color.fromRGBO(161, 136, 127, 1),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
