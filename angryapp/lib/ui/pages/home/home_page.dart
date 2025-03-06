@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> with LoadingManager {
     );
   }
 
-  _buildColumn(ColumnEntity column) {
+  Widget _buildColumn(ColumnEntity column) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.8,
       child: Card(
@@ -81,43 +81,34 @@ class _HomePageState extends State<HomePage> with LoadingManager {
         elevation: 10,
         child: Column(
           children: [
-            ListTile(
-              title: Text(
-                column.title,
-                style: TextStyle(
-                  color: Color.fromRGBO(113, 95, 89, 1),
-                ),
-              ),
-              subtitle: Text(
-                column.description,
-                style: TextStyle(
-                  color: Color.fromRGBO(161, 136, 127, 1),
-                ),
-              ),
-            ),
+            _createListTile(column.title, column.description),
             Expanded(
-              child: ListView.builder(
-                itemCount: column.cards.length,
-                itemBuilder: ((context, index) {
+              child: ReorderableListView.builder(
+                onReorder: (oldIndex, newIndex) => onReorder(
+                  oldIndex,
+                  newIndex,
+                  column,
+                ),
+                proxyDecorator: (child, index, animation) {
                   final card = column.cards[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     child: Card(
+                      elevation: 8,
+                      color: Colors.grey.shade300,
+                      child: _createListTile(card.title, card.description),
+                    ),
+                  );
+                },
+                itemCount: column.cards.length,
+                itemBuilder: ((context, index) {
+                  final card = column.cards[index];
+                  return Padding(
+                    key: ValueKey(card),
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Card(
                       elevation: 4,
-                      child: ListTile(
-                        title: Text(
-                          card.title,
-                          style: TextStyle(
-                            color: Color.fromRGBO(113, 95, 89, 1),
-                          ),
-                        ),
-                        subtitle: Text(
-                          card.description,
-                          style: TextStyle(
-                            color: Color.fromRGBO(161, 136, 127, 1),
-                          ),
-                        ),
-                      ),
+                      child: _createListTile(card.title, card.description),
                     ),
                   );
                 }),
@@ -127,5 +118,32 @@ class _HomePageState extends State<HomePage> with LoadingManager {
         ),
       ),
     );
+  }
+
+  Widget _createListTile(String title, String subtitle) {
+    return ListTile(
+      title: Text(
+        title,
+        style: TextStyle(
+          color: Color.fromRGBO(113, 95, 89, 1),
+        ),
+      ),
+      subtitle: Text(
+        subtitle,
+        style: TextStyle(
+          color: Color.fromRGBO(161, 136, 127, 1),
+        ),
+      ),
+    );
+  }
+
+  void onReorder(int oldIndex, int newIndex, ColumnEntity column) {
+    setState(() {
+      if (oldIndex < newIndex) {
+        newIndex -= 1;
+      }
+      final card = column.cards.removeAt(oldIndex);
+      column.cards.insert(newIndex, card);
+    });
   }
 }
