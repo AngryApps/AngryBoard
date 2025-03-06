@@ -46,11 +46,35 @@ class _HomePageState extends State<HomePage> with LoadingManager {
                   return Column(
                     children: [
                       Expanded(
-                        child: ListView.builder(
+                        child: ReorderableListView.builder(
+                          onReorder: (oldIndex, newIndex) => _onReorderColumn(
+                            oldIndex,
+                            newIndex,
+                            columns,
+                          ),
+                          proxyDecorator: (child, index, animation) {
+                            return SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: _buildColumn(
+                                      columns[index],
+                                      Color.fromRGBO(121, 86, 72, 1),
+                                      isProxyColumn: true,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                           scrollDirection: Axis.horizontal,
                           itemCount: columns.length,
                           itemBuilder: (BuildContext context, int index) =>
-                              _buildColumn(columns[index]),
+                              _buildColumn(
+                            columns[index],
+                            Color.fromRGBO(215, 204, 200, 1),
+                          ),
                         ),
                       ),
                     ],
@@ -73,18 +97,24 @@ class _HomePageState extends State<HomePage> with LoadingManager {
     );
   }
 
-  Widget _buildColumn(ColumnEntity column) {
+  Widget _buildColumn(ColumnEntity column, Color columnColor,
+      {bool isProxyColumn = false}) {
     return SizedBox(
+      key: ValueKey(column),
       width: MediaQuery.of(context).size.width * 0.8,
       child: Card(
-        color: Color.fromRGBO(215, 204, 200, 1),
-        elevation: 10,
+        color: columnColor,
+        elevation: 5,
         child: Column(
           children: [
-            _createListTile(column.title, column.description),
+            _createListTile(
+              column.title,
+              column.description,
+              isProxyColumn: isProxyColumn,
+            ),
             Expanded(
               child: ReorderableListView.builder(
-                onReorder: (oldIndex, newIndex) => onReorder(
+                onReorder: (oldIndex, newIndex) => _onReorderCard(
                   oldIndex,
                   newIndex,
                   column,
@@ -95,8 +125,12 @@ class _HomePageState extends State<HomePage> with LoadingManager {
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     child: Card(
                       elevation: 8,
-                      color: Colors.grey.shade300,
-                      child: _createListTile(card.title, card.description),
+                      color: Color.fromRGBO(121, 86, 72, 1),
+                      child: _createListTile(
+                        card.title,
+                        card.description,
+                        isProxyColumn: true,
+                      ),
                     ),
                   );
                 },
@@ -120,30 +154,41 @@ class _HomePageState extends State<HomePage> with LoadingManager {
     );
   }
 
-  Widget _createListTile(String title, String subtitle) {
+  Widget _createListTile(String title, String subtitle,
+      {bool isProxyColumn = false}) {
     return ListTile(
       title: Text(
         title,
         style: TextStyle(
-          color: Color.fromRGBO(113, 95, 89, 1),
+          color: isProxyColumn ? Colors.white : Color.fromRGBO(113, 95, 89, 1),
         ),
       ),
       subtitle: Text(
         subtitle,
         style: TextStyle(
-          color: Color.fromRGBO(161, 136, 127, 1),
+          color: isProxyColumn ? Colors.white : Color.fromRGBO(113, 95, 89, 1),
         ),
       ),
     );
   }
 
-  void onReorder(int oldIndex, int newIndex, ColumnEntity column) {
+  void _onReorderCard(int oldIndex, int newIndex, ColumnEntity column) {
     setState(() {
       if (oldIndex < newIndex) {
         newIndex -= 1;
       }
       final card = column.cards.removeAt(oldIndex);
       column.cards.insert(newIndex, card);
+    });
+  }
+
+  void _onReorderColumn(int oldIndex, int newIndex, List<ColumnEntity> column) {
+    setState(() {
+      if (oldIndex < newIndex) {
+        newIndex -= 1;
+      }
+      final card = column.removeAt(oldIndex);
+      column.insert(newIndex, card);
     });
   }
 }
