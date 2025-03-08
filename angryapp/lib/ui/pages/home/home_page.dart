@@ -108,9 +108,9 @@ class _HomePageState extends State<HomePage> with LoadingManager {
         child: Column(
           children: [
             _createListTile(
-              column.title,
-              column.description,
-              isProxyColumn: isProxyColumn,
+              title: column.title,
+              subtitle: column.description,
+              isProxy: isProxyColumn,
             ),
             Expanded(
               child: ReorderableListView.builder(
@@ -127,9 +127,9 @@ class _HomePageState extends State<HomePage> with LoadingManager {
                       elevation: 8,
                       color: Color.fromRGBO(121, 86, 72, 1),
                       child: _createListTile(
-                        card.title,
-                        card.description,
-                        isProxyColumn: true,
+                        title: card.title,
+                        subtitle: card.description,
+                        isProxy: true,
                       ),
                     ),
                   );
@@ -142,11 +142,19 @@ class _HomePageState extends State<HomePage> with LoadingManager {
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     child: Card(
                       elevation: 4,
-                      child: _createListTile(card.title, card.description),
+                      child: _createListTile(
+                        title: card.title,
+                        subtitle: card.description,
+                      ),
                     ),
                   );
                 }),
               ),
+            ),
+            _createListTile(
+              title: "Add Card",
+              alignment: TextAlign.center,
+              onTap: () {},
             ),
           ],
         ),
@@ -154,21 +162,33 @@ class _HomePageState extends State<HomePage> with LoadingManager {
     );
   }
 
-  Widget _createListTile(String title, String subtitle,
-      {bool isProxyColumn = false}) {
+  Widget _createListTile({
+    String? title,
+    String? subtitle,
+    bool isProxy = false,
+    TextAlign alignment = TextAlign.start,
+    void Function()? onTap,
+  }) {
     return ListTile(
-      title: Text(
-        title,
-        style: TextStyle(
-          color: isProxyColumn ? Colors.white : Color.fromRGBO(113, 95, 89, 1),
-        ),
-      ),
-      subtitle: Text(
-        subtitle,
-        style: TextStyle(
-          color: isProxyColumn ? Colors.white : Color.fromRGBO(113, 95, 89, 1),
-        ),
-      ),
+      title: title != null
+          ? Text(
+              title,
+              textAlign: alignment,
+              style: TextStyle(
+                color: isProxy ? Colors.white : Color.fromRGBO(113, 95, 89, 1),
+                fontWeight: FontWeight.bold,
+              ),
+            )
+          : null,
+      subtitle: subtitle != null
+          ? Text(
+              subtitle,
+              style: TextStyle(
+                color: isProxy ? Colors.white : Color.fromRGBO(113, 95, 89, 1),
+              ),
+            )
+          : null,
+      onTap: onTap,
     );
   }
 
