@@ -28,7 +28,11 @@ export interface AddColumnRequest {
 
 export interface UpdateColumnRequest {
   id: string;
-  position: number;
   title: string;
   description: string;
+}
+
+export interface MoveColumnRequest {
+  previousColumnId?: string;
+  nextColumnId?: string;
 }

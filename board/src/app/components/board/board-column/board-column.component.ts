@@ -60,6 +60,26 @@ export class BoardColumnComponent {
         $event.currentIndex,
       );
     }
+
+    if (
+      $event.previousIndex !== $event.currentIndex ||
+      $event.previousContainer !== $event.container
+    ) {
+      const currentCard = this.column().cards[$event.currentIndex];
+
+      const previousCard = this.column().cards[$event.currentIndex - 1];
+
+      const nextCard = this.column().cards[$event.currentIndex + 1];
+
+      const targetColumn = this.column();
+
+      this.boardService.moveCard(
+        currentCard.id,
+        previousCard?.id,
+        nextCard?.id,
+        targetColumn.id,
+      );
+    }
   }
 
   onEdit() {
@@ -94,7 +114,7 @@ export class BoardColumnComponent {
     this.newCards.set([...this.newCards(), card]);
   }
 
-  saveNewCard($event: string, card: Card, idx: number) {
+  saveNewCard(card: Card, idx: number) {
     this.newCards.set(this.newCards().filter((_, i) => i !== idx));
     if (!card?.title) {
       return;
