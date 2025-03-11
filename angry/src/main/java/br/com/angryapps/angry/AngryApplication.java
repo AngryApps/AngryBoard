@@ -6,6 +6,7 @@ import br.com.angryapps.angry.models.Card;
 import br.com.angryapps.angry.models.Column;
 import br.com.angryapps.angry.utils.CardUtils;
 import br.com.angryapps.angry.utils.ColumnUtils;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,7 +22,27 @@ public class AngryApplication {
     // Usar como base os projetos:
     // https://github.com/basarbk/tdd-spring-react
     public static void main(String[] args) {
+        configureEnvVariables();
+
         SpringApplication.run(AngryApplication.class, args);
+    }
+
+    private static void configureEnvVariables() {
+        Dotenv dotenv = Dotenv.configure()
+                              .filename("secrets.env")
+                              .ignoreIfMalformed()
+                              .ignoreIfMissing()
+                              .load();
+
+        String githubClientId = dotenv.get("GITHUB_CLIENT_ID");
+        if (githubClientId != null) {
+            System.setProperty("GITHUB_CLIENT_ID", githubClientId);
+        }
+
+        String githubClientSecret = dotenv.get("GITHUB_CLIENT_SECRET");
+        if (githubClientSecret != null) {
+            System.setProperty("GITHUB_CLIENT_SECRET", githubClientSecret);
+        }
     }
 
     @Bean
