@@ -17,7 +17,7 @@ public class SecurityConfiguration {
                     .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
                     .anyRequest().authenticated()
             )
-            .oauth2Login(o -> o.defaultSuccessUrl("/", true));
+            .oauth2Login(o -> o.defaultSuccessUrl("/dashboard", true));
 
         return http.build();
     }
