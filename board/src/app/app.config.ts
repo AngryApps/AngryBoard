@@ -9,9 +9,10 @@ import { registerLocaleData } from '@angular/common';
 import pt from '@angular/common/locales/pt';
 import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { providePrimeNG } from 'primeng/config';
 import { CoffeeTheme } from '../styles/themes/my-coffee-theme';
+import { authInterceptor } from './core/interceptors/auth.interceptor';
 
 registerLocaleData(pt);
 
@@ -20,7 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideExperimentalZonelessChangeDetection(),
     provideRouter(routes),
     importProvidersFrom(FormsModule),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authInterceptor])),
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {

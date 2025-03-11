@@ -1,4 +1,4 @@
-<p-menubar class="z-50" [model]="items">
+<p-menubar [model]="items">
   <ng-template #start>
     <svg
       version="1.1"
@@ -17,15 +17,18 @@
   <ng-template #item let-item let-root="root">
     <a class="flex items-center p-menubar-item-link" pRipple>
       <span>{{ item.label }}</span>
-      <span
-        *ngIf="item.shortcut"
-        class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1"
-        >{{ item.shortcut }}</span
-      >
-      <i
-        *ngIf="item.items"
-        [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"
-      ></i>
+      @if (item.shortcut) {
+        <span
+          class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1"
+          >{{ item.shortcut }}</span
+        >
+      }
+
+      @if (item.items) {
+        <i
+          [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"
+        ></i>
+      }
     </a>
   </ng-template>
   <ng-template #end>
@@ -36,6 +39,13 @@
         class="float-right"
         variant="text"
       />
+      <p-avatar
+        (click)="menu.toggle($event)"
+        class="cursor-pointer"
+        image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+        shape="circle"
+      />
+      <user-menu #menu></user-menu>
     </div>
   </ng-template>
 </p-menubar>

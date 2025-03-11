@@ -1,0 +1,30 @@
+<p-menu
+  [model]="items"
+  appendTo="body"
+  popup="true"
+  class="flex justify-center"
+  styleClass="w-full md:w-60"
+>
+  <ng-template #submenuheader let-item>
+    <span class="text-primary font-bold">{{ item.label }}</span>
+  </ng-template>
+  <ng-template #item let-item>
+    <a pRipple class="flex items-center p-menu-item-link">
+      <span [class]="item.icon"></span>
+
+      <span class="ml-2">{{ item.label }}</span>
+
+      @if (item.badge) {
+        <p-badge class="ml-auto" [value]="item.badge" />
+      }
+
+      @if (item.shortcut) {
+        <span
+          class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1"
+        >
+          {{ item.shortcut }}
+        </span>
+      }
+    </a>
+  </ng-template>
+</p-menu>

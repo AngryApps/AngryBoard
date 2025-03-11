@@ -1,0 +1,33 @@
+<svg
+  version="1.1"
+  xmlns="http://www.w3.org/2000/svg"
+  width="33"
+  height="35"
+  viewBox="0 0 200 200"
+  class="angryboard-logo"
+>
+  <style>
+    .background {
+      fill: #f5f2f0;
+    }
+
+    .kanban-lines,
+    .kanban-curve {
+      stroke: #ac6939;
+      stroke-width: 10;
+      stroke-linecap: round;
+      fill: #f5f2f0;
+    }
+
+    .angry-eyes {
+      stroke: #d63d1f;
+      stroke-width: 5;
+      fill: none;
+    }
+  </style>
+  <rect width="200" height="200" rx="20" ry="20" class="background"/>
+  <path d="M40,30 V140 M160,30 V140" class="kanban-lines"/>
+  <path d="M30,160 Q100,90 170,160" class="kanban-curve"/>
+  <path d="M70,80 Q85,60 100,80 Q115,60 130,80" class="angry-eyes"/>
+</svg>
+
