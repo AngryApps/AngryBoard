@@ -10,29 +10,14 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return web -> web.ignoring().requestMatchers(new AntPathRequestMatcher("/**"));
-//    }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers("/").permitAll()
-                    .requestMatchers("/login/**").permitAll()
-                    .requestMatchers("/swagger-ui/**").permitAll()
-                    .requestMatchers("/v3/api-docs/**").permitAll()
-                    .requestMatchers("/swagger-resources/**").permitAll()
-                    .requestMatchers("/error/**").permitAll()
+        http.authorizeHttpRequests(authorize -> authorize
+                    .requestMatchers("/", "/login/**").permitAll()
+                    .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
                     .anyRequest().authenticated()
             )
-            .oauth2Login(oauth2 -> oauth2
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/", true)
-                    .failureUrl("/login?error=true")
-            )
-            .logout(l -> l.logoutSuccessUrl("/").permitAll());
+            .oauth2Login(o -> o.defaultSuccessUrl("/", true));
 
         return http.build();
     }
