@@ -21,7 +21,7 @@ public class SecurityConfiguration {
             .formLogin(f -> f.disable())
             .oauth2Login(oauth -> oauth
                     .loginPage(baseUrl + "/login")
-                    .defaultSuccessUrl(baseUrl + "/login-callback", true)
+                    .defaultSuccessUrl(baseUrl + "/api/v1/auth/current", true)
                     .failureUrl(baseUrl + "/login-failure")
             )
             .logout(logout -> logout
