@@ -12,19 +12,21 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        String baseUrl = System.getProperty("BASE_URL");
         http.authorizeHttpRequests(authorize -> authorize
                     .requestMatchers("/", "/login/**").permitAll()
                     .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
                     .anyRequest().authenticated()
             )
+            .formLogin(f -> f.disable())
             .oauth2Login(oauth -> oauth
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/login-callback", true)
-                    .failureUrl("/login-failure")
+                    .loginPage(baseUrl + "/login")
+                    .defaultSuccessUrl(baseUrl + "/login-callback", true)
+                    .failureUrl(baseUrl + "/login-failure")
             )
             .logout(logout -> logout
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/login?logout=true")
+                    .logoutUrl(baseUrl + "/logout")
+                    .logoutSuccessUrl(baseUrl + "/login?logout=true")
                     .invalidateHttpSession(true)
                     .clearAuthentication(true)
                     .deleteCookies("JSESSIONID"));

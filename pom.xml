@@ -21,7 +21,6 @@
     </properties>
 
     <modules>
-        <module>board</module>
         <module>angry</module>
     </modules>
 </project>

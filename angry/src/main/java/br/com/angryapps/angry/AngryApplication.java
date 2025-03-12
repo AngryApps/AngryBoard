@@ -43,6 +43,11 @@ public class AngryApplication {
         if (githubClientSecret != null) {
             System.setProperty("GITHUB_CLIENT_SECRET", githubClientSecret);
         }
+
+        String baseUrl = dotenv.get("BASE_URL");
+        if (baseUrl != null) {
+            System.setProperty("BASE_URL", baseUrl);
+        }
     }
 
     @Bean
