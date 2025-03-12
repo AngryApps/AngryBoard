@@ -26,6 +26,10 @@ export class LoginCallbackComponent implements OnInit {
   ngOnInit() {
     this.authService.checkAuthStatus();
     this.authService.isAuthenticated$.subscribe((isAuthenticated) => {
+      console.log(
+        '### (login-callback.component.ts:30) isAuthenticated',
+        isAuthenticated,
+      );
       if (isAuthenticated) {
         this.router.navigate(['/']);
       } else {

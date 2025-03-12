@@ -24,7 +24,7 @@ export class UserService {
 
   getUser(): void {
     this.apiService
-      .get<UserResponse>('users/current')
+      .get<UserResponse>('auth/current')
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         map((response: BaseResponse<UserResponse>) => {
