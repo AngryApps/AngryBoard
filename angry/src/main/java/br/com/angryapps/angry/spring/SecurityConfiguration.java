@@ -18,6 +18,7 @@ public class SecurityConfiguration {
                     .anyRequest().authenticated()
             )
             .oauth2Login(oauth -> oauth
+                    .loginPage("/login")
                     .defaultSuccessUrl("/login-callback", true)
                     .failureUrl("/login-failure")
             )
