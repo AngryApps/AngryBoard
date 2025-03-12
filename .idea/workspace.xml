@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0f6d5326-6e0d-4850-8180-9a55c7189695" name="Changes" comment="feat: add patch functionality for Card and Column resources (main)&#10;&#10;- Implemented `patchCard` method in `CardMapper` for partial updates &#10;  of card properties.&#10;- Updated `ColumnMapper` to sort cards by position during mapping.&#10;- Introduced `patchCard` endpoint in `CardResource` to allow card &#10;  updates while maintaining the position of other cards in the &#10;  same column.">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/angry/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/angry/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="FindBugs-IDEA-Workspace">
+    <toolWindowEditorPreview>false</toolWindowEditorPreview>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;thiagomiranda3&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/AngryApps/AngryBoard&quot;,
+    &quot;accountId&quot;: &quot;ef0c1000-9f7f-4346-bc33-4ce00cec0112&quot;
+  }
+}</component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/board/package.json" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="2" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2sRsFLs5v67wJEfbrT3K5mBtPIs" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JAR Application.Rodar Jar.executor&quot;: &quot;Debug&quot;,
+    &quot;Maven.Rebuild All.executor&quot;: &quot;Debug&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ChatTagsLlmMigration&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.CodyAccountHistoryMigration&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.CodyAccountsIdsRefresh&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.CodyAssignOrphanedChatsToActiveAccount&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.CodyConvertUrlToCodebaseName&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.CodyHistoryLlmMigration&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.CodyMigrateChatHistory-v2&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.CodyProjectSettingsMigration&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.DeprecatedChatLlmMigration&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ToggleCodyToolWindowAfterMigration&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AngryApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;auth&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/thiago/git/AngryBoard/angry/src/main/java/br/com/angryapps/angry/api&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.build:prod.executor&quot;: &quot;Run&quot;,
+    &quot;npm.prepare.executor&quot;: &quot;Run&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.inline.completion&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/thiago/git/AngryBoard/board/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/angry/src/main/java/br/com/angryapps/angry/api" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/angry" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="br.com.angryapps.angry.api.exceptions" />
+      <recent name="br.com.angryapps.angry.api.vm.requests" />
+      <recent name="br.com.angryapps.angry.utils" />
+      <recent name="br.com.angryapps.angry.api.filters" />
+      <recent name="br.com.angryapps.angry.api.responses" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.AngryApplication">
+    <configuration name="Rodar Jar" type="JarApplication">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/angry/target/angry-0.0.1-SNAPSHOT.jar" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/angry" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method v="2">
+        <option name="RunConfigurationTask" enabled="true" run_configuration_name="Rebuild All" run_configuration_type="MavenRunConfiguration" />
+      </method>
+    </configuration>
+    <configuration name="Rebuild All" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="cmdOptions" />
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+                <option value="install" />
+              </list>
+            </option>
+            <option name="multimoduleDir" />
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="projectsCmdOptionValues">
+              <list />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration name="AngryApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="angry" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="br.com.angryapps.angry.AngryApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="build:prod" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/board/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build:prod" />
+      </scripts>
+      <node-interpreter value="$USER_HOME$/.nvm/versions/node/v20.18.2/bin/node" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="prepare" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/board/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="prepare" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="JAR Application.Rodar Jar" />
+      <item itemvalue="Maven.Rebuild All" />
+      <item itemvalue="npm.prepare" />
+      <item itemvalue="npm.build:prod" />
+      <item itemvalue="Spring Boot.AngryApplication" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.prepare" />
+        <item itemvalue="npm.build:prod" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.25659.59" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.25659.59" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0f6d5326-6e0d-4850-8180-9a55c7189695" name="Changes" comment="" />
+      <created>1738429617075</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1738429617075</updated>
+      <workItem from="1738429618119" duration="4670000" />
+      <workItem from="1738462282042" duration="4832000" />
+      <workItem from="1738516081610" duration="11239000" />
+      <workItem from="1738633330760" duration="3906000" />
+      <workItem from="1738892700855" duration="3574000" />
+      <workItem from="1739039932518" duration="1247000" />
+      <workItem from="1739127824295" duration="1348000" />
+      <workItem from="1739583244513" duration="7180000" />
+      <workItem from="1739716166034" duration="97000" />
+      <workItem from="1739844522679" duration="4502000" />
+      <workItem from="1739878054826" duration="1031000" />
+      <workItem from="1740014818181" duration="5326000" />
+      <workItem from="1740101770383" duration="6241000" />
+      <workItem from="1740446202313" duration="10569000" />
+      <workItem from="1741196455132" duration="1834000" />
+      <workItem from="1741260108261" duration="264000" />
+      <workItem from="1741260396680" duration="33000" />
+      <workItem from="1741529534484" duration="757000" />
+      <workItem from="1741541044591" duration="17203000" />
+      <workItem from="1741605549039" duration="2871000" />
+      <workItem from="1741656940669" duration="7320000" />
+      <workItem from="1741745258941" duration="8199000" />
+      <workItem from="1741753521613" duration="665000" />
+      <workItem from="1741778733033" duration="2064000" />
+    </task>
+    <task id="LOCAL-00001" summary="feat: add position handling in column creation and update (main) &#10;&#10;- Introduced `findByPositionGreaterThanEqualOrderByPositionAsc` and &#10;  `findByPositionGreaterThanEqualAndIdNotOrderByPositionAsc` methods &#10;  in `ColumnRepository` for position-based queries.&#10;- Updated `ColumnMapper` to include mapping for the position field.&#10;- Added position validation in the `Column` model.&#10;- Refactored column creation and update logic in `ColumnResource` to &#10;  handle position updates and reorder existing columns accordingly.">
+      <option name="closed" value="true" />
+      <created>1739588868136</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1739588868136</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat: add position attribute to Card and update related mappers (main) &#10;&#10;- Introduced a new `position` attribute in the `Card` model.&#10;- Updated `CardMapper` to handle the new `position` attribute.&#10;- Modified the `AngryApplication` to initialize columns and cards with positions.&#10;- Adjusted `CardResource` to support upserting cards based on their position.&#10;- Enhanced `CardRepository` with methods to retrieve cards based on position and column.">
+      <option name="closed" value="true" />
+      <created>1739847745858</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1739847745858</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat: update cascade options for Card and Column relationships (main)  &#10;&#10;- Changed the `@ManyToOne` annotation in the `Card` model to include  &#10;  `cascade = CascadeType.REMOVE` to ensure related entities are removed  &#10;  when a Card is deleted.  &#10;- Updated the `@OneToMany` annotation in the `Column` model to add  &#10;  `cascade = CascadeType.REMOVE` and `orphanRemoval = true` for  &#10;  better management of Card entities associated with a Column.">
+      <option name="closed" value="true" />
+      <created>1739848708887</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1739848708887</updated>
+    </task>
+    <task id="LOCAL-00004" summary="feat: add patch functionality for Card and Column resources (main)&#10;&#10;- Implemented `patchCard` method in `CardMapper` for partial updates &#10;  of card properties.&#10;- Updated `ColumnMapper` to sort cards by position during mapping.&#10;- Introduced `patchCard` endpoint in `CardResource` to allow card &#10;  updates while maintaining the position of other cards in the &#10;  same column.">
+      <option name="closed" value="true" />
+      <created>1740103706317</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1740103706317</updated>
+    </task>
+    <task id="LOCAL-00005" summary="feat: add patch functionality for Card and Column resources (main)&#10;&#10;- Implemented `patchCard` method in `CardMapper` for partial updates &#10;  of card properties.&#10;- Updated `ColumnMapper` to sort cards by position during mapping.&#10;- Introduced `patchCard` endpoint in `CardResource` to allow card &#10;  updates while maintaining the position of other cards in the &#10;  same column.">
+      <option name="closed" value="true" />
+      <created>1740103746934</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1740103746934</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.env" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat: add position handling in column creation and update (main) &#10;&#10;- Introduced `findByPositionGreaterThanEqualOrderByPositionAsc` and &#10;  `findByPositionGreaterThanEqualAndIdNotOrderByPositionAsc` methods &#10;  in `ColumnRepository` for position-based queries.&#10;- Updated `ColumnMapper` to include mapping for the position field.&#10;- Added position validation in the `Column` model.&#10;- Refactored column creation and update logic in `ColumnResource` to &#10;  handle position updates and reorder existing columns accordingly." />
+    <MESSAGE value="feat: add position attribute to Card and update related mappers (main) &#10;&#10;- Introduced a new `position` attribute in the `Card` model.&#10;- Updated `CardMapper` to handle the new `position` attribute.&#10;- Modified the `AngryApplication` to initialize columns and cards with positions.&#10;- Adjusted `CardResource` to support upserting cards based on their position.&#10;- Enhanced `CardRepository` with methods to retrieve cards based on position and column." />
+    <MESSAGE value="feat: update cascade options for Card and Column relationships (main)  &#10;&#10;- Changed the `@ManyToOne` annotation in the `Card` model to include  &#10;  `cascade = CascadeType.REMOVE` to ensure related entities are removed  &#10;  when a Card is deleted.  &#10;- Updated the `@OneToMany` annotation in the `Column` model to add  &#10;  `cascade = CascadeType.REMOVE` and `orphanRemoval = true` for  &#10;  better management of Card entities associated with a Column." />
+    <MESSAGE value="feat: add patch functionality for Card and Column resources (main)&#10;&#10;- Implemented `patchCard` method in `CardMapper` for partial updates &#10;  of card properties.&#10;- Updated `ColumnMapper` to sort cards by position during mapping.&#10;- Introduced `patchCard` endpoint in `CardResource` to allow card &#10;  updates while maintaining the position of other cards in the &#10;  same column." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add patch functionality for Card and Column resources (main)&#10;&#10;- Implemented `patchCard` method in `CardMapper` for partial updates &#10;  of card properties.&#10;- Updated `ColumnMapper` to sort cards by position during mapping.&#10;- Introduced `patchCard` endpoint in `CardResource` to allow card &#10;  updates while maintaining the position of other cards in the &#10;  same column." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/angry/src/main/java/br/com/angryapps/angry/api/resources/ColumnResource.java</url>
+          <line>54</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/angry/src/main/java/br/com/angryapps/angry/api/resources/CardResource.java</url>
+          <line>89</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/angry/src/main/java/br/com/angryapps/angry/api/resources/CardResource.java</url>
+          <line>72</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/security/spring-security-oauth2-client/6.4.1/spring-security-oauth2-client-6.4.1-sources.jar!/org/springframework/security/oauth2/client/userinfo/DelegatingOAuth2UserService.java</url>
+          <line>59</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/security/spring-security-oauth2-client/6.4.1/spring-security-oauth2-client-6.4.1-sources.jar!/org/springframework/security/oauth2/client/oidc/userinfo/OidcUserService.java</url>
+          <line>111</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/angry/src/main/java/br/com/angryapps/angry/api/resources/AuthResource.java</url>
+          <line>36</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/angry/src/main/java/br/com/angryapps/angry/spring/SecurityConfiguration.java</url>
+          <line>14</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
