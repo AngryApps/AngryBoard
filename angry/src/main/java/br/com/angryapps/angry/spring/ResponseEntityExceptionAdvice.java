@@ -1,6 +1,7 @@
 package br.com.angryapps.angry.spring;
 
 import br.com.angryapps.angry.api.exceptions.BadRequestResponseException;
+import br.com.angryapps.angry.api.exceptions.InternalServerErrorResponseException;
 import br.com.angryapps.angry.api.exceptions.NotFoundResponseException;
 import br.com.angryapps.angry.api.exceptions.UnauthorizedResponseException;
 import br.com.angryapps.angry.api.responses.ApiResponses;
@@ -34,8 +35,15 @@ public class ResponseEntityExceptionAdvice {
 
     @ResponseBody
     @ExceptionHandler(UnauthorizedResponseException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public BaseResponse handleUnauthorizedException(UnauthorizedResponseException ex) {
+        return ex.getResponse();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(InternalServerErrorResponseException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public BaseResponse handleInternalServerErrorException(InternalServerErrorResponseException ex) {
         return ex.getResponse();
     }
 
