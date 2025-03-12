@@ -1,17 +1,16 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BaseApiHttpRequestService } from '../../../shared';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
+import { UserService } from '../../../shared/services/user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  apiService = inject(BaseApiHttpRequestService);
+  userService = inject(UserService);
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-  private userSubject = new BehaviorSubject<unknown>(null);
 
   private http: HttpClient = inject(HttpClient);
   private router: Router = inject(Router);
@@ -28,29 +27,12 @@ export class AuthService {
     return this.isAuthenticatedSubject.value;
   }
 
-  get user$(): Observable<unknown> {
-    return this.userSubject.asObservable();
-  }
-
   login(): void {
     window.location.href = 'http://localhost:8080/oauth2/authorization/github';
   }
 
   checkAuthStatus(): void {
-    this.apiService
-      .get('/api/user')
-      .pipe(
-        tap((user) => {
-          this.userSubject.next(user);
-          this.isAuthenticatedSubject.next(true);
-        }),
-        catchError(() => {
-          this.userSubject.next(null);
-          this.isAuthenticatedSubject.next(false);
-          return of(null);
-        }),
-      )
-      .subscribe();
+    this.userService.getUser();
   }
 
   logout(): void {
@@ -58,12 +40,10 @@ export class AuthService {
       .post('/logout', { withCredentials: true })
       .pipe(
         tap(() => {
-          this.userSubject.next(null);
           this.isAuthenticatedSubject.next(false);
           this.router.navigate(['/login']);
         }),
         catchError(() => {
-          this.userSubject.next(null);
           this.isAuthenticatedSubject.next(false);
           this.router.navigate(['/login']);
           return of(null);

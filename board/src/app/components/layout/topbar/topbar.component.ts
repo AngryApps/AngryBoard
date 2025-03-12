@@ -1,9 +1,16 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
 import { CommonModule } from '@angular/common';
 import { Avatar } from 'primeng/avatar';
 import { UserMenuComponent } from '../user-menu/user-menu.component';
+import { UserService } from '../../../shared/services/user.service';
+import { Ripple } from 'primeng/ripple';
 
 @Component({
   selector: 'topbar',
@@ -13,12 +20,16 @@ import { UserMenuComponent } from '../user-menu/user-menu.component';
     ButtonModule,
     Avatar,
     UserMenuComponent,
+    Ripple,
   ],
   templateUrl: './topbar.component.html',
   styleUrl: './topbar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TopbarComponent {
+  userService = inject(UserService);
+  user = this.userService.user;
+
   iconClass = signal<string>('pi pi-moon');
 
   items = [

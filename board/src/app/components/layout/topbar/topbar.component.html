@@ -1,17 +1,17 @@
 <p-menubar [model]="items">
   <ng-template #start>
     <svg
-      version="1.1"
-      xmlns="http://www.w3.org/2000/svg"
-      width="33"
-      height="35"
-      viewBox="0 0 200 200"
       class="angryboard-logo"
+      height="35"
+      version="1.1"
+      viewBox="0 0 200 200"
+      width="33"
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <rect width="200" height="200" rx="20" ry="20" class="background" />
-      <path d="M40,30 V140 M160,30 V140" class="kanban-lines" />
-      <path d="M30,160 Q100,90 170,160" class="kanban-curve" />
-      <path d="M70,80 Q85,60 100,80 Q115,60 130,80" class="angry-eyes" />
+      <rect class="background" height="200" rx="20" ry="20" width="200" />
+      <path class="kanban-lines" d="M40,30 V140 M160,30 V140" />
+      <path class="kanban-curve" d="M30,160 Q100,90 170,160" />
+      <path class="angry-eyes" d="M70,80 Q85,60 100,80 Q115,60 130,80" />
     </svg>
   </ng-template>
   <ng-template #item let-item let-root="root">
@@ -41,8 +41,8 @@
       />
       <p-avatar
         (click)="menu.toggle($event)"
+        [image]="user().avatar"
         class="cursor-pointer"
-        image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
         shape="circle"
       />
       <user-menu #menu></user-menu>
