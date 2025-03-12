@@ -37,7 +37,7 @@ export class AuthService {
 
   logout(): void {
     this.http
-      .post('/logout', { withCredentials: true })
+      .post('user/logout', { withCredentials: true })
       .pipe(
         tap(() => {
           this.isAuthenticatedSubject.next(false);
