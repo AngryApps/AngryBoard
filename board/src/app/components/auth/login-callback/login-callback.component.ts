@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ProgressSpinner } from 'primeng/progressspinner';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -21,15 +21,13 @@ import { AuthService } from '../services/auth.service';
 })
 export class LoginCallbackComponent implements OnInit {
   private authService = inject(AuthService);
-  private route = inject(ActivatedRoute);
   private router = inject(Router);
 
   ngOnInit() {
-    this.route.queryParams.subscribe((params) => {
-      const token = params['token'];
-
-      if (token) {
-        this.authService.handleAuthenticationResponse(token);
+    this.authService.checkAuthStatus();
+    this.authService.isAuthenticated$.subscribe((isAuthenticated) => {
+      if (isAuthenticated) {
+        this.router.navigate(['/']);
       } else {
         this.router.navigate(['/login']);
       }

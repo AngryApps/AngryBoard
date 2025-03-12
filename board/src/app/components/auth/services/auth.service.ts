@@ -1,6 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseApiHttpRequestService } from '../../../shared';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -8,26 +10,65 @@ import { BaseApiHttpRequestService } from '../../../shared';
 export class AuthService {
   apiService = inject(BaseApiHttpRequestService);
 
-  router = inject(Router);
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  private userSubject = new BehaviorSubject<unknown>(null);
 
-  login() {
-    this.apiService.get<void>('/oauth2/authorization/github');
+  private http: HttpClient = inject(HttpClient);
+  private router: Router = inject(Router);
+
+  constructor() {
+    this.checkAuthStatus();
   }
 
-  logout() {
-    this.router.navigate(['/login']);
+  get isAuthenticated$(): Observable<boolean> {
+    return this.isAuthenticatedSubject.asObservable();
   }
 
-  handleAuthenticationResponse(token: string): void {
-    localStorage.setItem('auth_token', token);
-    this.router.navigate(['/']);
+  get isAuthenticated(): boolean {
+    return this.isAuthenticatedSubject.value;
   }
 
-  isAuthenticated(): boolean {
-    return this.hasToken();
+  get user$(): Observable<unknown> {
+    return this.userSubject.asObservable();
   }
 
-  private hasToken(): boolean {
-    return !!localStorage.getItem('auth_token');
+  login(): void {
+    window.location.href = 'http://localhost:8080/oauth2/authorization/github';
+  }
+
+  checkAuthStatus(): void {
+    this.apiService
+      .get('/api/user')
+      .pipe(
+        tap((user) => {
+          this.userSubject.next(user);
+          this.isAuthenticatedSubject.next(true);
+        }),
+        catchError(() => {
+          this.userSubject.next(null);
+          this.isAuthenticatedSubject.next(false);
+          return of(null);
+        }),
+      )
+      .subscribe();
+  }
+
+  logout(): void {
+    this.http
+      .post('/logout', { withCredentials: true })
+      .pipe(
+        tap(() => {
+          this.userSubject.next(null);
+          this.isAuthenticatedSubject.next(false);
+          this.router.navigate(['/login']);
+        }),
+        catchError(() => {
+          this.userSubject.next(null);
+          this.isAuthenticatedSubject.next(false);
+          this.router.navigate(['/login']);
+          return of(null);
+        }),
+      )
+      .subscribe();
   }
 }

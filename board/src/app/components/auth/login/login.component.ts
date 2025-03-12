@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Button } from 'primeng/button';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'login',
@@ -10,7 +11,9 @@ import { Button } from 'primeng/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
+  authService = inject(AuthService);
+
   githubLogin() {
-    window.location.href = 'https://github.com/oauth2/v1/authorize';
+    this.authService.login();
   }
 }
