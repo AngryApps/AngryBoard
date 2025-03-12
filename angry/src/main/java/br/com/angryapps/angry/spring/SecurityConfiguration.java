@@ -19,8 +19,14 @@ public class SecurityConfiguration {
             )
             .oauth2Login(oauth -> oauth
                     .defaultSuccessUrl("/login-callback", true)
-                    .failureUrl("login-failure")
-            );
+                    .failureUrl("/login-failure")
+            )
+            .logout(logout -> logout
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/login?logout=true")
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    .deleteCookies("JSESSIONID"));
 
         return http.build();
     }

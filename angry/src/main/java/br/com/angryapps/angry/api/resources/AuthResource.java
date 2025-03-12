@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/users")
+@RequestMapping("api/v1/auth")
 public class AuthResource {
 
     private UserMapper userMapper;
@@ -39,7 +39,7 @@ public class AuthResource {
         if (authentication instanceof OAuth2AuthenticationToken o) {
             User user = switch (o.getAuthorizedClientRegistrationId()) {
                 case "github" -> userRepository.findByGithubId("" + principal.getAttribute("id"))
-                                               .orElseThrow(() -> new NotFoundResponseException("Column not found"));
+                                               .orElseThrow(() -> new NotFoundResponseException("User not found"));
                 default ->
                         throw new BadRequestResponseException("Provider " + o.getAuthorizedClientRegistrationId() + " not supported");
             };
