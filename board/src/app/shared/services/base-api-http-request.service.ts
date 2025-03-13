@@ -18,7 +18,6 @@ export class BaseApiHttpRequestService {
 
   get<T>(path: string, id?: string): Observable<BaseResponse<T>> {
     const basePath = id ? `${path}/${id}` : path;
-
     return this.httpClient
       .get<
         BaseResponse<T>
@@ -82,7 +81,7 @@ export class BaseApiHttpRequestService {
     if (error.status === 400) {
       return throwError(() => new Error('Bad request.'));
     }
-
+    console.log('### (base-api-http-request.service.ts:81) error', error);
     return throwError(
       () => new Error('An error occurred. Please try again later.'),
     );

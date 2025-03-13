@@ -7,6 +7,7 @@ import {
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { UserService } from '../../../shared/services/user.service';
 
 @Component({
   selector: 'login-callback',
@@ -16,25 +17,22 @@ import { AuthService } from '../services/auth.service';
       <p-progress-spinner ariaLabel="loading" />
     </div>
   `,
+  standalone: true,
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginCallbackComponent implements OnInit {
   private authService = inject(AuthService);
+  private userService = inject(UserService);
   private router = inject(Router);
 
   ngOnInit() {
+    console.log('### (login-callback.component.ts:26) callback');
     this.authService.checkAuthStatus();
-    this.authService.isAuthenticated$.subscribe((isAuthenticated) => {
-      console.log(
-        '### (login-callback.component.ts:30) isAuthenticated',
-        isAuthenticated,
-      );
-      if (isAuthenticated) {
-        this.router.navigate(['/']);
-      } else {
-        this.router.navigate(['/login']);
-      }
-    });
+    if (this.userService.user()) {
+      this.router.navigate(['/']);
+    } else {
+      this.authService.logout();
+    }
   }
 }

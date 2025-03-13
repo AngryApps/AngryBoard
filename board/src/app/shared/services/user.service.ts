@@ -40,7 +40,7 @@ export class UserService {
           this.userSignal.set(user);
         },
         error: (err: string) => {
-          console.error(err);
+          console.log(err);
         },
       });
   }
