@@ -1,7 +1,10 @@
 import 'package:angryapp/domain/entities/entities.dart';
 import 'package:angryapp/ui/mixins/loading_manager.dart';
+import 'package:angryapp/ui/pages/home/components/card.dart';
 import 'package:angryapp/ui/pages/home/home_presenter.dart';
 import 'package:flutter/material.dart';
+
+import '../components/components.dart';
 
 class HomePage extends StatefulWidget {
   final HomePresenter presenter;
@@ -13,6 +16,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with LoadingManager {
+  List<ColumnEntity> globalColumns = [];
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +48,7 @@ class _HomePageState extends State<HomePage> with LoadingManager {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final columns = snapshot.data as List<ColumnEntity>;
+                  globalColumns = columns;
                   return Column(
                     children: [
                       Expanded(
@@ -140,11 +146,13 @@ class _HomePageState extends State<HomePage> with LoadingManager {
                   return Padding(
                     key: ValueKey(card),
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    child: Card(
-                      elevation: 4,
-                      child: _createListTile(
-                        title: card.title,
-                        subtitle: card.description,
+                    child: CardComponent(
+                      title: card.title,
+                      subtitle: card.description,
+                      columns: globalColumns,
+                      onTap: () => ModalBottomSheetTargetColumn.show(
+                        context,
+                        globalColumns,
                       ),
                     ),
                   );
