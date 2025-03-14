@@ -5,18 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f6d5326-6e0d-4850-8180-9a55c7189695" name="Changes" comment="feat: add patch functionality for Card and Column resources (main)&#10;&#10;- Implemented `patchCard` method in `CardMapper` for partial updates &#10;  of card properties.&#10;- Updated `ColumnMapper` to sort cards by position during mapping.&#10;- Introduced `patchCard` endpoint in `CardResource` to allow card &#10;  updates while maintaining the position of other cards in the &#10;  same column.">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/angry/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/angry/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/angry/src/main/java/br/com/angryapps/angry/spring/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/angry/src/main/java/br/com/angryapps/angry/spring/SecurityConfiguration.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -246,6 +236,7 @@
       <workItem from="1741745258941" duration="8199000" />
       <workItem from="1741753521613" duration="665000" />
       <workItem from="1741778733033" duration="2064000" />
+      <workItem from="1741867456018" duration="714000" />
     </task>
     <task id="LOCAL-00001" summary="feat: add position handling in column creation and update (main) &#10;&#10;- Introduced `findByPositionGreaterThanEqualOrderByPositionAsc` and &#10;  `findByPositionGreaterThanEqualAndIdNotOrderByPositionAsc` methods &#10;  in `ColumnRepository` for position-based queries.&#10;- Updated `ColumnMapper` to include mapping for the position field.&#10;- Added position validation in the `Column` model.&#10;- Refactored column creation and update logic in `ColumnResource` to &#10;  handle position updates and reorder existing columns accordingly.">
       <option name="closed" value="true" />
