@@ -4,9 +4,11 @@ import br.com.angryapps.api.vm.CardVM;
 import br.com.angryapps.api.vm.requests.PatchCard;
 import br.com.angryapps.models.Card;
 import br.com.angryapps.models.Column;
+import jakarta.inject.Singleton;
 
 import java.time.LocalDateTime;
 
+@Singleton
 public class CardMapper {
 
     public CardVM mapToCardVM(Card card) {
