@@ -5,11 +5,13 @@ import br.com.angryapps.api.vm.ColumnVM;
 import br.com.angryapps.api.vm.requests.PatchColumn;
 import br.com.angryapps.models.Card;
 import br.com.angryapps.models.Column;
+import jakarta.inject.Singleton;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
+@Singleton
 public class ColumnMapper {
 
     private CardMapper cardMapper;

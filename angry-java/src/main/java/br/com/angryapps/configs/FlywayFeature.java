@@ -1,4 +1,4 @@
-package br.com.angryapps.config;
+package br.com.angryapps.configs;
 
 import br.com.angryapps.db.AppDatasource;
 import jakarta.ws.rs.core.Feature;

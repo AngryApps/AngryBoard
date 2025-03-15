@@ -1,4 +1,4 @@
-package br.com.angryapps.config;
+package br.com.angryapps.configs;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

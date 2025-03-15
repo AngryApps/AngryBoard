@@ -7,12 +7,14 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JettyBootstrap implements Runnable {
+public final class JettyBootstrap {
 
     private static final Logger logger = LoggerFactory.getLogger(JettyBootstrap.class);
 
-    @Override
-    public void run() {
+    private JettyBootstrap() {
+    }
+
+    public static void start() {
         try {
             Integer port = Integer.getInteger("server.port");
             String contextPath = System.getProperty("server.servlet.context-path");
@@ -34,8 +36,6 @@ public class JettyBootstrap implements Runnable {
             // Start the server
             server.start();
             logger.info("Server started on port {}", port);
-
-            server.join();
         } catch (Exception e) {
             logger.error("Error starting server", e);
         }
