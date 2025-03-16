@@ -5,9 +5,11 @@ import br.com.angryapps.api.vm.requests.PatchCard;
 import br.com.angryapps.models.Card;
 import br.com.angryapps.models.Column;
 import jakarta.inject.Singleton;
+import org.jvnet.hk2.annotations.Service;
 
 import java.time.LocalDateTime;
 
+@Service
 @Singleton
 public class CardMapper {
 

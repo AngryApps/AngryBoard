@@ -2,10 +2,9 @@ package br.com.angryapps;
 
 import br.com.angryapps.api.JettyBootstrap;
 import br.com.angryapps.configs.PropertiesLoader;
-import br.com.angryapps.db.AppDatasource;
-import br.com.angryapps.db.JdbiManager;
-import org.glassfish.hk2.api.ServiceLocator;
-import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
+import br.com.angryapps.configs.di.MainInjector;
+import com.zaxxer.hikari.HikariDataSource;
+import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,15 +15,23 @@ public class Main {
     public static void main(String[] args) {
         PropertiesLoader.loadConfiguration();
 
-        JdbiManager.getInstance();
-
-        ServiceLocator locator = ServiceLocatorUtilities.createAndPopulateServiceLocator();
+        executeMigrations();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             logger.info("Shutting down application...");
-            AppDatasource.closeDataSource();
         }));
 
         JettyBootstrap.start();
+    }
+
+    private static void executeMigrations() {
+        HikariDataSource hikariDataSource = MainInjector.getService(HikariDataSource.class);
+        Flyway flyway = Flyway.configure()
+                              .dataSource(hikariDataSource)
+                              .locations("classpath:db/migrations")
+                              .baselineOnMigrate(true)
+                              .load();
+
+        flyway.migrate();
     }
 }

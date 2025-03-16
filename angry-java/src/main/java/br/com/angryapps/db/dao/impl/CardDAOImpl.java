@@ -1,16 +1,23 @@
 package br.com.angryapps.db.dao.impl;
 
-import br.com.angryapps.db.JdbiManager;
 import br.com.angryapps.db.dao.CardDAO;
 import br.com.angryapps.db.dto.CardDTO;
+import jakarta.inject.Inject;
 import org.jdbi.v3.core.Jdbi;
+import org.jvnet.hk2.annotations.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class CardDAOImpl implements CardDAO {
 
-    private final Jdbi jdbi = JdbiManager.getInstance();
+    private final Jdbi jdbi;
+
+    @Inject
+    public CardDAOImpl(Jdbi jdbi) {
+        this.jdbi = jdbi;
+    }
 
     @Override
     public List<CardDTO> findByColumnIdAndPositionGreaterThanEqualAndIdNotOrderByPositionAsc(UUID columnId, int position, UUID id) {
