@@ -9,6 +9,20 @@ import java.util.UUID;
 @Contract
 public interface CardDAO {
 
+    List<CardDTO> findAll();
+
+    List<CardDTO> findByColumnId(UUID columnId);
+
+    CardDTO save(CardDTO cardDTO);
+
+    void deleteById(UUID id);
+
+    void deleteByColumnId(UUID columnId);
+
+    boolean existsById(UUID id);
+
+    long count();
+
     List<CardDTO> findByColumnIdAndPositionGreaterThanEqualAndIdNotOrderByPositionAsc(UUID id, int positionIsGreaterThan, UUID id1);
 
     List<CardDTO> findByColumnIdAndPositionGreaterThanEqualOrderByPositionAsc(UUID columnId, int position);
