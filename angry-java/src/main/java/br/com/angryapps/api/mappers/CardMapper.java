@@ -2,8 +2,8 @@ package br.com.angryapps.api.mappers;
 
 import br.com.angryapps.api.vm.CardVM;
 import br.com.angryapps.api.vm.requests.PatchCard;
-import br.com.angryapps.models.Card;
-import br.com.angryapps.models.Column;
+import br.com.angryapps.db.dto.CardDTO;
+import br.com.angryapps.db.dto.ColumnDTO;
 import jakarta.inject.Singleton;
 import org.jvnet.hk2.annotations.Service;
 
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Singleton
 public class CardMapper {
 
-    public CardVM mapToCardVM(Card card) {
+    public CardVM mapToCardVM(CardDTO card) {
         CardVM cardVM = new CardVM();
 
         cardVM.setId(card.getId());
@@ -22,13 +22,13 @@ public class CardMapper {
         cardVM.setPosition(card.getPosition());
         cardVM.setCreatedAt(card.getCreatedAt());
         cardVM.setUpdatedAt(card.getUpdatedAt());
-        cardVM.setColumnId(card.getColumn().getId());
+        cardVM.setColumnId(card.getColumnId());
 
         return cardVM;
     }
 
-    public Card mapToCard(CardVM cardVM, Column column) {
-        Card card = new Card();
+    public CardDTO mapToCard(CardVM cardVM, ColumnDTO column) {
+        CardDTO card = new CardDTO();
 
         card.setId(cardVM.getId());
         card.setTitle(cardVM.getTitle());
@@ -36,12 +36,12 @@ public class CardMapper {
         card.setPosition(cardVM.getPosition());
         card.setCreatedAt(cardVM.getCreatedAt());
         card.setUpdatedAt(cardVM.getUpdatedAt());
-        card.setColumn(column);
+        card.setColumnId(column.getId());
 
         return card;
     }
 
-    public void patchCard(PatchCard patchCard, Card card) {
+    public void patchCard(PatchCard patchCard, CardDTO card) {
         if (patchCard.getTitle() != null) {
             card.setTitle(patchCard.getTitle());
         }

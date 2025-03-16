@@ -8,7 +8,7 @@ import org.glassfish.jersey.server.ServerProperties;
 public class ApiApplication extends ResourceConfig {
 
     public ApiApplication() {
-        packages("br.com.angryapps.api.resources");
+        packages("br.com.angryapps.api.resources", "br.com.angryapps.api.providers");
 
         property(ServerProperties.WADL_FEATURE_DISABLE, true);
     }
