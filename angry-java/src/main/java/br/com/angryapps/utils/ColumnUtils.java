@@ -1,12 +1,12 @@
 package br.com.angryapps.utils;
 
-import br.com.angryapps.models.Column;
+import br.com.angryapps.db.dto.ColumnDTO;
 
 public class ColumnUtils {
 
     public static final double DEFAULT_POSITION = 100_000.0;
 
-    public static double calculateNewPosition(Column previousColumn, Column nextColumn) {
+    public static double calculateNewPosition(ColumnDTO previousColumn, ColumnDTO nextColumn) {
         if (previousColumn == null && nextColumn == null) {
             return DEFAULT_POSITION;
         }

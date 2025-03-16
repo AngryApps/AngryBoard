@@ -1,12 +1,12 @@
 package br.com.angryapps.utils;
 
-import br.com.angryapps.models.Card;
+import br.com.angryapps.db.dto.CardDTO;
 
 public class CardUtils {
 
     public static final double DEFAULT_POSITION = 100_000.0;
 
-    public static double calculateNewPosition(Card previousCard, Card nextCard) {
+    public static double calculateNewPosition(CardDTO previousCard, CardDTO nextCard) {
         if (previousCard == null && nextCard == null) {
             return DEFAULT_POSITION;
         }

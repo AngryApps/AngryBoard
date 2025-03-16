@@ -3,24 +3,28 @@ package br.com.angryapps.api.mappers;
 import br.com.angryapps.api.vm.CardVM;
 import br.com.angryapps.api.vm.ColumnVM;
 import br.com.angryapps.api.vm.requests.PatchColumn;
-import br.com.angryapps.models.Card;
-import br.com.angryapps.models.Column;
+import br.com.angryapps.db.dto.CardDTO;
+import br.com.angryapps.db.dto.ColumnDTO;
+import br.com.angryapps.utils.Util;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.jvnet.hk2.annotations.Service;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
-//@Singleton
+@Singleton
 public class ColumnMapper {
 
-    @Inject
-    private CardMapper cardMapper;
+    private final CardMapper cardMapper;
 
-    public ColumnVM mapToColumnVM(Column column) {
+    @Inject
+    public ColumnMapper(CardMapper cardMapper) {
+        this.cardMapper = cardMapper;
+    }
+
+    public ColumnVM mapToColumnVM(ColumnDTO column) {
         ColumnVM columnVM = new ColumnVM();
         columnVM.setId(column.getId());
         columnVM.setTitle(column.getTitle());
@@ -29,17 +33,23 @@ public class ColumnMapper {
         columnVM.setUpdatedAt(column.getUpdatedAt());
         columnVM.setPosition(column.getPosition());
 
-        List<Card> cards = column.getCards();
-        if (cards != null) {
-            cards.sort(Comparator.comparingDouble(Card::getPosition));
-            columnVM.setCards(cards.stream().map(cardMapper::mapToCardVM).toList());
-        }
+        return columnVM;
+    }
+
+    public ColumnVM mapToColumnVM(ColumnDTO column, List<CardDTO> cardsDto) {
+        ColumnVM columnVM = mapToColumnVM(column);
+
+        List<CardVM> cards = Util.safeList(cardsDto).stream()
+                                 .map(cardMapper::mapToCardVM)
+                                 .toList();
+
+        columnVM.setCards(cards);
 
         return columnVM;
     }
 
-    public Column mapToColumn(ColumnVM columnVM) {
-        Column column = new Column();
+    public ColumnDTO mapToColumn(ColumnVM columnVM) {
+        ColumnDTO column = new ColumnDTO();
         column.setId(columnVM.getId());
         column.setTitle(columnVM.getTitle());
         column.setDescription(columnVM.getDescription());
@@ -47,16 +57,10 @@ public class ColumnMapper {
         column.setUpdatedAt(columnVM.getUpdatedAt());
         column.setPosition(columnVM.getPosition());
 
-        List<CardVM> cards = columnVM.getCards();
-        if (cards != null) {
-            cards.sort(Comparator.comparingDouble(CardVM::getPosition));
-            column.setCards(cards.stream().map(c -> cardMapper.mapToCard(c, column)).toList());
-        }
-
         return column;
     }
 
-    public void patchColumn(PatchColumn patchColumn, Column column) {
+    public void patchColumn(PatchColumn patchColumn, ColumnDTO column) {
         if (patchColumn.getTitle() != null) {
             column.setTitle(patchColumn.getTitle());
         }
