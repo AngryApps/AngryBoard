@@ -12,14 +12,14 @@ public class CardDTO implements Serializable {
     private double position;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private UUID column_id;
+    private UUID columnId;
 
-    public UUID getColumn_id() {
-        return column_id;
+    public UUID getColumnId() {
+        return columnId;
     }
 
-    public void setColumn_id(UUID column_id) {
-        this.column_id = column_id;
+    public void setColumnId(UUID columnId) {
+        this.columnId = columnId;
     }
 
     public LocalDateTime getCreatedAt() {
