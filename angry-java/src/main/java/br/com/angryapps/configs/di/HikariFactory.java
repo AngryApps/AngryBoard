@@ -1,22 +1,17 @@
-package br.com.angryapps.db;
+package br.com.angryapps.configs.di;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.glassfish.hk2.api.Factory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.sql.DataSource;
+public class HikariFactory implements Factory<HikariDataSource> {
 
-public class AppDatasource {
+    private static final Logger logger = LoggerFactory.getLogger(HikariFactory.class);
 
-    private static final Logger logger = LoggerFactory.getLogger(AppDatasource.class);
-    private static final HikariDataSource dataSource = initializeDataSource();
-
-    public static DataSource getDataSource() {
-        return dataSource;
-    }
-
-    private static HikariDataSource initializeDataSource() {
+    @Override
+    public HikariDataSource provide() {
         try {
             HikariConfig config = new HikariConfig();
 
@@ -46,10 +41,8 @@ public class AppDatasource {
         }
     }
 
-    public static void closeDataSource() {
-        if (!dataSource.isClosed()) {
-            dataSource.close();
-            logger.info("HikariCP connection pool closed");
-        }
+    @Override
+    public void dispose(HikariDataSource instance) {
+        instance.close();
     }
 }

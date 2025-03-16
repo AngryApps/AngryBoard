@@ -1,16 +1,23 @@
 package br.com.angryapps.db.dao.impl;
 
-import br.com.angryapps.db.JdbiManager;
 import br.com.angryapps.db.dao.ColumnDAO;
 import br.com.angryapps.db.dto.ColumnDTO;
+import jakarta.inject.Inject;
 import org.jdbi.v3.core.Jdbi;
+import org.jvnet.hk2.annotations.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class ColumnDAOImpl implements ColumnDAO {
 
-    private final Jdbi jdbi = JdbiManager.getInstance();
+    private final Jdbi jdbi;
+
+    @Inject
+    public ColumnDAOImpl(Jdbi jdbi) {
+        this.jdbi = jdbi;
+    }
 
     @Override
     public List<ColumnDTO> findAllOrderByPositionAsc() {
