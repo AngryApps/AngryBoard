@@ -23,8 +23,4 @@ public interface ColumnDAO {
     long count();
 
     List<ColumnDTO> findAllOrderByPositionAsc();
-
-    List<ColumnDTO> findByPositionGreaterThanEqualOrderByPositionAsc(int position);
-
-    List<ColumnDTO> findByPositionGreaterThanEqualAndIdNotOrderByPositionAsc(int position, UUID id);
 }

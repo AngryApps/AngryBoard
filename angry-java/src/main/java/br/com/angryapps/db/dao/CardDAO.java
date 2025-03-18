@@ -28,9 +28,5 @@ public interface CardDAO {
 
     List<CardDTO> findAllOrderByPositionAsc();
 
-    List<CardDTO> findByColumnIdAndPositionGreaterThanEqualAndIdNotOrderByPositionAsc(UUID id, int positionIsGreaterThan, UUID id1);
-
-    List<CardDTO> findByColumnIdAndPositionGreaterThanEqualOrderByPositionAsc(UUID columnId, int position);
-
     List<CardDTO> findAllByColumnId(List<UUID> ids);
 }

@@ -115,23 +115,4 @@ public class ColumnDAOImpl implements ColumnDAO {
                                                .list()
         );
     }
-
-    @Override
-    public List<ColumnDTO> findByPositionGreaterThanEqualOrderByPositionAsc(int position) {
-        return jdbi.withHandle(handle -> handle.createQuery("SELECT * FROM columns WHERE position >= :position ORDER BY position ASC")
-                                               .bind("position", position)
-                                               .mapToBean(ColumnDTO.class)
-                                               .list()
-        );
-    }
-
-    @Override
-    public List<ColumnDTO> findByPositionGreaterThanEqualAndIdNotOrderByPositionAsc(int position, UUID id) {
-        return jdbi.withHandle(handle -> handle.createQuery("SELECT * FROM columns WHERE position >= :position AND id != :id ORDER BY position ASC")
-                                               .bind("position", position)
-                                               .bind("id", id)
-                                               .mapToBean(ColumnDTO.class)
-                                               .list()
-        );
-    }
 }
