@@ -136,29 +136,8 @@ public class CardDAOImpl implements CardDAO {
     }
 
     @Override
-    public List<CardDTO> findByColumnIdAndPositionGreaterThanEqualAndIdNotOrderByPositionAsc(UUID columnId, int position, UUID id) {
-        return jdbi.withHandle(handle -> handle.createQuery("SELECT * FROM cards WHERE column_id = :columnId AND position >= :position AND id != :id ORDER BY position ASC")
-                                               .bind("columnId", columnId)
-                                               .bind("position", position)
-                                               .bind("id", id)
-                                               .mapToBean(CardDTO.class)
-                                               .list()
-        );
-    }
-
-    @Override
-    public List<CardDTO> findByColumnIdAndPositionGreaterThanEqualOrderByPositionAsc(UUID columnId, int position) {
-        return jdbi.withHandle(handle -> handle.createQuery("SELECT * FROM cards WHERE column_id = :columnId AND position >= :position ORDER BY position ASC")
-                                               .bind("columnId", columnId)
-                                               .bind("position", position)
-                                               .mapToBean(CardDTO.class)
-                                               .list()
-        );
-    }
-
-    @Override
     public List<CardDTO> findAllByColumnId(List<UUID> ids) {
-        return jdbi.withHandle(handle -> handle.createQuery("SELECT * FROM cards WHERE column_id IN (<ids>)")
+        return jdbi.withHandle(handle -> handle.createQuery("SELECT * FROM cards WHERE column_id IN (<ids>) ORDER BY position ASC")
                                                .bindList("ids", ids)
                                                .mapToBean(CardDTO.class)
                                                .list()
