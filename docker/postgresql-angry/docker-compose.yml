@@ -1,0 +1,17 @@
+services:
+    db:
+        image: arm64v8/postgres:17.4
+        container_name: postgres-angry
+        ports:
+            - 5433:5432
+        environment:
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_HOST_AUTH_METHOD: trust
+        volumes:
+            - ./data:/var/lib/postgresql/data
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "100m"
+                max-file: "10"
