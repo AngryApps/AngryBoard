@@ -7,6 +7,7 @@ import br.com.angryapps.api.responses.ApiResponses;
 import br.com.angryapps.api.responses.BaseResponse;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Path;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
@@ -54,7 +55,7 @@ public class ExceptionResponseProvider {
         @Override
         public Response toResponse(ConstraintViolationException exception) {
             String message = exception.getConstraintViolations().stream()
-                                      .map(ConstraintViolation::getMessage)
+                                      .map(c -> extractPropertyPath(c.getPropertyPath()) + ": " + c.getMessage())
                                       .collect(Collectors.joining(", "));
 
             BaseResponse response = ApiResponses.error(message);
@@ -63,6 +64,17 @@ public class ExceptionResponseProvider {
                            .entity(response)
                            .type(MediaType.APPLICATION_JSON)
                            .build();
+        }
+
+        private String extractPropertyPath(Path propertyPath) {
+            String path = propertyPath.toString();
+            int lastDotIndex = path.lastIndexOf('.');
+
+            if (lastDotIndex > 0) {
+                path = path.substring(lastDotIndex + 1);
+            }
+
+            return path;
         }
     }
 
