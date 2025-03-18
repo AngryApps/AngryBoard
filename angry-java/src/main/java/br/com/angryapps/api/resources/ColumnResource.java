@@ -1,36 +1,47 @@
 package br.com.angryapps.api.resources;
 
 import br.com.angryapps.api.exceptions.NotFoundResponseException;
+import br.com.angryapps.api.mappers.CardMapper;
 import br.com.angryapps.api.mappers.ColumnMapper;
 import br.com.angryapps.api.responses.ApiResponses;
 import br.com.angryapps.api.responses.BaseResponse;
 import br.com.angryapps.api.responses.ListDataResponse;
 import br.com.angryapps.api.responses.SingleDataResponse;
+import br.com.angryapps.api.vm.CardVM;
 import br.com.angryapps.api.vm.ColumnVM;
 import br.com.angryapps.api.vm.requests.ChangeColumnPositionRequest;
 import br.com.angryapps.api.vm.requests.PatchColumn;
+import br.com.angryapps.db.dao.CardDAO;
 import br.com.angryapps.db.dao.ColumnDAO;
+import br.com.angryapps.db.dto.CardDTO;
 import br.com.angryapps.db.dto.ColumnDTO;
 import br.com.angryapps.utils.ColumnUtils;
+import br.com.angryapps.utils.Util;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Path("/v1/columns")
 public class ColumnResource {
 
     private final ColumnDAO columnDAO;
+    private final CardDAO cardDAO;
     private final ColumnMapper columnMapper;
+    private final CardMapper cardMapper;
 
     @Inject
-    public ColumnResource(ColumnDAO columnDAO, ColumnMapper columnMapper) {
+    public ColumnResource(ColumnDAO columnDAO, CardDAO cardDAO, ColumnMapper columnMapper, CardMapper cardMapper) {
         this.columnDAO = columnDAO;
         this.columnMapper = columnMapper;
+        this.cardDAO = cardDAO;
+        this.cardMapper = cardMapper;
     }
 
     @POST
@@ -93,6 +104,17 @@ public class ColumnResource {
         List<ColumnVM> columnVMs = columns.stream()
                                           .map(columnMapper::mapToColumnVM)
                                           .toList();
+
+        Map<UUID, List<CardDTO>> cardsPerColumn = cardDAO.findAllByColumnId(columns.stream().map(ColumnDTO::getId).toList())
+                                                         .stream().collect(Collectors.groupingBy(CardDTO::getColumnId));
+
+        for (ColumnVM columnVM : columnVMs) {
+            List<CardDTO> cards = cardsPerColumn.get(columnVM.getId());
+            List<CardVM> cardsVM = Util.safeList(cards).stream()
+                                       .map(cardMapper::mapToCardVM).toList();
+
+            columnVM.setCards(cardsVM);
+        }
 
         return ApiResponses.list(columnVMs);
     }

@@ -8,6 +8,7 @@ import org.jvnet.hk2.annotations.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -18,6 +19,15 @@ public class CardDAOImpl implements CardDAO {
     @Inject
     public CardDAOImpl(Jdbi jdbi) {
         this.jdbi = jdbi;
+    }
+
+    @Override
+    public Optional<CardDTO> findById(UUID id) {
+        return jdbi.withHandle(handle -> handle.createQuery("SELECT * FROM cards WHERE id = :id")
+                                               .bind("id", id)
+                                               .mapToBean(CardDTO.class)
+                                               .findOne()
+        );
     }
 
     @Override
@@ -118,6 +128,14 @@ public class CardDAOImpl implements CardDAO {
     }
 
     @Override
+    public List<CardDTO> findAllOrderByPositionAsc() {
+        return jdbi.withHandle(handle -> handle.createQuery("SELECT * FROM cards ORDER BY position ASC")
+                                               .mapToBean(CardDTO.class)
+                                               .list()
+        );
+    }
+
+    @Override
     public List<CardDTO> findByColumnIdAndPositionGreaterThanEqualAndIdNotOrderByPositionAsc(UUID columnId, int position, UUID id) {
         return jdbi.withHandle(handle -> handle.createQuery("SELECT * FROM cards WHERE column_id = :columnId AND position >= :position AND id != :id ORDER BY position ASC")
                                                .bind("columnId", columnId)
@@ -133,6 +151,15 @@ public class CardDAOImpl implements CardDAO {
         return jdbi.withHandle(handle -> handle.createQuery("SELECT * FROM cards WHERE column_id = :columnId AND position >= :position ORDER BY position ASC")
                                                .bind("columnId", columnId)
                                                .bind("position", position)
+                                               .mapToBean(CardDTO.class)
+                                               .list()
+        );
+    }
+
+    @Override
+    public List<CardDTO> findAllByColumnId(List<UUID> ids) {
+        return jdbi.withHandle(handle -> handle.createQuery("SELECT * FROM cards WHERE column_id IN (<ids>)")
+                                               .bindList("ids", ids)
                                                .mapToBean(CardDTO.class)
                                                .list()
         );
